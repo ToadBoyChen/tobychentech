@@ -9,7 +9,7 @@ export default function ScrollTracker() {
 
   const sections = [
     { id: "intro", label: " " },
-    { id: "about", label: "ABOUT" },
+    { id: "about", label: "ABOUT ME" },
     { id: "stats", label: "STATISTICS" },
     { id: "projects", label: "PROJECTS" },
     { id: "services", label: "SERVICES" },

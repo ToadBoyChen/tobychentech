@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Me from "@/public/me.jpg"; 
+import HackerText from "../HackerText";
 
 const METRICS = [
   { label: "CORE FOCUS", value: "FULLSTACK" },
@@ -54,7 +55,17 @@ export default function Card() {
         </span>
         <div className="h-px bg-zinc-600 flex-1" />
       </div>
-
+      
+      <div className="flex flex-col items-center mb-8">
+        <HackerText
+          text="USER_PROFILE"
+          triggerOnMount={true}
+          triggerOnHover={false}
+          speed={50}
+          className="font-bold text-5xl tracking-tighter text-center font-mono"
+        />
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto">
         
         <div className="md:col-span-2 bg-zinc-100 p-8 md:p-12 flex flex-col justify-between group hover:scale-[1.02] transition-all duration-300 ease-out min-h-[400px]">

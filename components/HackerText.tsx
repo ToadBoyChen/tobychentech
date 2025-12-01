@@ -10,7 +10,7 @@ type HackerTextProps = {
   triggerOnHover?: boolean;
   speed?: number; 
   delay?: number;
-  direction?: "ltr" | "rtl" | "center"; // New Prop
+  direction?: "ltr" | "rtl" | "center";
 };
 
 export default function HackerText({ 
@@ -20,10 +20,14 @@ export default function HackerText({
   triggerOnHover = true,
   speed = 40,
   delay = 0,
-  direction = "ltr" // Default to Left-to-Right
+  direction = "ltr"
 }: HackerTextProps) {
   
   const [displayText, setDisplayText] = useState(text);
+  const [hasPlayed, setHasPlayed] = useState(false); // Track if animation has run once
+  
+  // 1. REF: We need a reference to the DOM element to observe it
+  const elementRef = useRef<HTMLSpanElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startScramble = useCallback(() => {
@@ -38,37 +42,22 @@ export default function HackerText({
       const now = Date.now();
       const elapsed = now - startTime;
 
-      // Calculate how many characters *should* be revealed based on time
       const revealCount = Math.floor((elapsed - delay) / speed);
 
       const currentText = text
         .split("")
         .map((char, index) => {
           
-          // --- DIRECTION LOGIC ---
           let shouldReveal = false;
-
-          if (direction === "ltr") {
-            // Left to Right: Reveal if index is low enough
-            shouldReveal = index < revealCount;
-          } 
-          else if (direction === "rtl") {
-            // Right to Left: Reveal if index is high enough
-            // (e.g. if length is 10 and we revealed 3, show indices 7, 8, 9)
-            shouldReveal = index >= text.length - revealCount;
-          } 
+          if (direction === "ltr") shouldReveal = index < revealCount;
+          else if (direction === "rtl") shouldReveal = index >= text.length - revealCount;
           else if (direction === "center") {
-            // Center Out: Calculate distance from middle
             const middle = text.length / 2;
             const distFromCenter = Math.abs(index - middle);
-            // We divide revealCount by 2 because we are expanding in two directions
             shouldReveal = distFromCenter < revealCount / 2;
           }
 
-          // If revealed, show real char. If not, show random char.
-          if (shouldReveal) {
-            return text[index];
-          }
+          if (shouldReveal) return text[index];
           return LETTERS[Math.floor(Math.random() * LETTERS.length)];
         })
         .join("");
@@ -86,15 +75,32 @@ export default function HackerText({
 
   }, [text, speed, delay, direction]);
 
+  // 2. INTERSECTION OBSERVER LOGIC
   useEffect(() => {
-    if (triggerOnMount) {
-      startScramble();
-    } else {
+    // If triggerOnMount is false, we just set the text and do nothing else
+    if (!triggerOnMount) {
       setDisplayText(text);
+      return;
     }
 
-    return () => clearInterval(intervalRef.current as NodeJS.Timeout);
-  }, [triggerOnMount, startScramble, text]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Run ONLY if it enters viewport AND hasn't played yet
+        if (entry.isIntersecting && !hasPlayed) {
+          startScramble();
+          setHasPlayed(true); // Mark as played so it doesn't re-run when scrolling back up
+          observer.disconnect(); // Stop observing to save resources
+        }
+      },
+      { threshold: 0.2 } // Trigger when 10% of the text is visible
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [triggerOnMount, startScramble, hasPlayed, text]);
 
   const handleMouseEnter = () => {
     if (triggerOnHover) {
@@ -104,6 +110,7 @@ export default function HackerText({
 
   return (
     <span 
+      ref={elementRef} // Attach ref here
       className={className}
       onMouseEnter={handleMouseEnter}
     >

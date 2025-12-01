@@ -15,22 +15,22 @@ export default function Body() {
                 <Introduction/>
             </section>
             
-            <div className="w-full px-10 min-h-screen flex items-center justify-center py-20 flex-col">
+            <div className="w-full px-16 py-36 min-h-screen grid gap-24 items-center justify-center grid-cols-1">
                 <section id="about">
-                <Card />
-            </section>
-            
-            <section id="stats">
-                <Statistics />
-            </section>
+                    <Card />
+                </section>
+                
+                <section id="stats">
+                    <Statistics />
+                </section>
 
-            <section id="projects">
-                <Projects />
-            </section>
+                <section id="projects">
+                    <Projects />
+                </section>
 
-            <section id="services">
-                <Services />
-            </section>
+                <section id="services">
+                    <Services />
+                </section>
             </div>
         </div>
     );

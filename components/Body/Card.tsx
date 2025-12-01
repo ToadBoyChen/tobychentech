@@ -36,8 +36,7 @@ export default function Card() {
   }, []);
 
   return (
-    <section className="w-full max-w-6xl px-6 py-32 relative">
-      
+    <div>
       <style jsx>{`
         @keyframes slideUpFade {
           0% { opacity: 0; transform: translateY(10px); }
@@ -101,7 +100,7 @@ export default function Card() {
             `}>
             </div>
         </div>
-        <div className="md:col-span-2 bg-zinc-900 p-8 flex flex-col justify-center items-center overflow-hidden hover:scale-[1.02] transition-transform duration-300 relative min-h-[250px]">
+        <div className="md:col-span-2 bg-zinc-900 p-8 flex flex-col justify-center items-center overflow-hidden transition-transform duration-300 relative min-h-[250px]">
              
              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
 
@@ -126,13 +125,11 @@ export default function Card() {
                     ))}
                 </div>
              </div>
-
              <div className="absolute -right-4 -bottom-8 text-[8rem] font-black text-white/5 select-none pointer-events-none">
                 2004
              </div>
         </div>
-
       </div>
-    </section>
+    </div>
   );
 }

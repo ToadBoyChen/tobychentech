@@ -7,30 +7,27 @@ import ScrollTracker from "@/components/ScrollTracker";
 
 export default function Body() {
     return (
-        <div className="w-full">
+        <div className="w-full flex flex-col items-center">
+            
             <ScrollTracker />
 
-            <section id="intro">
+            <section id="intro" className="w-screen relative">
                 <Introduction/>
             </section>
 
-            {/* 1. About Section */}
-            <section id="about" className="min-h-screen flex items-center justify-center py-20">
+            <section id="about" className="w-full max-w-5xl px-6 min-h-screen flex items-center justify-center py-20">
                 <Card />
             </section>
-
-            {/* 2. Stats Section */}
-            <section id="stats" className="min-h-[50vh] flex items-center justify-center py-20">
+            
+            <section id="stats" className="w-full max-w-5xl px-6 min-h-[50vh] flex items-center justify-center py-20">
                 <Statistics />
             </section>
 
-            {/* 3. Projects Section */}
-            <section id="projects" className="min-h-screen flex items-center justify-center py-20">
+            <section id="projects" className="w-full max-w-5xl px-6 min-h-screen flex items-center justify-center py-20">
                 <Projects />
             </section>
 
-            {/* 4. Services Section */}
-            <section id="services" className="min-h-screen flex items-center justify-center py-20">
+            <section id="services" className="w-full max-w-5xl px-6 min-h-screen flex items-center justify-center py-20">
                 <Services />
             </section>
         </div>

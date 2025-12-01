@@ -27,8 +27,8 @@ export default function Navbar() {
         <Link 
           href="/" 
           className={`
-            pointer-events-auto font-extrabold text-xl tracking-tighter transition-colors duration-500
-            ${isScrolled ? "text-zinc-900" : "text-white drop-shadow-md"}
+            pointer-events-auto font-extrabold text-xl tracking-tighter transition-colors duration-300
+            ${isScrolled ? "text-zinc-900 hover:text-blue-600" : "text-white drop-shadow-md hover:text-blue-400"}
           `}
         >
             <HackerText 
@@ -41,11 +41,8 @@ export default function Navbar() {
         </Link>
         <Link 
             href="/contact"
-            className={` pointer-events-auto font-extrabold text-xl tracking-tighter transition-colors duration-500
-              ${isScrolled 
-                ? "text-black"
-                : "text-white" 
-              }
+            className={` pointer-events-auto font-extrabold text-xl tracking-tighter transition-colors duration-300
+              ${isScrolled ? "text-zinc-900 hover:text-pink-600" : "text-white drop-shadow-md hover:text-pink-400" }
             `}
         >
             <HackerText 

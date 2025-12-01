@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import HackerText from "../HackerText"; // FIXED PATH
+import HackerText from "../HackerText";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -93,20 +93,20 @@ const TechDonut = ({ labels, values }: { labels: string[], values: number[] }) =
   };
 
   return (
-    <div className="flex items-center gap-4 xl:gap-8 h-full w-full">
-      <div className="relative w-28 h-28 xl:w-32 xl:h-32 flex-shrink-0">
+    <div className="flex items-center gap-8 h-full w-full">
+      <div className="relative w-32 h-32 flex-shrink-0">
         <Doughnut data={data} options={options} />
         <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
             <span className="text-xl font-bold text-white">100%</span>
             <span className="text-[8px] font-mono text-zinc-500">EFFICIENCY</span>
         </div>
       </div>
-      <div className="flex flex-col gap-3 w-full min-w-0">
+      <div className="flex flex-col gap-3 w-full">
         {labels.map((label, i) => (
             <div key={i} className="flex items-center justify-between w-full group cursor-default">
-                <div className="flex items-center gap-2 min-w-0">
-                    <div className={`w-2 h-2 rounded-full flex-shrink-0`} style={{ backgroundColor: data.datasets[0].backgroundColor[i] }} />
-                    <span className="text-xs font-bold text-zinc-400 group-hover:text-white transition-colors truncate">{label}</span>
+                <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full`} style={{ backgroundColor: data.datasets[0].backgroundColor[i] }} />
+                    <span className="text-xs font-bold text-zinc-400 group-hover:text-white transition-colors">{label}</span>
                 </div>
                 <span className="font-mono text-xs text-zinc-500">{values[i]}%</span>
             </div>
@@ -166,11 +166,14 @@ export default function Statistics() {
   const [totalCommits, setTotalCommits] = useState(0);
   const [repoCount, setRepoCount] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
+  const [avgCommits, setAvgCommits] = useState(0);
   
   const [langLabels, setLangLabels] = useState<string[]>(["Loading...", "Loading...", "Loading..."]);
   const [langValues, setLangValues] = useState<number[]>([33, 33, 33]);
   const [weeklyLabels, setWeeklyLabels] = useState<string[]>([]);
   const [weeklyData, setWeeklyData] = useState<number[]>([]);
+
+  const yearsExp = new Date().getFullYear() - START_YEAR;
 
   useEffect(() => {
     async function fetchData() {
@@ -184,20 +187,22 @@ export default function Statistics() {
         setTotalCommits(total);
         setHeatmapData(last84.map((day: any) => day.count));
 
-        // Streak Logic
         let maxStreak = 0;
         let currentStreak = 0;
+        let activeDays = 0;
+        
         contribJson.contributions.forEach((day: any) => {
             if (day.count > 0) {
                 currentStreak++;
+                activeDays++;
                 if (currentStreak > maxStreak) maxStreak = currentStreak;
             } else {
                 currentStreak = 0;
             }
         });
         setBestStreak(maxStreak);
+        setAvgCommits(Math.round(total / (activeDays || 1))); 
 
-        // Weekly Data
         const last7 = contribJson.contributions.slice(-7);
         const days = last7.map((day: any) => new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }));
         const counts = last7.map((day: any) => day.count);
@@ -250,16 +255,18 @@ export default function Statistics() {
         <div className="h-px bg-zinc-800 flex-1" />
       </div>
 
+      {/* 2. HEADER */}
       <div className="flex mb-16 flex-col items-center">
         <HackerText
           text="GITHUB_STATS"
           triggerOnMount={true}
           triggerOnHover={false}
           speed={50}
-          className="font-bold text-white text-5xl tracking-tighter text-center font-mono"
+          className="font-bold text-white text-5xl md:text-7xl tracking-tighter text-center font-mono"
         />
       </div>
 
+      {/* --- GITHUB GRID --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
 
         {/* 1. ACTIVITY LOG */}
@@ -298,21 +305,12 @@ export default function Statistics() {
                 <AnimatedCounter end={bestStreak} label="Best Streak" />
             </div>
             <div className="flex-1 bg-zinc-900 border border-zinc-800 p-6 flex flex-col justify-center items-center hover:border-zinc-600 transition-colors">
-                <AnimatedCounter end={repoCount} label="Public Repos" />
+                <AnimatedCounter end={avgCommits} label="Avg Commits/Day" />
             </div>
         </div>
-      </div>
 
-        <div className="flex my-16 flex-col items-center">
-            <HackerText
-                text="CUSTOMER_STATS"
-                triggerOnMount={true}
-                triggerOnHover={false}
-                speed={50}
-                className="font-bold text-white text-5xl tracking-tighter text-center font-mono"
-            />
-      </div>
-
+        {/* 4. PERFORMANCE GRAPH (MOVED UP) */}
+        {/* Now part of the main grid, spanning full width at the bottom of the github section */}
         <div className="col-span-1 md:col-span-2 lg:col-span-4 bg-zinc-900 border border-zinc-800 p-8 flex flex-col hover:border-zinc-600 transition-colors group min-h-[300px]">
             <div className="flex justify-between items-center mb-8">
                 <div>
@@ -333,6 +331,48 @@ export default function Statistics() {
                 <PerformanceChart labels={weeklyLabels} dataPoints={weeklyData} />
             </div>
         </div>
+
+      </div>
+
+
+      {/* --- CUSTOMER SECTION --- */}
+      
+      <div className="flex my-24 flex-col items-center">
+            <HackerText
+                text="CUSTOMER_STATS"
+                triggerOnMount={true}
+                triggerOnHover={false}
+                speed={50}
+                className="font-bold text-white text-5xl tracking-tighter text-center font-mono"
+            />
+      </div>
+
+      <div className="flex justify-center w-full">
+        <div className="w-full max-w-3xl bg-zinc-900 border-2 border-dashed border-zinc-800 rounded-xl p-12 flex flex-col items-center justify-center text-center hover:border-zinc-600 transition-colors group relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
+            <h2 className="text-9xl font-black text-zinc-800 mb-4 group-hover:text-zinc-700 transition-colors">0</h2>
+            <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Total Customers Served</h3>
+            <p className="text-zinc-400 font-mono text-sm max-w-md relative z-10 mb-8">
+                SYSTEM_STATUS: <span className="text-yellow-500">WAITING_FOR_INPUT</span>. 
+                <br />
+                <br />
+                Be the first to break the streak. (please) 🥺👉👈
+            </p>
+            
+            {/* BUTTON LINK */}
+            <div className="relative z-10">
+                <a 
+                    href="/contact"
+                    className="
+                    pointer-events-auto font-extrabold text-xl tracking-tighter transition-all
+                    inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-black rounded-full"
+                >
+                    Contact Me
+                </a>
+            </div>
+        </div>
+      </div>
+
     </section>
   );
 }

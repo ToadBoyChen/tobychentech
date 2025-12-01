@@ -4,18 +4,15 @@ import Link from "next/link";
 import HackerText from "./HackerText"; 
 
 export default function Navbar() {
-  // 1. State to track position
   const [isPastIntro, setIsPastIntro] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // 2. Logic: If we scroll past the window height (the Intro), toggle state
-      const threshold = window.innerHeight - 80; // Buffer for smooth transition
+      const threshold = window.innerHeight - 80;
       setIsPastIntro(window.scrollY > threshold);
     };
 
     window.addEventListener("scroll", handleScroll);
-    // Call once on mount to check initial position
     handleScroll();
     
     return () => window.removeEventListener("scroll", handleScroll);
@@ -28,22 +25,8 @@ export default function Navbar() {
         ${isPastIntro ? "mix-blend-difference" : ""} 
       `}
     >
-      {/* LOGIC EXPLAINED:
-         1. Inside Intro (!isPastIntro):
-            - No Blend Mode.
-            - Text is White.
-            - Result: Pure White text on top of your photo.
-         
-         2. Past Intro (isPastIntro):
-            - mix-blend-difference is applied.
-            - Text is White.
-            - Background is White (Body).
-            - Result: White - White = BLACK text.
-      */}
 
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
-
-        {/* LEFT LINK */}
         <Link 
           href="/" 
           className={`
@@ -58,8 +41,6 @@ export default function Navbar() {
               className="block" 
             />
         </Link>
-
-        {/* RIGHT LINK */}
         <Link 
             href="/contact"
             className={`

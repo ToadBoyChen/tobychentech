@@ -10,7 +10,7 @@ export default function Navbar() {
           text="Toby Chen" 
           triggerOnMount={false} 
           triggerOnHover={true} 
-          speed={50}
+          speed={30}
         />
       </Link>
       

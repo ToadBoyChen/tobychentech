@@ -1,75 +1,59 @@
 "use client";
 import { useState, useEffect } from "react";
 import HackerText from "../HackerText";
+import TOC from "../TOC";
 
 export default function Introduction() {
-  const roles = [
-    "Mathematician",
-    "Kickboxer",
-    "Programmer",
-    "Hacker"
-  ];
-
+  const roles = ["Mathematician", "Kickboxer", "Programmer", "Hacker"];
   const [index, setIndex] = useState(0);
-  
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    const loadTimer = setTimeout(() => {
-      setHasLoaded(true);
-    }, 900);
-
+    const loadTimer = setTimeout(() => setHasLoaded(true), 900);
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % roles.length);
-    }, 3500); 
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(loadTimer);
-    };
+      setIndex((prev) => (prev + 1) % roles.length);
+    }, 3500);
+    return () => { clearInterval(interval); clearTimeout(loadTimer); };
   }, [roles.length]);
 
   return (
-    <div className="relative flex flex-col justify-end items-center min-h-[90vh] pb-20 overflow-hidden z-10">
-      <div className="w-full max-w-5xl px-6">
-        <div className="flex flex-col items-start w-full">
-            
+    <div>
+      <div className="grid mt-48">
+        <div className="flex flex-col text-zinc-900 font-mono">
             <HackerText 
                 text="Welcome,"
                 triggerOnMount={true}
                 triggerOnHover={false}
                 speed={50}
                 delay={0}
-                className="font-bold text-7xl md:text-9xl tracking-tighter mb-2 text-zinc-900 text-left"
+                className="font-bold text-8xl tracking-tighter mb-4"
             />
 
-            <div className="flex flex-wrap items-center justify-start gap-x-3 md:gap-x-5 text-3xl md:text-5xl font-medium tracking-tight text-zinc-900 w-full">
-                
+            <div className="flex flex-wrap items-center justify-start gap-x-3 text-3xl md:text-4xl font-medium tracking-tight text-zinc-900 w-full">
                 <HackerText 
                     text="I'm a"
                     triggerOnMount={true}
                     triggerOnHover={false}
-                    speed={50}
+                    speed={40}
                     delay={600} 
                     className="whitespace-nowrap"
                 />
-
                 <div className="relative flex justify-start"> 
-                    
                     <HackerText 
                         key={roles[index]} 
                         text={roles[index]}
                         triggerOnMount={true}
                         triggerOnHover={false}
-                        speed={50}
+                        speed={35}
                         delay={index === 0 && !hasLoaded ? 900 : 0} 
                         className="text-zinc-900 font-bold whitespace-nowrap"
                     />
-                    <div 
-                      className="absolute -bottom-2 left-0 w-full h-[3px] bg-zinc-900"
-                    />
+                    <div className="absolute -bottom-2 left-0 w-full h-[3px] bg-zinc-900" />
                 </div>
             </div>
+        </div>
+        <div className="mt-16">
+          <TOC/>
         </div>
       </div>
     </div>

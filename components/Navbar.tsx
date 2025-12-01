@@ -5,17 +5,15 @@ export default function Navbar() {
   return (
     <div className="fixed top-6 left-1/2 -translate-x-1/2 flex justify-between items-center w-2/3 max-w-6xl z-50">
       
-      {/* 1. Logo */}
-      <Link href="/" className="font-bold text-xl tracking-tighter">
+      <Link href="/" className="font-extrabold text-xl tracking-tighter">
         <HackerText 
           text="Toby Chen" 
           triggerOnMount={false} 
           triggerOnHover={true} 
-          speed={15}
+          speed={50}
         />
       </Link>
       
-      {/* 2. The Contact Button */}
       <Link 
         href="/contact"
         className="

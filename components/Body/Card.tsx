@@ -68,7 +68,7 @@ export default function Card() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto">
         
-        <div className="md:col-span-2 bg-zinc-100 p-8 md:p-12 flex flex-col justify-between group hover:scale-[1.02] transition-all duration-300 ease-out min-h-[400px]">
+        <div className="md:col-span-2 bg-zinc-100 p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 ease-out min-h-[400px]">
             <div>
               <p className="text-4xl md:text-5xl font-black text-zinc-900 mb-8 tracking-tighter leading-[0.95]">
                   Building the <br/> Foundation.

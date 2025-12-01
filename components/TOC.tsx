@@ -8,9 +8,17 @@ export default function TOC() {
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-6 text-xs font-mono text-zinc-300 uppercase tracking-widest">
-        <div className="w-2 h-2 bg-white rounded-full" />
-        <span>Table of Contents</span>
+      <div className="w-full flex items-center justify-between mb-6 text-xs font-mono text-zinc-300 uppercase tracking-widest">
+        
+        {/* LEFT GROUP: Dot + Title */}
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-white rounded-full" />
+          <p>Table of Contents</p> 
+        </div>
+
+        {/* RIGHT SIDE: Credit */}
+        <p className="text-right">Photo by Martin Bennie</p>
+        
       </div>
 
       <nav className="flex flex-col space-y-1">

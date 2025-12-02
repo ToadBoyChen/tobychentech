@@ -1,7 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Github, Globe } from "lucide-react"; 
 import HackerText from "../HackerText";
+import { motion, useAnimation } from "framer-motion";
+
+interface CardProps {
+  isProjectActive: boolean;
+}
 
 const completed_projects = [
   { 
@@ -168,156 +173,171 @@ const ProjectRow = ({ project, index, isExpanded, onToggle, isHovered, onHover, 
                     </div>
                 </div>
             </div>
-
-            {/* HOVER IMAGE PREVIEW (Hidden if Expanded) */}
-            {!isExpanded && (
-                <div className={`
-                    absolute right-20 top-1/2 -translate-y-1/2 w-64 h-40 bg-zinc-800 
-                    pointer-events-none transition-all duration-300 opacity-0 scale-90 rotate-2 grayscale
-                    hidden lg:block overflow-hidden border border-zinc-600 z-20
-                    ${isHovered ? "opacity-100 scale-100 rotate-0" : ""}
-                `}>
-                    <div className="w-full h-full bg-zinc-900 flex items-center justify-center relative">
-                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                        <span className="font-mono text-xs text-zinc-500">IMG_PREVIEW_{project.id}</span>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
 
-
-// --- MAIN COMPONENT ---
-export default function ProjectsList() {
+export default function ProjectsList({isProjectActive} : CardProps) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
+
+    const controls = useAnimation();
+    
+    const cardVariants = {
+      hidden: { y: 100},
+      visible: { y: 0, transition: { duration: 0.6 }},
+    };
+  
+    useEffect(() => {
+      if (isProjectActive) {
+        controls.start("visible");
+      } else {
+        controls.start("hidden");
+      }
+    }, [isProjectActive, controls]);
+  
 
   const handleToggle = (id: string) => {
       setExpanded(prev => prev === id ? null : id);
   };
 
   return (
-    <section 
-        id="projects" 
-        className="px-16 py-36 items-center justify-center z-30 bg-white"
+    <motion.div
+        initial="hidden"
+        animate={controls}
+        variants={cardVariants}
     >
-       <div className="flex items-center gap-6 mb-16">
-            <div className="h-px bg-zinc-800 flex-1" />
-            <span className="font-mono text-sm text-zinc-500 uppercase tracking-widest">
-                03 // NOTABLE_PROJECTS
-            </span>
-            <div className="h-px bg-zinc-800 flex-1" />
+        <div 
+            className="w-full top-0 left-0 z-10"
+        >
+            <svg 
+                viewBox="0 0 100 100" 
+                preserveAspectRatio="none" 
+                className="w-full h-[50px] fill-white block overflow-visible"
+            >
+            <use href="#fixed-convex"/> 
+            </svg>
         </div>
+        <section
+            className="px-16 py-36 items-center justify-center z-30 bg-white"
+        >
+        <div className="flex items-center gap-6 mb-16">
+                <div className="h-px bg-zinc-800 flex-1" />
+                <span className="font-mono text-sm text-zinc-500 uppercase tracking-widest">
+                    03 // NOTABLE_PROJECTS
+                </span>
+                <div className="h-px bg-zinc-800 flex-1" />
+            </div>
 
-        {/* --- COMPLETED --- */}
-        <div className="flex flex-col items-center mt-12 mb-8">
-            <HackerText
-                text="COMPLETED_PROJECTS"
-                triggerOnMount={true}
-                triggerOnHover={false}
-                speed={50}
-                className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono"
-            />
-        </div>
-        <div className="flex flex-col border-t border-zinc-800">
-            {completed_projects.map((p, i) => (
-                <ProjectRow 
-                    key={p.id} 
-                    project={p} 
-                    index={i} 
-                    isExpanded={expanded === p.id}
-                    onToggle={() => handleToggle(p.id)}
-                    isHovered={hovered === p.id}
-                    onHover={() => setHovered(p.id)}
-                    onLeave={() => setHovered(null)}
+            {/* --- COMPLETED --- */}
+            <div className="flex flex-col items-center mt-12 mb-8">
+                <HackerText
+                    text="COMPLETED_PROJECTS"
+                    triggerOnMount={true}
+                    triggerOnHover={false}
+                    speed={50}
+                    className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono"
                 />
-            ))}
-        </div>
+            </div>
+            <div className="flex flex-col border-t border-zinc-800">
+                {completed_projects.map((p, i) => (
+                    <ProjectRow 
+                        key={p.id} 
+                        project={p} 
+                        index={i} 
+                        isExpanded={expanded === p.id}
+                        onToggle={() => handleToggle(p.id)}
+                        isHovered={hovered === p.id}
+                        onHover={() => setHovered(p.id)}
+                        onLeave={() => setHovered(null)}
+                    />
+                ))}
+            </div>
 
-        {/* --- WIP --- */}
-        <div className="flex flex-col items-center mt-24 mb-8">
-            <HackerText
-                text="[W.I.P]_PROJECTS"
-                triggerOnMount={true}
-                triggerOnHover={false}
-                speed={50}
-                className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono"
-            />
-        </div>
-        <div className="flex flex-col border-t border-zinc-800">
-             {wip_projects.map((p, i) => (
-                <ProjectRow 
-                    key={p.id} 
-                    project={p} 
-                    index={i} 
-                    isExpanded={expanded === p.id}
-                    onToggle={() => handleToggle(p.id)}
-                    isHovered={hovered === p.id}
-                    onHover={() => setHovered(p.id)}
-                    onLeave={() => setHovered(null)}
+            {/* --- WIP --- */}
+            <div className="flex flex-col items-center mt-24 mb-8">
+                <HackerText
+                    text="[W.I.P]_PROJECTS"
+                    triggerOnMount={true}
+                    triggerOnHover={false}
+                    speed={50}
+                    className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono"
                 />
-            ))}
-        </div>
+            </div>
+            <div className="flex flex-col border-t border-zinc-800">
+                {wip_projects.map((p, i) => (
+                    <ProjectRow 
+                        key={p.id} 
+                        project={p} 
+                        index={i} 
+                        isExpanded={expanded === p.id}
+                        onToggle={() => handleToggle(p.id)}
+                        isHovered={hovered === p.id}
+                        onHover={() => setHovered(p.id)}
+                        onLeave={() => setHovered(null)}
+                    />
+                ))}
+            </div>
 
-        {/* --- OPEN SOURCE --- */}
-        {/* <div className="flex flex-col items-center mt-24 mb-8">
-            <HackerText
-                text="OPEN_SOURCE"
-                triggerOnMount={true}
-                triggerOnHover={false}
-                speed={50}
-                className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono"
-            />
-        </div>
-        <div className="flex flex-col border-t border-zinc-800">
-            {open_projects.map((p, i) => (
-                <ProjectRow 
-                    key={p.id} 
-                    project={p} 
-                    index={i} 
-                    isExpanded={expanded === p.id}
-                    onToggle={() => handleToggle(p.id)}
-                    isHovered={hovered === p.id}
-                    onHover={() => setHovered(p.id)}
-                    onLeave={() => setHovered(null)}
+            {/* --- OPEN SOURCE --- */}
+            {/* <div className="flex flex-col items-center mt-24 mb-8">
+                <HackerText
+                    text="OPEN_SOURCE"
+                    triggerOnMount={true}
+                    triggerOnHover={false}
+                    speed={50}
+                    className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono"
                 />
-            ))}
-        </div> */}
+            </div>
+            <div className="flex flex-col border-t border-zinc-800">
+                {open_projects.map((p, i) => (
+                    <ProjectRow 
+                        key={p.id} 
+                        project={p} 
+                        index={i} 
+                        isExpanded={expanded === p.id}
+                        onToggle={() => handleToggle(p.id)}
+                        isHovered={hovered === p.id}
+                        onHover={() => setHovered(p.id)}
+                        onLeave={() => setHovered(null)}
+                    />
+                ))}
+            </div> */}
 
-        {/* --- LEGACY / OLD PORTFOLIOS --- */}
-        <div className="flex flex-col items-center mt-24 mb-8 group">
-            <HackerText
-                text="OLD_PORTFOLIOS"
-                triggerOnMount={true}
-                triggerOnHover={false}
-                speed={50}
-                className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono mb-4"
-            />
-            <p className="text-zinc-500 leading-relaxed text-lg font-medium">
-                I started web development during my <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">first year</span> of Mathematics back in <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">2023</span>. Its Been <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">3</span> years of learning. 
-
-                <br />
-                <br />
-
-                Here is the work I have done over the past few years. We can see <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-indigo-500 transition-all">serious, consistent improvements</span> over the years. I can't wait to see where I will be in the next few years!
-            </p>
-        </div>
-
-        <div className="flex flex-col border-t border-zinc-800">
-            {legacy_projects.map((p, i) => (
-                <ProjectRow 
-                    key={p.id} 
-                    project={p} 
-                    index={i} 
-                    isExpanded={expanded === p.id}
-                    onToggle={() => handleToggle(p.id)}
-                    isHovered={hovered === p.id}
-                    onHover={() => setHovered(p.id)}
-                    onLeave={() => setHovered(null)}
+            {/* --- LEGACY / OLD PORTFOLIOS --- */}
+            <div className="flex flex-col items-center mt-24 mb-8 group">
+                <HackerText
+                    text="OLD_PORTFOLIOS"
+                    triggerOnMount={true}
+                    triggerOnHover={false}
+                    speed={50}
+                    className="font-bold text-zinc-900 text-3xl md:text-5xl tracking-tighter text-center font-mono mb-4"
                 />
-            ))}
-        </div>
-    </section>
+                <p className="text-zinc-500 leading-relaxed text-lg font-medium">
+                    I started web development during my <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">first year</span> of Mathematics back in <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">2023</span>. Its Been <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">3</span> years of learning. 
+
+                    <br />
+                    <br />
+
+                    Here is the work I have done over the past few years. We can see <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-indigo-500 transition-all">serious, consistent improvements</span> over the years. I can't wait to see where I will be in the next few years!
+                </p>
+            </div>
+
+            <div className="flex flex-col border-t border-zinc-800">
+                {legacy_projects.map((p, i) => (
+                    <ProjectRow 
+                        key={p.id} 
+                        project={p} 
+                        index={i} 
+                        isExpanded={expanded === p.id}
+                        onToggle={() => handleToggle(p.id)}
+                        isHovered={hovered === p.id}
+                        onHover={() => setHovered(p.id)}
+                        onLeave={() => setHovered(null)}
+                    />
+                ))}
+            </div>
+        </section>
+    </motion.div>
   );
 }

@@ -4,16 +4,15 @@ import Image from "next/image";
 import HackerText from "../HackerText";
 import TOC from "../../lib/TOC";
 import Wallpaper from "@/public/martin-bennie-LDAEJ1rySaQ-unsplash.jpg"; 
-import { motion, useAnimation } from 'framer-motion';
 
+// 1. Define interface for the preload callback
 interface IntroductionProps {
-  isAboutActive: boolean;
+    onLoadComplete?: () => void;
 }
 
-export default function Introduction({ isAboutActive }: IntroductionProps) {
+export default function Introduction({ onLoadComplete }: IntroductionProps) {
   const roles = ["Mathematician", "Kickboxer", "Programmer", "Hacker"];
   const [index, setIndex] = useState(0);
-  const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,59 +21,33 @@ export default function Introduction({ isAboutActive }: IntroductionProps) {
     return () => clearInterval(interval);
   }, [roles.length]);
 
-  const controls = useAnimation();
-  const convexCut = {
-    hidden: { y: 50 },
-    visible: { y: 0, transition: { duration: 0.6 } },
-  };
-
-  useEffect(() => {
-    if (isAboutActive) {
-      controls.start("visible");
-    } else {
-      controls.start("hidden");
-    }
-  }, [isAboutActive, controls]);
 
   return (
-    <section id="intro" className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
-      <div 
-        className={`
-          fixed inset-0 z-50 bg-black flex items-center justify-center 
-          transition-opacity duration-1000 ease-in-out
-          ${bgLoaded ? "opacity-0 pointer-events-none" : "opacity-100"}
-        `}
-      >
-        <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-1 bg-zinc-800 rounded-full overflow-hidden">
-                <div className="h-full bg-white animate-progress-indeterminate" />
-            </div>
-            <span className="font-mono text-xs text-zinc-500 animate-pulse tracking-widest uppercase">
-                Loading Environment
-            </span>
-        </div>
-      </div>
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
 
+      {/* Background Image */}
       <div className="absolute inset-0 -z-20 w-full h-full">
         <Image 
             src={Wallpaper} 
             alt="Deer in the Cairngorms"
             fill            
+            priority
+            quality={100}
             unoptimized
-            preload
-            onLoad={() => setBgLoaded(true)}
+            onLoad={onLoadComplete} 
             className="object-cover object-center" 
         />
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute bottom-0 left-0 w-full h-[50vh] bg-linear-to-t from-black/90 via-black/50 to-transparent" />
       </div>
 
-      <div className={`w-full max-w-5xl px-6 relative z-10 pb-10 transition-all duration-1000 ${bgLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      {/* Content */}
+      <div className="w-full max-w-5xl px-6 relative z-10 pb-10">
         <div className="grid">
             <div className="flex flex-col text-white font-mono">
                 <HackerText 
                     text="Welcome,"
-                    triggerOnMount={bgLoaded} 
+                    triggerOnMount={true} 
                     triggerOnHover={false}
                     speed={50}
                     delay={100} 
@@ -84,7 +57,7 @@ export default function Introduction({ isAboutActive }: IntroductionProps) {
                 <div className="flex flex-wrap items-center justify-start gap-x-3 text-3xl md:text-4xl font-medium tracking-tight w-full">
                     <HackerText 
                         text="I'm a"
-                        triggerOnMount={bgLoaded}
+                        triggerOnMount={true}
                         triggerOnHover={false}
                         speed={40}
                         delay={700} 

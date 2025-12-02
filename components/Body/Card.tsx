@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Me from "@/public/me.jpg"; 
 import HackerText from "../HackerText";
-import { motion, useAnimation } from "framer-motion"; // 1. Import Framer Motion
+import { motion, useAnimation } from "framer-motion";
 
 const METRICS = [
   { label: "CORE FOCUS", value: "FRONTEND" },
@@ -12,7 +12,6 @@ const METRICS = [
   { label: "STATUS", value: "AVAILABLE" }
 ];
 
-// 2. Define the prop interface
 interface CardProps {
   isAboutActive: boolean;
 }
@@ -63,7 +62,7 @@ export default function Card({ isAboutActive }: CardProps) {
       variants={cardVariants}
     > 
       <div 
-        className="w-full top-0 left-0 z-50"
+        className="w-full top-0 left-0 z-10"
       >
         <svg 
           viewBox="0 0 100 100" 
@@ -73,7 +72,7 @@ export default function Card({ isAboutActive }: CardProps) {
           <use href="#fixed-convex"/> 
         </svg>
       </div>
-      <section id="about" className="relative px-16 py-36 items-center justify-center z-10 bg-white">
+      <section className="relative px-16 py-36 items-center justify-center z-10 bg-white">
       <style jsx>{`
         @keyframes slideUpFade {
           0% { opacity: 0; transform: translateY(10px); }

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import HackerText from "./HackerText";
+import HackerText from "./HackerText"; // Ensure this path is correct for your setup
 
 const sections = [
   { id: "intro", label: " " },
@@ -11,11 +11,18 @@ const sections = [
   { id: "end", label: " " },
 ];
 
-export function useActiveSection() {
+// ------------------------------------
+// 1. ROBUST TRACKER (Winner Takes All)
+// ------------------------------------
+// NOW ACCEPTS 'isReady' argument
+export function useActiveSection(isReady: boolean) {
   const [activeSection, setActiveSection] = useState("intro");
   const observers = useRef<Map<string, IntersectionObserverEntry>>(new Map());
 
   useEffect(() => {
+    // STOP if the page isn't ready (loading screen still up)
+    if (!isReady) return;
+
     const callback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         observers.current.set(entry.target.id, entry);
@@ -42,21 +49,41 @@ export function useActiveSection() {
       rootMargin: "-10% 0px -10% 0px", 
     });
 
-    sections.forEach(({ id }) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
+    // Helper to find elements with retry logic
+    const scan = () => {
+        sections.forEach(({ id }) => {
+            const element = document.getElementById(id);
+            if (element) observer.observe(element);
+        });
+    };
 
-    return () => observer.disconnect();
-  }, []);
+    // Run immediately
+    scan();
+    
+    // Safety retry (just in case)
+    const timer = setTimeout(scan, 500);
+
+    return () => {
+        clearTimeout(timer);
+        observer.disconnect();
+    };
+
+  // RE-RUN this effect when isReady changes to true
+  }, [isReady]); 
 
   return activeSection;
 }
 
-export function useEarlyActiveSection() {
+// ------------------------------------
+// 2. EARLY TRIGGER HOOK (Animations)
+// ------------------------------------
+// NOW ACCEPTS 'isReady' argument
+export function useEarlyActiveSection(isReady: boolean) {
   const [earlyActiveSection, setEarlyActiveSection] = useState("intro");
 
   useEffect(() => {
+    if (!isReady) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -65,31 +92,45 @@ export function useEarlyActiveSection() {
           }
         });
       },
-      { rootMargin: "0px 0px -10% 0px" } 
+      { rootMargin: "0px 0px -25% 0px" } 
     );
 
-    sections.forEach(({ id }) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
+    const scan = () => {
+        sections.forEach(({ id }) => {
+            const element = document.getElementById(id);
+            if (element) observer.observe(element);
+        });
+    };
 
-    return () => observer.disconnect();
-  }, []);
+    scan();
+    const timer = setTimeout(scan, 500);
 
+    return () => {
+        clearTimeout(timer);
+        observer.disconnect();
+    };
+  }, [isReady]);
+
+  // Scroll to top reset logic
   useEffect(() => {
+    if (!isReady) return; 
+
     const handleScroll = () => {
-      if (window.scrollY < 100 ) {
+      if (window.scrollY < 100 && earlyActiveSection !== "intro") {
         setEarlyActiveSection("intro");
       }
     };
     
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isReady, earlyActiveSection]);
 
   return earlyActiveSection;
 }
 
+// ------------------------------------
+// 3. VISUAL COMPONENT
+// ------------------------------------
 interface ScrollTrackerProps {
     activeSection: string;
 }

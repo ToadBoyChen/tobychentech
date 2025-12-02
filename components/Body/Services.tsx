@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { ArrowRight, Code2, Globe, HeartHandshake, RefreshCw, Check } from "lucide-react";
 import HackerText from "../HackerText";
+import { motion, useAnimation } from "framer-motion";
 
 const CURRENCIES = {
   GBP: { symbol: "£", rate: 1, label: "GBP" },
@@ -58,10 +59,29 @@ const SERVICES_DATA = [
     }
 ];
 
-export default function Services() {
+interface CardProps {
+  isServicesActive: boolean;
+}
+
+export default function Services({isServicesActive} : CardProps) {
     const [currency, setCurrency] = useState<CurrencyKey>("GBP");
     const [conversionRates, setConversionRates] = useState(CURRENCIES);
     const [loadingRates, setLoadingRates] = useState(false);
+
+    const controls = useAnimation();
+    
+    const cardVariants = {
+      hidden: { y: 100},
+      visible: { y: 0, transition: { duration: 0.6 }},
+    };
+  
+    useEffect(() => {
+      if (isServicesActive) {
+        controls.start("visible");
+      } else {
+        controls.start("hidden");
+      }
+    }, [isServicesActive, controls]);
 
     useEffect(() => {
         const fetchRates = async () => {
@@ -96,160 +116,158 @@ export default function Services() {
     };
 
     return (
-        <section 
-            id="services" 
-            className="px-16 py-36 items-center justify-center z-40 bg-zinc-900"
+        <motion.div
+            initial="hidden"
+            animate={controls}
+            variants={cardVariants}
         >
-            <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">
+            <div 
+                className="w-full top-0 left-0 z-10"
+            >
                 <svg 
                     viewBox="0 0 100 100" 
                     preserveAspectRatio="none" 
-                    className="relative block w-full h-[50px] fill-white" 
+                    className="w-full h-[50px] fill-blue-600 block overflow-visible"
                 >
-                    <use href="#fixed-concave" /> 
+                    <use href="#fixed-convex"/> 
                 </svg>
             </div>
-            <div className="absolute inset-0 opacity-10 pointer-events-none" 
-                 style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} 
-            />
+            <section
+                className="px-16 py-36 items-center justify-center z-40 bg-blue-600"
+            >
+                <div className="absolute inset-0 opacity-10 pointer-events-none" 
+                    style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} 
+                />
 
-            <div className="max-w-6xl mx-auto relative z-10">
-                
-                {/* --- HEADER --- */}
-                <div className="flex items-center gap-6 mb-12">
-                    <div className="h-px bg-white/30 flex-1" />
-                    <span className="font-mono text-sm text-blue-100 uppercase tracking-widest">
-                        04 // Services_Offered
-                    </span>
-                    <div className="h-px bg-white/30 flex-1" />
-                </div>
+                <div className="max-w-6xl mx-auto relative z-10">
+                    
+                    {/* --- HEADER --- */}
+                    <div className="flex items-center gap-6 mb-12">
+                        <div className="h-px bg-white/30 flex-1" />
+                        <span className="font-mono text-sm text-blue-100 uppercase tracking-widest">
+                            04 // Services_Offered
+                        </span>
+                        <div className="h-px bg-white/30 flex-1" />
+                    </div>
 
-                <div className="mb-20 flex flex-col items-center">
-                    <HackerText 
-                        text="SELECT_YOUR_TIER"
-                        className="text-4xl md:text-5xl font-black text-white tracking-tighter text-center"
-                        speed={40}
-                        triggerOnMount={true}
-                        triggerOnHover={false}
-                    />
-                </div>
+                    <div className="mb-20 flex flex-col items-center">
+                        <HackerText 
+                            text="SELECT_YOUR_TIER"
+                            className="text-4xl md:text-5xl font-black text-white tracking-tighter text-center"
+                            speed={40}
+                            triggerOnMount={true}
+                            triggerOnHover={false}
+                        />
+                    </div>
 
-                {/* --- CARDS --- */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {SERVICES_DATA.map((service, index) => {
-                        const currentCurrency = conversionRates[currency];
-                        const rawPrice = Math.round(service.basePrice * currentCurrency.rate);
-                        
-                        const displayPrice = service.basePrice === 0 
-                            ? "FREE" 
-                            : `${currentCurrency.symbol}${rawPrice} ${currentCurrency.label}`;
+                    {/* --- CARDS --- */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {SERVICES_DATA.map((service, index) => {
+                            const currentCurrency = conversionRates[currency];
+                            const rawPrice = Math.round(service.basePrice * currentCurrency.rate);
+                            
+                            const displayPrice = service.basePrice === 0 
+                                ? "FREE" 
+                                : `${currentCurrency.symbol}${rawPrice} ${currentCurrency.label}`;
 
-                        const displayRateLabel = loadingRates 
-                            ? "Fetching Rates..." 
-                            : service.priceLabel;
+                            const displayRateLabel = loadingRates 
+                                ? "Fetching Rates..." 
+                                : service.priceLabel;
 
-                        return (
-                            <div 
-                                key={service.id}
-                                className={`
-                                    relative flex flex-col justify-between p-8 rounded-2xl backdrop-blur-md border border-white/20 transition-all duration-300 group
-                                    ${index === 0 ? "bg-white/10 hover:bg-white/15" : "bg-white/5 hover:bg-white/10"}
-                                    hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)]
-                                `}
-                            >
-                                {/* Top Section */}
-                                <div>
-                                    <div className="flex justify-between items-start mb-8">
-                                        <div className="p-4 bg-white text-blue-600 rounded-xl shadow-lg">
-                                            {service.icon}
-                                        </div>
-                                        <span className="font-mono text-xs text-white/50 border border-white/20 px-2 py-1 rounded-full">
-                                            {service.id}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="text-3xl font-black text-white mb-6 tracking-tighter leading-[0.95] min-h-[4rem] flex items-end">
-                                        {service.title.replace(/_/g, " ")}
-                                    </h3>
-                                    
-                                    {/* DESCRIPTION */}
-                                    <div className="text-white/80 leading-relaxed text-lg font-medium mb-8">
-                                        {service.desc}
-                                    </div>
-
-                                    {/* FEATURES LIST */}
-                                    <ul className="space-y-3 mb-8">
-                                        {service.features.map(feat => (
-                                            <li key={feat} className="flex items-center gap-3 text-sm text-white font-medium opacity-90">
-                                                <Check className="w-4 h-4 text-blue-200" strokeWidth={3} />
-                                                <span>{feat}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                {/* Bottom Section: Price & Action */}
-                                <div className="pt-6 border-t border-white/10">
-                                    <div className="mb-6">
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="block text-[10px] font-mono text-white/50 uppercase tracking-widest">
-                                                {displayRateLabel}
+                            return (
+                                <div 
+                                    key={service.id}
+                                    className={`
+                                        relative flex flex-col justify-between p-8 rounded-2xl backdrop-blur-md border border-white/20 transition-all duration-300 group
+                                        ${index === 0 ? "bg-white/10 hover:bg-white/15" : "bg-white/5 hover:bg-white/10"}
+                                        hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)]
+                                    `}
+                                >
+                                    {/* Top Section */}
+                                    <div>
+                                        <div className="flex justify-between items-start mb-8">
+                                            <div className="p-4 bg-white text-blue-600 rounded-xl shadow-lg">
+                                                {service.icon}
+                                            </div>
+                                            <span className="font-mono text-xs text-white/50 border border-white/20 px-2 py-1 rounded-full">
+                                                {service.id}
                                             </span>
-                                            
-                                            {service.basePrice > 0 && (
-                                                <button 
-                                                    onClick={handleCurrencyToggle}
-                                                    className={`flex items-center gap-1 text-[10px] font-mono transition-colors ${loadingRates ? 'text-zinc-400' : 'text-blue-200 hover:text-white'}`}
-                                                    disabled={loadingRates}
-                                                >
-                                                    <RefreshCw className="w-3 h-3" />
-                                                    <span>{loadingRates ? 'LOADING' : 'CONVERT'}</span>
-                                                </button>
-                                            )}
                                         </div>
 
-                                        <button 
-                                            onClick={handleCurrencyToggle} 
-                                            disabled={service.basePrice === 0 || loadingRates}
-                                            className={`text-left w-full group/price ${service.basePrice === 0 || loadingRates ? 'cursor-default' : 'cursor-pointer'}`}
-                                        >
-                                            <HackerText 
-                                                key={displayPrice} 
-                                                text={displayPrice}
-                                                className="text-4xl font-black text-white tracking-tight group-hover/price:text-blue-100 transition-colors"
-                                                speed={30}
-                                                triggerOnMount={true}
-                                                triggerOnHover={false}
-                                            />
-                                        </button>
+                                        <h3 className="text-3xl font-black text-white mb-6 tracking-tighter leading-[0.95] min-h-[4rem] flex items-end">
+                                            {service.title.replace(/_/g, " ")}
+                                        </h3>
+                                        
+                                        {/* DESCRIPTION */}
+                                        <div className="text-white/80 leading-relaxed text-lg font-medium mb-8">
+                                            {service.desc}
+                                        </div>
+
+                                        {/* FEATURES LIST */}
+                                        <ul className="space-y-3 mb-8">
+                                            {service.features.map(feat => (
+                                                <li key={feat} className="flex items-center gap-3 text-sm text-white font-medium opacity-90">
+                                                    <Check className="w-4 h-4 text-blue-200" strokeWidth={3} />
+                                                    <span>{feat}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                    
-                                    <a 
-                                        href="mailto:contact@toadboy.com" 
-                                        className="flex items-center justify-between w-full px-6 py-4 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all group-hover:scale-[1.02] shadow-lg shadow-black/5"
-                                    >
-                                        <span>INITIATE</span>
-                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </a>
+
+                                    {/* Bottom Section: Price & Action */}
+                                    <div className="pt-6 border-t border-white/10">
+                                        <div className="mb-6">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <span className="block text-[10px] font-mono text-white/50 uppercase tracking-widest">
+                                                    {displayRateLabel}
+                                                </span>
+                                                
+                                                {service.basePrice > 0 && (
+                                                    <button 
+                                                        onClick={handleCurrencyToggle}
+                                                        className={`flex items-center gap-1 text-[10px] font-mono transition-colors ${loadingRates ? 'text-zinc-400' : 'text-blue-200 hover:text-white'}`}
+                                                        disabled={loadingRates}
+                                                    >
+                                                        <RefreshCw className="w-3 h-3" />
+                                                        <span>{loadingRates ? 'LOADING' : 'CONVERT'}</span>
+                                                    </button>
+                                                )}
+                                            </div>
+
+                                            <button 
+                                                onClick={handleCurrencyToggle} 
+                                                disabled={service.basePrice === 0 || loadingRates}
+                                                className={`text-left w-full group/price ${service.basePrice === 0 || loadingRates ? 'cursor-default' : 'cursor-pointer'}`}
+                                            >
+                                                <HackerText 
+                                                    key={displayPrice} 
+                                                    text={displayPrice}
+                                                    className="text-4xl font-black text-white tracking-tight group-hover/price:text-blue-100 transition-colors"
+                                                    speed={30}
+                                                    triggerOnMount={true}
+                                                    triggerOnHover={false}
+                                                />
+                                            </button>
+                                        </div>
+                                        
+                                        <a 
+                                            href="mailto:contact@toadboy.com" 
+                                            className="flex items-center justify-between w-full px-6 py-4 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all group-hover:scale-[1.02] shadow-lg shadow-black/5"
+                                        >
+                                            <span>INITIATE</span>
+                                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
+                    
+                    <p className="text-center text-white/40 text-xs font-mono mt-12">
+                        * Prices are indicative estimates based on typical project complexity. They are updated once per component load using current exchange rates.
+                    </p>
                 </div>
-                
-                <p className="text-center text-white/40 text-xs font-mono mt-12">
-                    * Prices are indicative estimates based on typical project complexity. They are updated once per component load using current exchange rates.
-                </p>
-            </div>
-            <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-0">
-                <svg 
-                    viewBox="0 0 100 100" 
-                    preserveAspectRatio="none" 
-                    className="relative block w-full h-[50px] fill-white" 
-                >
-                    <use href="#fixed-convex" /> 
-                </svg>
-            </div>
-        </section>
+            </section>
+        </motion.div>
     );
 }

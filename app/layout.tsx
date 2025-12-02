@@ -33,7 +33,6 @@ export default function RootLayout({
       >
         <SectionShape />
         {children}
-        <Footer/>
       </body>
     </html>
   );

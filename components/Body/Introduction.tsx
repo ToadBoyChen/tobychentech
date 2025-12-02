@@ -4,11 +4,15 @@ import Image from "next/image";
 import HackerText from "../HackerText";
 import TOC from "../../lib/TOC";
 import Wallpaper from "@/public/martin-bennie-LDAEJ1rySaQ-unsplash.jpg"; 
+import { motion, useAnimation } from 'framer-motion';
 
-export default function Introduction() {
+interface IntroductionProps {
+  isAboutActive: boolean;
+}
+
+export default function Introduction({ isAboutActive }: IntroductionProps) {
   const roles = ["Mathematician", "Kickboxer", "Programmer", "Hacker"];
   const [index, setIndex] = useState(0);
-  
   const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
@@ -18,12 +22,38 @@ export default function Introduction() {
     return () => clearInterval(interval);
   }, [roles.length]);
 
+  const controls = useAnimation();
+  const convexCut = {
+    hidden: { y: 50 },
+    visible: { y: 0, transition: { duration: 0.6 } },
+  };
+
+  useEffect(() => {
+    if (isAboutActive) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [isAboutActive, controls]);
+
   return (
-    <section  
-      id="intro" 
-      className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden"
-      style={{ clipPath: "url(#organic-intro)" }}
-      >
+    <section id="intro" className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
+
+        <motion.div 
+          initial="hidden"
+          animate={controls}
+          variants={convexCut}
+          className="absolute w-full bottom-0 left-0"
+        >
+          <svg 
+            viewBox="0 0 100 100" 
+            preserveAspectRatio="none" 
+            className="w-full h-[50px] fill-white"
+          >
+          <use href="#fixed-convex" /> 
+          </svg>
+        </motion.div>
+
       <div 
         className={`
           fixed inset-0 z-50 bg-black flex items-center justify-center 
@@ -32,7 +62,6 @@ export default function Introduction() {
         `}
       >
         <div className="flex flex-col items-center gap-2">
-            {/* Simple pulsating loader */}
             <div className="w-12 h-1 bg-zinc-800 rounded-full overflow-hidden">
                 <div className="h-full bg-white animate-progress-indeterminate" />
             </div>
@@ -42,7 +71,6 @@ export default function Introduction() {
         </div>
       </div>
 
-      {/* --- BACKGROUND IMAGE --- */}
       <div className="absolute inset-0 -z-20 w-full h-full">
         <Image 
             src={Wallpaper} 
@@ -53,24 +81,19 @@ export default function Introduction() {
             onLoad={() => setBgLoaded(true)}
             className="object-cover object-center" 
         />
-        
         <div className="absolute inset-0 bg-black/40" />
-        
         <div className="absolute bottom-0 left-0 w-full h-[50vh] bg-linear-to-t from-black/90 via-black/50 to-transparent" />
       </div>
 
-      {/* --- CONTENT --- */}
       <div className={`w-full max-w-5xl px-6 relative z-10 pb-10 transition-all duration-1000 ${bgLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
         <div className="grid">
             <div className="flex flex-col text-white font-mono">
-                
-                {/* We pass 'bgLoaded' to triggerOnMount so animations wait for the loader */}
                 <HackerText 
                     text="Welcome,"
                     triggerOnMount={bgLoaded} 
                     triggerOnHover={false}
                     speed={50}
-                    delay={100} // Small delay after fade-out
+                    delay={100} 
                     className="font-bold text-8xl tracking-tighter mb-4 text-white drop-shadow-lg"
                 />
 
@@ -87,7 +110,7 @@ export default function Introduction() {
                         <HackerText 
                             key={roles[index]} 
                             text={roles[index]}
-                            triggerOnMount={true} // Cycles naturally
+                            triggerOnMount={true} 
                             triggerOnHover={false}
                             speed={35}
                             delay={0}

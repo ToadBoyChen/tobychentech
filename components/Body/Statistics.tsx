@@ -19,6 +19,9 @@ import { Doughnut, Line } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Filler);
 
+const TRANSITION_CLASSES = 'transition-all duration-700 ease-out';
+const THRESHOLD = 0.1;
+
 const GITHUB_USERNAME = "ToadBoyChen";
 
 const LANGUAGE_COLORS: Record<string, string> = {
@@ -263,6 +266,34 @@ export default function Statistics() {
   const [weeklyLabels, setWeeklyLabels] = useState<string[]>([]);
   const [weeklyData, setWeeklyData] = useState<number[]>([]);
 
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Optional: Disconnect observer after the first appearance
+          observer.unobserve(entry.target); 
+        }
+      },
+      { threshold: THRESHOLD }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, []);
+
+  const animationClasses = isVisible
+    ? 'opacity-100 translate-y-0' 
+    : 'opacity-0 translate-y-16';
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -335,6 +366,7 @@ export default function Statistics() {
   return (
     <section 
         id="stats"
+        ref={sectionRef}
         className="px-16 py-36 items-center justify-center bg-zinc-900 z-20"
     >
         <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">

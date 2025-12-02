@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Me from "@/public/me.jpg"; 
 import HackerText from "../HackerText";
+import { motion, useAnimation } from "framer-motion"; // 1. Import Framer Motion
 
 const METRICS = [
   { label: "CORE FOCUS", value: "FRONTEND" },
@@ -11,11 +12,30 @@ const METRICS = [
   { label: "STATUS", value: "AVAILABLE" }
 ];
 
+// 2. Define the prop interface
+interface CardProps {
+  isAboutActive: boolean;
+}
 
-export default function Card() {
+export default function Card({ isAboutActive }: CardProps) {
   const [isPhotoVisible, setIsPhotoVisible] = useState(false);
   const photoRef = useRef<HTMLDivElement>(null);
   const [metricIndex, setMetricIndex] = useState(0);
+
+  const controls = useAnimation();
+  
+  const cardVariants = {
+    hidden: { y: 100},
+    visible: { y: 0, transition: { duration: 0.6 }},
+  };
+
+  useEffect(() => {
+    if (isAboutActive) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [isAboutActive, controls]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,18 +57,12 @@ export default function Card() {
   }, []);
 
   return (
-    <section 
-        id="about" 
-        className="px-16 py-36 items-center justify-center z-10 bg-white">
-      <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">
-        <svg 
-          viewBox="0 0 100 100" 
-          preserveAspectRatio="none" 
-          className="relative block w-full h-[50px] fill-white"
-        >
-          <use href="#fixed-concave" /> 
-        </svg>
-      </div>
+    <motion.section 
+      initial="hidden"
+      animate={controls}
+      variants={cardVariants}
+      className="relative px-16 py-36 items-center justify-center z-10 bg-white"
+    >
       <style jsx>{`
         @keyframes slideUpFade {
           0% { opacity: 0; transform: translateY(10px); }
@@ -59,8 +73,7 @@ export default function Card() {
         }
       `}</style>
 
-      <div 
-        className="flex items-center gap-6 mb-16">
+      <div className="flex items-center gap-6 mb-16">
         <div className="h-px bg-zinc-600 flex-1" />
         <span className="font-mono text-sm text-zinc-800 uppercase tracking-widest">
           01 // About_Me
@@ -153,6 +166,6 @@ export default function Card() {
              </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

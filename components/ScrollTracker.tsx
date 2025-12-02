@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import HackerText from "./HackerText"; // Check path
+import HackerText from "./HackerText";
 
 export default function ScrollTracker() {
   const [activeSection, setActiveSection] = useState("intro");
@@ -41,16 +41,14 @@ export default function ScrollTracker() {
   }, [activeSection]);
 
   const currentIndex = sections.findIndex((s) => s.id === activeSection);
-  const currentNumber = (currentIndex + 1).toString().padStart(2, "0");
-  const totalNumber = sections.length.toString().padStart(2, "0");
   const activeLabel = sections[currentIndex]?.label || "LOADING";
 
   return (
     <div 
       className={`
-        fixed right-2 top-1/2 -translate-y-1/2 z-50 
+        fixed right-2 top-1/2 -translate-y-1/2 
         h-[85vh] flex flex-col items-center justify-between
-        transition-all duration-1000 ease-out mix-blend-difference text-white
+        transition-all duration-1000 ease-out mix-blend-difference text-white z-100
         ${isVisible 
             ? "opacity-100 translate-x-0" 
             : "opacity-0 translate-x-10 pointer-events-none"

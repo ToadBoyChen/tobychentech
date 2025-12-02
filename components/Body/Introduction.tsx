@@ -2,14 +2,13 @@
 import { useState, useEffect } from "react";
 import Image from "next/image"; 
 import HackerText from "../HackerText";
-import TOC from "../TOC";
+import TOC from "../../lib/TOC";
 import Wallpaper from "@/public/martin-bennie-LDAEJ1rySaQ-unsplash.jpg"; 
 
 export default function Introduction() {
   const roles = ["Mathematician", "Kickboxer", "Programmer", "Hacker"];
   const [index, setIndex] = useState(0);
   
-  // State to track if the heavy background image has finished loading
   const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
@@ -20,10 +19,11 @@ export default function Introduction() {
   }, [roles.length]);
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
-
-      {/* --- MINIMAL LOADING SCREEN --- */}
-      {/* This sits on top (z-50) and fades out when bgLoaded becomes true */}
+    <section  
+      id="intro" 
+      className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden"
+      style={{ clipPath: "url(#organic-intro)" }}
+      >
       <div 
         className={`
           fixed inset-0 z-50 bg-black flex items-center justify-center 
@@ -103,6 +103,6 @@ export default function Introduction() {
             </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

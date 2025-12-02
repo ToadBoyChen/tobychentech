@@ -309,7 +309,6 @@ export default function ContactPage() {
       }> 
         <ContactContent formState={formState} handleChange={handleChange} />
       </Suspense>
-      
     </div>
   );
 }

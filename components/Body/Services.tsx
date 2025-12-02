@@ -58,7 +58,6 @@ const SERVICES_DATA = [
     }
 ];
 
-
 export default function Services() {
     const [currency, setCurrency] = useState<CurrencyKey>("GBP");
     const [conversionRates, setConversionRates] = useState(CURRENCIES);
@@ -97,7 +96,19 @@ export default function Services() {
     };
 
     return (
-        <section className="w-full bg-blue-600 py-24 px-6 relative overflow-hidden">
+        <section 
+            id="services" 
+            className="px-16 py-36 items-center justify-center z-40 bg-zinc-900"
+        >
+            <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">
+                <svg 
+                    viewBox="0 0 100 100" 
+                    preserveAspectRatio="none" 
+                    className="relative block w-full h-[50px] fill-white" 
+                >
+                    <use href="#fixed-concave" /> 
+                </svg>
+            </div>
             <div className="absolute inset-0 opacity-10 pointer-events-none" 
                  style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} 
             />
@@ -229,7 +240,15 @@ export default function Services() {
                 <p className="text-center text-white/40 text-xs font-mono mt-12">
                     * Prices are indicative estimates based on typical project complexity. They are updated once per component load using current exchange rates.
                 </p>
-
+            </div>
+            <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-0">
+                <svg 
+                    viewBox="0 0 100 100" 
+                    preserveAspectRatio="none" 
+                    className="relative block w-full h-[50px] fill-white" 
+                >
+                    <use href="#fixed-convex" /> 
+                </svg>
             </div>
         </section>
     );

@@ -6,7 +6,9 @@ export default function Footer() {
 
   return (
     <footer 
-      className="w-full bg-blue-600 text-white pt-32 pb-12 px-6 overflow-hidden z-0" 
+      id="footer" 
+      className="w-full px-16 py-36 items-center justify-center relative z-10 bg-black"
+      style={{ clipPath: "url(#organic-footer)" }}
     >
         <div className="flex items-center gap-6 mb-16">
           <div className="h-px bg-zinc-100 flex-1" />
@@ -115,8 +117,16 @@ export default function Footer() {
               />
             </a>
           </div>
-        </div>
-        
+        </div> 
+      </div>
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">
+          <svg 
+              viewBox="0 0 100 100" 
+              preserveAspectRatio="none" 
+              className="relative block w-full h-[50px] fill-white" 
+          >
+              <use href="#fixed-concave" /> 
+          </svg>
       </div>
     </footer>
   );

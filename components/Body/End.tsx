@@ -1,14 +1,14 @@
 import HackerText from "../HackerText";
 
 export default function End() {
-    // Define the dark color for contrast against a white background
     const DARK_TEXT = "text-zinc-900"; 
     const LIGHT_DIVIDER = "bg-zinc-300";
-    const ACCENT_COLOR = "text-cyan-600"; // Used for the main CTA link
 
     return (
-        <div className="flex flex-col items-center max-w-2xl mx-auto group">
-            
+        <section 
+            id="end" 
+            className="px-16 py-36 items-center justify-center z-50 bg-white"
+        >   
             {/* Section Header - Updated to reflect Action */}
             <div className="flex items-center gap-6 mb-16 w-full">
                 <div className={`h-px ${LIGHT_DIVIDER} flex-1`} />
@@ -30,6 +30,6 @@ export default function End() {
                     Thanks for stopping by, <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">every visit counts</span>. I hope this portfolio showcases my skills. If it does, and you're impressed, <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">reach out</span>! If you have any feedback, also get in touch with me, I'm <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">always looking to improve</span>.
               </p>
             </div>
-        </div>
+        </section>
     );
 }

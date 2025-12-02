@@ -109,7 +109,6 @@ const SystemLoad = ({ data, loading }: { data: LangDetail[], loading: boolean })
     );
   }
 
-  // Handle empty data
   if (!data || data.length === 0) return <div className="text-zinc-500 font-mono text-xs">NO_DATA_STREAM</div>;
 
   const activeItem = data[activeIndex] || data[0];
@@ -119,7 +118,7 @@ const SystemLoad = ({ data, loading }: { data: LangDetail[], loading: boolean })
     datasets: [{
       data: data.map(d => d.percent),
       backgroundColor: data.map((d, i) => 
-        i === activeIndex ? d.color : `${d.color}33` // 33 is ~20% opacity hex
+        i === activeIndex ? d.color : `${d.color}33`
       ),
       borderColor: '#18181b', 
       borderWidth: 2, 
@@ -144,13 +143,10 @@ const SystemLoad = ({ data, loading }: { data: LangDetail[], loading: boolean })
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-center w-full h-full gap-8 lg:gap-12">
-      
-      {/* LEFT: The Chart */}
+    <div className="flex flex-col lg:flex-row items-center w-full h-full gap-12 px-16">
       <div className="relative w-48 h-48 group cursor-crosshair">
         <Doughnut data={chartData} options={chartOptions} />
         
-        {/* Decorative Ring */}
         <div className="absolute inset-[-10px] border border-zinc-800 rounded-full border-dashed animate-[spin_10s_linear_infinite] opacity-30 pointer-events-none" />
       </div>
 
@@ -165,7 +161,6 @@ const SystemLoad = ({ data, loading }: { data: LangDetail[], loading: boolean })
             </div>
         </div>
 
-        {/* Legend List */}
         <div className="space-y-1">
             {data.map((lang, idx) => (
                 <div 
@@ -185,7 +180,6 @@ const SystemLoad = ({ data, loading }: { data: LangDetail[], loading: boolean })
                         </span>
                     </div>
                     
-                    {/* Visual Progress Bar in List */}
                     <div className="flex items-center gap-3">
                         <div className="w-56 h-2 bg-zinc-800 rounded-full overflow-hidden">
                             <div 
@@ -206,7 +200,6 @@ const SystemLoad = ({ data, loading }: { data: LangDetail[], loading: boolean })
   );
 };
 
-// --- 4. PERFORMANCE CHART (Same Logic, Better Style) ---
 const PerformanceChart = ({ labels, dataPoints }: { labels: string[], dataPoints: number[] }) => {
     const data = {
       labels: labels,
@@ -257,6 +250,7 @@ const PerformanceChart = ({ labels, dataPoints }: { labels: string[], dataPoints
         </div>
     );
 };
+
 
 
 export default function Statistics() {
@@ -339,9 +333,20 @@ export default function Statistics() {
   }, []);
 
   return (
-    <section className="w-full max-w-none px-6 lg:px-12">
-      
-      {/* HEADER */}
+    <section 
+        id="stats"
+        className="px-16 py-36 items-center justify-center bg-zinc-900 z-20"
+    >
+        <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">
+            <svg  
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                className="relative block w-full h-[50px] fill-white" 
+            >
+                <use href="#fixed-concave" /> 
+            </svg>
+        </div>
+
       <div className="flex items-center gap-6 mb-16">
         <div className="h-px bg-zinc-800 flex-1" />
         <div className="font-mono text-sm text-zinc-500 uppercase tracking-widest flex items-center gap-2 group">
@@ -483,7 +488,15 @@ export default function Statistics() {
             </div>
         </div>
       </div>
-
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-0">
+          <svg 
+              viewBox="0 0 100 100" 
+              preserveAspectRatio="none" 
+              className="relative block w-full h-[50px] fill-white" 
+          >
+              <use href="#fixed-convex" /> 
+          </svg>
+      </div>
     </section>
   );
 }

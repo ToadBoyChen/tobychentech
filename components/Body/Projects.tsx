@@ -198,7 +198,10 @@ export default function ProjectsList() {
   };
 
   return (
-    <section className="w-full max-w-5xl mx-auto px-6 mb-24">
+    <section 
+        id="projects" 
+        className="px-16 py-36 items-center justify-center z-30 bg-white"
+    >
        <div className="flex items-center gap-6 mb-16">
             <div className="h-px bg-zinc-800 flex-1" />
             <span className="font-mono text-sm text-zinc-500 uppercase tracking-widest">
@@ -315,7 +318,6 @@ export default function ProjectsList() {
                 />
             ))}
         </div>
-        
     </section>
   );
 }

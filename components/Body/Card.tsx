@@ -5,16 +5,16 @@ import Me from "@/public/me.jpg";
 import HackerText from "../HackerText";
 
 const METRICS = [
-  { label: "CORE FOCUS", value: "FULLSTACK" },
+  { label: "CORE FOCUS", value: "FRONTEND" },
   { label: "CURRENTLY BASED IN", value: "LDN, UK" },
   { label: "EXPERIENCE", value: "1 YEAR" },
   { label: "STATUS", value: "AVAILABLE" }
 ];
 
+
 export default function Card() {
   const [isPhotoVisible, setIsPhotoVisible] = useState(false);
   const photoRef = useRef<HTMLDivElement>(null);
-
   const [metricIndex, setMetricIndex] = useState(0);
 
   useEffect(() => {
@@ -37,7 +37,18 @@ export default function Card() {
   }, []);
 
   return (
-    <div>
+    <section 
+        id="about" 
+        className="px-16 py-36 items-center justify-center z-10 bg-white">
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-0">
+        <svg 
+          viewBox="0 0 100 100" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[50px] fill-white"
+        >
+          <use href="#fixed-concave" /> 
+        </svg>
+      </div>
       <style jsx>{`
         @keyframes slideUpFade {
           0% { opacity: 0; transform: translateY(10px); }
@@ -48,7 +59,8 @@ export default function Card() {
         }
       `}</style>
 
-      <div className="flex items-center gap-6 mb-16">
+      <div 
+        className="flex items-center gap-6 mb-16">
         <div className="h-px bg-zinc-600 flex-1" />
         <span className="font-mono text-sm text-zinc-800 uppercase tracking-widest">
           01 // About_Me
@@ -141,6 +153,6 @@ export default function Card() {
              </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

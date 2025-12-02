@@ -26,7 +26,7 @@ export default function Introduction({ onLoadComplete }: IntroductionProps) {
     <section className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
 
       {/* Background Image */}
-      <div className="absolute inset-0 -z-20 w-full h-full">
+      <div className="absolute inset-0 z-1 w-full h-full">
         <Image 
             src={Wallpaper} 
             alt="Deer in the Cairngorms"

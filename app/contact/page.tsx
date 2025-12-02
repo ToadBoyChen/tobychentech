@@ -6,6 +6,7 @@ import HackerText from "@/components/HackerText";
 import { ArrowRight } from "lucide-react";
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Footer from "@/components/Footer";
 
 function ContactContent({ formState, handleChange }: { 
     formState: any, 
@@ -69,8 +70,6 @@ function ContactContent({ formState, handleChange }: {
           background-size: 100% 4px;
         }
       `}</style>
-
-      {/* Background Pattern (From Services.tsx but using the current dark blue dot) */}
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{
@@ -81,7 +80,6 @@ function ContactContent({ formState, handleChange }: {
       />
 
       <div className="max-w-7xl mx-auto">
-        {/* --- Section Header (Divider) --- */}
         <div
           className="flex items-center gap-6 mb-12 relative z-10 opacity-0 animate-slide-up"
           style={{ animationDelay: "0.15s" }}
@@ -94,7 +92,6 @@ function ContactContent({ formState, handleChange }: {
         </div>
 
         <div className="relative z-10">
-          {/* Main Title - Uses dynamic welcomeText */}
           <div
             className="flex flex-col items-center mb-12 opacity-0 animate-slide-up"
             style={{ animationDelay: "0.2s" }}
@@ -109,7 +106,6 @@ function ContactContent({ formState, handleChange }: {
           </div>
 
           <div className="grid grid-cols-1 gap-6">
-            {/* Left Column: Context & Info (BRIGHTER CARD) */}
             <div
               className="bg-white/30 backdrop-blur-md border border-white/20 p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 min-h-[400px] opacity-0 animate-slide-up rounded-xl hover:bg-white/35"
               style={{ animationDelay: "0.3s" }}
@@ -144,7 +140,6 @@ function ContactContent({ formState, handleChange }: {
               </div>
             </div>
 
-            {/* Right Column: Form */}
             <div
               className="bg-white/30 backdrop-blur-md border border-white/20 p-8 md:p-12 relative overflow-hidden flex flex-col justify-center opacity-0 animate-slide-up rounded-xl hover:bg-white/35"
               style={{ animationDelay: "0.4s" }}
@@ -155,9 +150,7 @@ function ContactContent({ formState, handleChange }: {
                 action="#"
                 method="POST"
               >
-                {/* Code-Style Inputs */}
                 <div className="space-y-6">
-                  {/* Name Field */}
                   <div className="group">
                     <label
                       htmlFor="name"
@@ -185,7 +178,6 @@ function ContactContent({ formState, handleChange }: {
                     </div>
                   </div>
 
-                  {/* Email Field */}
                   <div className="group">
                     <label
                       htmlFor="email"
@@ -212,8 +204,6 @@ function ContactContent({ formState, handleChange }: {
                       </span>
                     </div>
                   </div>
-
-                  {/* Message Field with GROWING BRACES */}
                   <div className="group">
                     <label
                       htmlFor="message"
@@ -221,7 +211,6 @@ function ContactContent({ formState, handleChange }: {
                     >
                       str VISITOR_QUERY:
                     </label>
-                    {/* The items-stretch class makes the children fill the height */}
                     <div className="flex flex-row items-stretch justify-center">
                       <textarea
                         id="message"
@@ -242,11 +231,10 @@ function ContactContent({ formState, handleChange }: {
                     href="mailto:contact@toadboy.com"
                     className="flex items-center justify-between gap-3 font-mono px-8 py-4 bg-white text-blue-600 font-black uppercase tracking-widest hover:bg-blue-50 transition-all duration-300 shadow-xl shadow-black/20 group"
                   >
-                    {/* Replaced <span> with HackerText */}
                     <HackerText 
-                      text="SEND MESSAGE" // The original text
+                      text="SEND MESSAGE"
                       triggerOnMount={false} 
-                      triggerOnHover={true} // Trigger effect on hover
+                      triggerOnHover={true}
                       speed={30}
                       className="block" 
                     />
@@ -254,8 +242,6 @@ function ContactContent({ formState, handleChange }: {
                   </a>
                 </div>
               </form>
-
-              {/* Decorative 'Footer' inside the dark card */}
               <div className="absolute bottom-4 left-6 text-[10px] text-white/50 font-mono">
                 <span className="animate-pulse text-white mr-1">●</span>{" "}
                   CURRENTLY AVAILABLE FOR WORK
@@ -283,7 +269,6 @@ export default function ContactPage() {
 
   return (
     <div className="bg-blue-600">
-      {/* Fixed Navbar Link at the top */}
       <div className={`fixed top-6 left-6 z-50 w-full px-6 pt-6 pointer-events-none transition-all duration-300 mix-blend-difference`}>
         <Link
           href="/"
@@ -301,7 +286,6 @@ export default function ContactPage() {
         </Link>
       </div>
 
-      {/* Suspense is required for components using useSearchParams */}
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center text-white/50">
             <p className="font-mono">LOADING CONTACT FORM...</p>
@@ -309,6 +293,7 @@ export default function ContactPage() {
       }> 
         <ContactContent formState={formState} handleChange={handleChange} />
       </Suspense>
+      <Footer isFooterActive={true}/>
     </div>
   );
 }

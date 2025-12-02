@@ -60,8 +60,7 @@ export default function Footer({isFooterActive} : CardProps) {
             backgroundSize: "40px 40px",
           }}
         />
-
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-lg font-mono tracking-wider relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center tracking-wider relative z-10">
 
           <div className="flex flex-col items-center md:items-start space-y-3 mb-8 md:mb-0">
             <Link href="/" className="pointer-events-auto text-xl font-bold tracking-tighter text-white transition-all">
@@ -94,29 +93,33 @@ export default function Footer({isFooterActive} : CardProps) {
                   SEE MY{' '} 
                   <Link 
                       href="/contact"
-                      className="inline-block align-baseline text-white hover:text-cyan-300 transition-colors"
+                      className="inline-block align-baseline text-white hover:text-blue-600 transition-colors"
                   >
                       <HackerText 
                           text={`[CONTACT PAGE]`} 
                           triggerOnMount={false} 
                           triggerOnHover={true} 
                           speed={30} 
-                          className="text-sm font-extrabold"
+                          className="text-sm"
                       />
                   </Link> 
                   {' '}FOR DETAILS.
               </p>
-              <Link href="/contact" className="text-sm font-bold text-cyan-300 hover:text-cyan-100 transition duration-300 underline underline-offset-4">
-                  [Toby.chen1337@outlook.com]
-              </Link>
+              <HackerText 
+                  text={`[TOBY.CHEN1337@OUTLOOK.COM]`} 
+                  triggerOnMount={false} 
+                  triggerOnHover={true} 
+                  speed={30} 
+                  className="text-sm font-bold text-zinc-100 hover:text-blue-600 transition duration-300 underline underline-offset-4"
+              />
             </div>
             
-            <div className="flex flex-col space-y-2 text-base font-medium uppercase mt-4 sm:mt-0 sm:space-x-0 sm:pl-8 md:pl-10 md:border-l md:border-white/20">
-              <span className="text-white/50 text-xs font-mono mb-1 tracking-widest hidden md:block">
+            <div className="text-md flex flex-col space-y-2 font-mono mt-4 sm:mt-0 sm:space-x-0 sm:pl-8 md:pl-10 md:border-l border-white/20">
+              <span className="text-zinc-400 text-xs mb-1 tracking-widest hidden md:block">
                 {`// SOCIALS`}
               </span>
               
-              <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-300 transition duration-300">
+              <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600  transition duration-300">
                 <HackerText 
                     text="[GITHUB]" 
                     triggerOnMount={false} 
@@ -125,7 +128,7 @@ export default function Footer({isFooterActive} : CardProps) {
                 />
               </a>
 
-              <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-300 transition duration-300">
+              <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition text-zinc-100 duration-300">
                 <HackerText 
                     text="[LINKEDIN]" 
                     triggerOnMount={false} 
@@ -134,7 +137,7 @@ export default function Footer({isFooterActive} : CardProps) {
                 />
               </a>
 
-              <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-300 transition duration-300">
+              <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600  transition duration-300">
                 <HackerText 
                     text="[SUBSTACK]" 
                     triggerOnMount={false} 
@@ -143,7 +146,7 @@ export default function Footer({isFooterActive} : CardProps) {
                 />
               </a>
 
-              <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-300 transition duration-300">
+              <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600 transition duration-300">
                 <HackerText 
                     text="[INSTAGRAM]" 
                     triggerOnMount={false} 

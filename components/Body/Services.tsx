@@ -119,6 +119,7 @@ export default function Services() {
                         className="text-4xl md:text-5xl font-black text-white tracking-tighter text-center"
                         speed={40}
                         triggerOnMount={true}
+                        triggerOnHover={false}
                     />
                 </div>
 

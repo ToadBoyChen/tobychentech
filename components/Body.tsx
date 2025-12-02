@@ -35,8 +35,16 @@ export default function Body() {
                 <Projects />
             </section>
 
-            <section id="services" className="w-full px-16 py-36 min-h-screen items-center justify-center">
-                <Services />
+            <section 
+                id="services" 
+                className="w-full bg-blue-600 py-32 relative z-10 -my-16"
+                style={{
+                    clipPath: "polygon(0 0, 50% 5vw, 100% 0, 100% calc(100% - 5vw), 50% 100%, 0 calc(100% - 5vw))"
+                }}
+            >
+                <div className="flex justify-center w-full px-16 min-h-screen items-center">
+                    <Services />
+                </div>
             </section>
         </div>
     );

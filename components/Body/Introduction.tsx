@@ -46,12 +46,10 @@ export default function Introduction() {
       <div className="absolute inset-0 -z-20 w-full h-full">
         <Image 
             src={Wallpaper} 
-            alt="Leeds Background"
+            alt="Deer in the Cairngorms"
             fill            
-            priority
-            // 1. Unoptimized ensures raw quality (no compression)
-            unoptimized 
-            // 2. Trigger state change when browser confirms load
+            unoptimized
+            preload
             onLoad={() => setBgLoaded(true)}
             className="object-cover object-center" 
         />

@@ -73,7 +73,7 @@ export default function Card() {
               <p className="text-4xl md:text-5xl font-black text-zinc-900 mb-8 tracking-tighter leading-[0.95]">
                   Building the <br/> Foundation.
               </p>
-              <p className="text-zinc-500 leading-relaxed text-lg font-medium max-w-lg">
+              <p className="text-zinc-500 leading-relaxed text-lg font-medium">
                   I am currently <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">making my mark</span>.
 
                   As a developer without years under their belt, I compensate my lack of experience with a <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">real love for programming</span> and <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">genuine curiosity</span>. 

@@ -4,6 +4,7 @@ import Statistics from "@/components/Body/Statistics";
 import Projects from "@/components/Body/Projects";
 import Services from "@/components/Body/Services";
 import ScrollTracker from "@/components/ScrollTracker";
+import End from "@/components/Body/End";
 
 export default function Body() {
     return (
@@ -37,13 +38,25 @@ export default function Body() {
 
             <section 
                 id="services" 
-                className="w-full bg-blue-600 py-32 relative z-10 -my-16"
+                className="w-full bg-blue-600 py-32 relative z-10 my-16"
                 style={{
                     clipPath: "polygon(0 0, 50% 5vw, 100% 0, 100% calc(100% - 5vw), 50% 100%, 0 calc(100% - 5vw))"
                 }}
             >
                 <div className="flex justify-center w-full px-16 min-h-screen items-center">
                     <Services />
+                </div>
+            </section>
+
+            <section 
+                id="end" 
+                className="w-full py-32 bg-white relative z-10 -my-16"
+                style={{
+                    clipPath: "polygon(0 0, 50% 5vw, 100% 0, 100% calc(100% - 5vw), 50% 100%, 0 calc(100% - 5vw))"
+                }}
+            >
+                <div className="flex justify-center w-full px-16 items-center">
+                    <End />
                 </div>
             </section>
         </div>

@@ -42,7 +42,7 @@ export default function Navbar() {
             />
         </Link>
         <Link 
-            href="/contact"
+            href="/contact?source=navbar"
             className={`
               pointer-events-auto font-extrabold text-xl tracking-tighter text-white transition-all
             `}

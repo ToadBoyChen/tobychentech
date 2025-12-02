@@ -13,6 +13,7 @@ export default function ScrollTracker() {
     { id: "stats", label: "STATISTICS" },
     { id: "projects", label: "PROJECTS" },
     { id: "services", label: "SERVICES" },
+    { id: "end", label: " " },
   ];
 
   useEffect(() => {

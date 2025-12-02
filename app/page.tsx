@@ -1,7 +1,5 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Body from "@/components/Body";
-import Background from "@/components/Background";
 
 export default function Home() {
     return (
@@ -9,7 +7,6 @@ export default function Home() {
             <div>
                 <Navbar/>
                 <Body/>
-                <Footer/>
             </div>
         </main>
     );

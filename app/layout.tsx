@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 const dmSans = DM_Sans({
   variable: "--font-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${dmSans.variable} ${dmMono.variable} antialiased font-sans bg-white text-zinc-900`}
       >
         {children}
+        <Footer/>
       </body>
     </html>
   );

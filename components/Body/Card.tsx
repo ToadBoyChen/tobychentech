@@ -57,12 +57,23 @@ export default function Card({ isAboutActive }: CardProps) {
   }, []);
 
   return (
-    <motion.section 
+    <motion.div
       initial="hidden"
       animate={controls}
       variants={cardVariants}
-      className="relative px-16 py-36 items-center justify-center z-10 bg-white"
-    >
+    > 
+      <div 
+        className="w-full top-0 left-0 z-50"
+      >
+        <svg 
+          viewBox="0 0 100 100" 
+          preserveAspectRatio="none" 
+          className="w-full h-[50px] fill-white block overflow-visible"
+        >
+          <use href="#fixed-convex"/> 
+        </svg>
+      </div>
+      <section id="about" className="relative px-16 py-36 items-center justify-center z-10 bg-white">
       <style jsx>{`
         @keyframes slideUpFade {
           0% { opacity: 0; transform: translateY(10px); }
@@ -166,6 +177,7 @@ export default function Card({ isAboutActive }: CardProps) {
              </div>
         </div>
       </div>
-    </motion.section>
+    </section>
+    </motion.div>
   );
 }

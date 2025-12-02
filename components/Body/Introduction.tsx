@@ -38,22 +38,6 @@ export default function Introduction({ isAboutActive }: IntroductionProps) {
 
   return (
     <section id="intro" className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
-
-        <motion.div 
-          initial="hidden"
-          animate={controls}
-          variants={convexCut}
-          className="absolute w-full bottom-0 left-0"
-        >
-          <svg 
-            viewBox="0 0 100 100" 
-            preserveAspectRatio="none" 
-            className="w-full h-[50px] fill-white"
-          >
-          <use href="#fixed-convex" /> 
-          </svg>
-        </motion.div>
-
       <div 
         className={`
           fixed inset-0 z-50 bg-black flex items-center justify-center 

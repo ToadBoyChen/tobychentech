@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import HackerText from "./HackerText";
 
 const sections = [
@@ -13,18 +13,34 @@ const sections = [
 
 export function useActiveSection() {
   const [activeSection, setActiveSection] = useState("intro");
+  const observers = useRef<Map<string, IntersectionObserverEntry>>(new Map());
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+    const callback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        observers.current.set(entry.target.id, entry);
+      });
+
+      let maxVisibleHeight = 0;
+      let winnerId = "";
+
+      observers.current.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const visibleHeight = entry.intersectionRect.height;
+          if (visibleHeight > maxVisibleHeight) {
+            maxVisibleHeight = visibleHeight;
+            winnerId = entry.target.id;
           }
-        });
-      },
-      { rootMargin: "-40% 0px -40% 0px" } 
-    );
+        }
+      });
+
+      if (winnerId) setActiveSection(winnerId);
+    };
+
+    const observer = new IntersectionObserver(callback, {
+      threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+      rootMargin: "-10% 0px -10% 0px", 
+    });
 
     sections.forEach(({ id }) => {
       const element = document.getElementById(id);
@@ -49,7 +65,7 @@ export function useEarlyActiveSection() {
           }
         });
       },
-      { rootMargin: "-20% 0px -20% 0px" } 
+      { rootMargin: "0px 0px -10% 0px" } 
     );
 
     sections.forEach(({ id }) => {
@@ -58,6 +74,17 @@ export function useEarlyActiveSection() {
     });
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY < 100 ) {
+        setEarlyActiveSection("intro");
+      }
+    };
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return earlyActiveSection;

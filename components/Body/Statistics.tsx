@@ -20,6 +20,7 @@ import { motion, useAnimation } from "framer-motion";
 import CustomDiv from "../CustomDiv";
 import HackerHeader from "../HackerHeader";
 import SpotifyCard from "../SpotifyCard";
+import LinuxCard from "./LinuxCard";
 
 ChartJS.register(
   ArcElement,
@@ -284,17 +285,18 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
             className="text-stone-50 text-xl"
             lineColor="bg-stone-50"
           />
-          <HackerHeader 
-            text="02 01 01 // MUSIC OBSESSED"
-            lineSide="left"
-            className="text-stone-50 my-4"
-            lineColor="bg-stone-50"
-          />
-          <p className="leading-relaxed text-base md:text-lg font-medium text-stone-50 mb-12">
-              I'm not sure if I can claim to be an <span className="font-bold underline decoration-lime-800 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">audiophile</span> just yet, but I do love some good songs. I'm a big fan of the <span className="font-bold underline decoration-lime-800 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">Smiths, Radiohead</span> and <span className="font-bold underline decoration-lime-800 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">Deftones</span>, though I don't shy away from a varied music taste.
-          </p>
           <SpotifyCard/>
         </div>
+        <div className="mb-24">
+          <LinuxCard/>
+        </div>
+
+        <HackerHeader 
+          text="02 02 // GITHUB STATISTICS"
+          lineSide="right"
+          className="text-stone-50 text-xl"
+          lineColor="bg-stone-50"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 xl:gap-8">
             {/* Heatmap Card */}

@@ -32,12 +32,12 @@ export default function Footer({isFooterActive} : CardProps) {
         <svg 
           viewBox="0 0 100 100" 
           preserveAspectRatio="none" 
-          className="w-full h-[30px] md:h-[50px] fill-zinc-900 block overflow-visible"
+          className="w-full h-[30px] md:h-[50px] fill-lime-950 block overflow-visible"
         >
           <use href="#fixed-convex"/> 
         </svg>
       </div>
-      <footer className="w-full px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center relative z-10 bg-zinc-900">
+      <footer className="w-full px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center relative z-10 bg-lime-950">
         <CustomDiv
           label="< Footer />"
           lineColor='bg-zinc-100'

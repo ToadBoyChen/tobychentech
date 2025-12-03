@@ -84,7 +84,7 @@ export default function Card({ isAboutActive }: CardProps) {
         </svg>
       </div>
       
-      <section className="relative px-6 md:px-12 lg:px-16 py-24 md:py-36 items-center justify-center z-10 bg-stone-50">
+      <section className="relative px-6 md:px-20 lg:px-32 py-24 md:py-36 items-center justify-center z-10 bg-stone-50">
         <style jsx>{`
           @keyframes slideUpFade {
             0% { opacity: 0; transform: translateY(10px); }
@@ -110,7 +110,6 @@ export default function Card({ isAboutActive }: CardProps) {
           <HackerHeader 
             text="01 01 // MISSION STATEMENT"
             lineSide="right"
-            className="zinc-900"
           />
         </div>
 
@@ -173,7 +172,6 @@ export default function Card({ isAboutActive }: CardProps) {
           <HackerHeader 
             text="01 02 // AUTHOR HOBBIES"
             lineSide="right"
-            className="zinc-900"
           />
         </div>
 
@@ -225,7 +223,6 @@ export default function Card({ isAboutActive }: CardProps) {
           <HackerHeader 
             text="01 03 // PAST EXPERIENCE"
             lineSide="right"
-            className="zinc-900"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12 w-full max-w-5xl mx-auto">

@@ -18,6 +18,8 @@ import {
 import { Doughnut, Line } from "react-chartjs-2";
 import { motion, useAnimation } from "framer-motion";
 import CustomDiv from "../CustomDiv";
+import HackerHeader from "../HackerHeader";
+import SpotifyCard from "../SpotifyCard";
 
 ChartJS.register(
   ArcElement,
@@ -267,16 +269,22 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
         </svg>
       </div>
       <section className="relative px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
+        <div className="flex flex-col items-center mb-8 md:mb-12">
+          <HackerText text="STATISTICS" triggerOnMount={true} triggerOnHover={false} speed={50} className="text-stone-50 font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono" />
+        </div>
         <CustomDiv
           label="< Data >"
           lineColor="bg-stone-50"
           textColor="text-stone-50"
         />
-
-        <div className="flex flex-col items-center mb-8 md:mb-12">
-          <HackerText text="GITHUB_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-3xl md:text-5xl tracking-tighter text-center font-mono" />
+        <div className="mb-6">
+          <HackerHeader 
+            text="02 01 // GITHUB STATISTICS"
+            lineSide="right"
+            className="text-stone-50"
+            lineColor="bg-stone-50"
+          />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 xl:gap-8">
             {/* Heatmap Card */}
           <div className="col-span-1 md:col-span-2 lg:col-span-5 bg-zinc-900 border border-zinc-800 p-4 md:p-8 hover:border-zinc-600 transition-all group flex flex-col justify-between relative overflow-hidden">
@@ -337,8 +345,13 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
           </div>
         </div>
 
-        <div className="flex mt-20 md:mt-32 mb-8 md:mb-12 flex-col items-center">
-            <HackerText text="CLIENT_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-3xl md:text-5xl tracking-tighter text-center font-mono" />
+        <div className="mb-6 mt-24">
+          <HackerHeader 
+            text="02 01 // GITHUB STATISTICS"
+            lineSide="right"
+            className="text-stone-50"
+            lineColor="bg-stone-50"
+          />
         </div>
 
         <div className="flex justify-center w-full pb-12 md:pb-24">
@@ -360,6 +373,7 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
           lineColor="bg-stone-50"
           textColor="text-stone-50"
         />
+        <SpotifyCard/>
       </section>
     </motion.div>
   );

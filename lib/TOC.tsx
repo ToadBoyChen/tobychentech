@@ -43,7 +43,7 @@ export default function TOC() {
           >
             <div className="flex items-baseline gap-4 md:gap-8">
               {/* ID Number */}
-              <span className="font-mono text-xs md:text-sm text-zinc-500 group-hover:text-blue-400 transition-colors shrink-0">
+              <span className="font-mono text-xs md:text-sm text-zinc-500 font-normal group-hover:text-lime-300 transition-colors shrink-0">
                 {item.id}
               </span>
               

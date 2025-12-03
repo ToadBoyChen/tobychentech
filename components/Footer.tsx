@@ -62,18 +62,14 @@ export default function Footer({isFooterActive} : CardProps) {
                 className="block" 
               />
             </Link>
-            <p className="text-sm font-medium text-white/70">
+            <p className="text-sm font-medium text-zinc-100">
               &copy; {currentYear} ALL RIGHTS RESERVED.
             </p>
             
-            <p className="text-[10px] md:text-xs text-white/50 tracking-normal">
+            <p className="text-[10px] md:text-xs text-zinc-100 tracking-normal">
               BUILT WITH NEXT.JS & LOVE.
             </p>
           </div>
-          
-          {/* 2. Contact Info: Center Aligned with Left Border */}
-          {/* Added lg:items-center to visually center the text block in the grid column */}
-          {/* Added lg:border-l to create the first divider */}
           <div className="text-right md:text-center flex flex-col space-y-2 pt-1 font-mono text-base tracking-normal lg:border-l border-zinc-600 lg:items-center">
               <span className="text-zinc-400 text-xs tracking-widest block mb-1">
                 {`// GET_IN_TOUCH`}
@@ -81,7 +77,7 @@ export default function Footer({isFooterActive} : CardProps) {
               <p className="text-white font-extrabold text-lg tracking-tighter">
                   ALWAYS OPEN TO COLLABORATE.
               </p>
-              <p className="text-white/70 text-xs md:text-sm font-medium tracking-normal">
+              <p className="text-zinc-100 text-xs md:text-sm font-medium tracking-normal">
                   SEE MY{' '} 
                   <Link 
                       href="/contact"
@@ -107,10 +103,6 @@ export default function Footer({isFooterActive} : CardProps) {
                 />
               </a>
           </div>
-          
-          {/* 3. Socials: Right Aligned with Left Border */}
-          {/* Added lg:border-l to create the second divider (the "divider on the right") */}
-          {/* Added lg:pl-20 to give spacing from the new border */}
           <div className="text-md flex flex-col space-y-2 font-mono lg:items-end lg:border-l border-zinc-600 lg:pl-20 font-bold">
             <span className="text-zinc-400 text-xs mb-1 font-mono tracking-widest block">
               {`// SOCIALS`}

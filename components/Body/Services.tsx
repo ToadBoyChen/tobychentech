@@ -124,12 +124,12 @@ export default function Services({isServicesActive} : CardProps) {
                 <svg 
                     viewBox="0 0 100 100" 
                     preserveAspectRatio="none" 
-                    className="w-full h-[30px] md:h-[50px] fill-blue-600 block overflow-visible"
+                    className="w-full h-[30px] md:h-[50px] fill-lime-950 block overflow-visible"
                 >
                     <use href="#fixed-convex"/> 
                 </svg>
             </div>
-            <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-40 bg-blue-600 relative overflow-hidden">
+            <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-40 bg-lime-950 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 pointer-events-none" 
                     style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} 
                 />

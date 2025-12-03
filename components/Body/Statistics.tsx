@@ -261,11 +261,11 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
   return (
     <motion.div initial="hidden" animate={controls} variants={cardVariants}>
       <div className="w-full top-0 left-0 z-50">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-[30px] md:h-[50px] fill-zinc-900 block overflow-visible">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-[30px] md:h-[50px] fill-lime-950 block overflow-visible">
           <use href="#fixed-convex" />
         </svg>
       </div>
-      <section className="relative px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-20 bg-zinc-900">
+      <section className="relative px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
         <div className="flex items-center gap-4 md:gap-6 mb-12">
           <div className="h-px bg-zinc-800 flex-1" />
           <div className="font-mono text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap">

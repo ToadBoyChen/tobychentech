@@ -128,27 +128,27 @@ export default function Body() {
                         <Card isAboutActive={hasReached('about')} />
                     </div>
 
-                    <div className="bg-white">
+                    <div className="bg-stone-50">
                         <div id="stats">
                             {statsData && <Statistics isStatisticsActive={hasReached('stats')} data={statsData} />}
                         </div>
                 
-                        <div className="bg-zinc-900">
+                        <div className="bg-lime-950">
                             <div id="projects">
                                 <Projects isProjectActive={hasReached('projects')}/>
                             </div>
 
-                            <div className="bg-white">
+                            <div className="bg-stone-50">
                                 <div id="services">
                                     <Services isServicesActive={hasReached('services')}/>
                                 </div>
 
-                                <div className="bg-blue-600">
+                                <div className="bg-lime-950">
                                     <div id="end">
                                         <End isEndActive={hasReached('end')}/>
                                     </div>
 
-                                    <div id="footer" className="bg-white">
+                                    <div id="footer" className="bg-stone-50">
                                         <Footer isFooterActive={hasReached('footer')}/>
                                     </div>
                                 </div>

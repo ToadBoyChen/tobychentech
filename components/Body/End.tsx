@@ -40,14 +40,13 @@ export default function End({ isEndActive }: CardProps) {
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
-          className="w-full h-[30px] md:h-[50px] fill-zinc-100 block overflow-visible"
+          className="w-full h-[30px] md:h-[50px] fill-stone-50 block overflow-visible"
         >
           <use href="#fixed-convex" />
         </svg>
       </div>
       
-      <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-50 bg-zinc-100 min-h-screen">
-        {/* --- HEADER DECORATION --- */}
+      <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-50 bg-stone-50 min-h-screen">
         <div className="flex items-center gap-4 md:gap-6 mb-12 md:mb-16 w-full max-w-6xl mx-auto">
           <div className="h-px bg-zinc-400 flex-1" />
           <span className="font-mono text-[10px] md:text-sm uppercase tracking-widest text-zinc-500 whitespace-nowrap">

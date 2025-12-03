@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 import { ArrowRight, Code2, Globe, HeartHandshake, RefreshCw, Check } from "lucide-react";
 import HackerText from "../HackerText";
 import { motion, useAnimation } from "framer-motion";
+import Link from "next/link";
 
 const CURRENCIES = {
   GBP: { symbol: "£", rate: 1, label: "GBP" },
   USD: { symbol: "$", rate: 1.27, label: "USD" },
   EUR: { symbol: "€", rate: 1.17, label: "EUR" }
 };
-// ... [Type definitions remain the same] ...
+
 type CurrencyKey = keyof typeof CURRENCIES;
 const SPAN_BASE = "text-white font-bold underline decoration-white/30 decoration-4 underline-offset-4 transition-all";
 
 const SERVICES_DATA = [
-    // ... [Your existing service data] ...
     {
         id: "01",
         title: "PASSION_PROJECT_VOLUNTEER",
@@ -22,12 +22,13 @@ const SERVICES_DATA = [
         desc: (
             <>
                 Got a non-profit or a genuinely cool idea? I will help you <span className={`${SPAN_BASE} group-hover:decoration-green-400`}>build it for free</span>. 
-                I'm looking for <span className={`${SPAN_BASE} group-hover:decoration-green-400`}>interesting problems</span>, not just paychecks.
+                I'm looking for <span className={`${SPAN_BASE} group-hover:decoration-green-400`}>interesting problems</span>, not just pay checks.
             </>
         ),
         features: ["Code Contribution", "Technical Consulting", "Zero Cost"],
         basePrice: 0,
-        priceLabel: "FREE / PRO BONO"
+        priceLabel: "FREE / PRO BONO",
+        source: "volunteering"
     },
     {
         id: "02",
@@ -35,13 +36,13 @@ const SERVICES_DATA = [
         icon: <Globe className="w-8 h-8" />,
         desc: (
             <>
-                A <span className={`${SPAN_BASE} group-hover:decoration-cyan-400`}>visually stunning</span> landing page or portfolio. 
-                Perfect for showcasing your work with <span className={`${SPAN_BASE} group-hover:decoration-cyan-400`}>modern animations</span> and responsive design.
+                A <span className={`${SPAN_BASE} group-hover:decoration-cyan-400`}>stunning</span> landing page or portfolio. Perfect for showcasing your work with <span className={`${SPAN_BASE} group-hover:decoration-cyan-400`}>modern animations</span>, <span className={`${SPAN_BASE} group-hover:decoration-cyan-400`}>responsive designs</span> and <span className={`${SPAN_BASE} group-hover:decoration-cyan-400`}>careful design</span>.
             </>
         ),
-        features: ["React / Next.js", "Responsive Design", "SEO Optimized", "CMS Integration"],
-        basePrice: 300, 
-        priceLabel: "STARTING AT"
+        features: ["Next.js", "Vite", "Responsive Design", "SEO Optimised"],
+        basePrice: 100, 
+        priceLabel: "STARTING AT",
+        source: "frontend"
     },
     {
         id: "03",
@@ -54,8 +55,9 @@ const SERVICES_DATA = [
             </>
         ),
         features: ["Database (SQL/NoSQL)", "User Auth", "API Integration", "Admin Dashboard"],
-        basePrice: 800,
-        priceLabel: "STARTING AT"
+        basePrice: 300,
+        priceLabel: "STARTING AT",
+        source: "fullstack"
     }
 ];
 
@@ -82,15 +84,18 @@ export default function Services({isServicesActive} : CardProps) {
       }
     }, [isServicesActive, controls]);
 
-    // ... [Fetch useEffect remains the same] ...
+    // FETCH LIVE RATES (Using Frankfurter API)
     useEffect(() => {
         const fetchRates = async () => {
             setLoadingRates(true);
             try {
-                const response = await fetch('https://api.exchangerate.host/latest?base=GBP&symbols=GBP,USD,EUR');
+                // api.frankfurter.app is a free, open-source API
+                const response = await fetch('https://api.frankfurter.app/latest?from=GBP&to=USD,EUR');
                 const data = await response.json();
-                if (data.success && data.rates) {
+                
+                if (data && data.rates) {
                     const { USD: rateUSD, EUR: rateEUR } = data.rates;
+                    
                     setConversionRates({
                         GBP: { symbol: "£", rate: 1, label: "GBP" },
                         USD: { symbol: "$", rate: rateUSD, label: "USD" },
@@ -98,7 +103,8 @@ export default function Services({isServicesActive} : CardProps) {
                     });
                 }
             } catch (error) {
-                console.error("Failed to fetch current exchange rates:", error);
+                console.error("Failed to fetch current exchange rates, using defaults:", error);
+                // No need to reset to default here as state is initialized with defaults
             } finally {
                 setLoadingRates(false);
             }
@@ -153,7 +159,9 @@ export default function Services({isServicesActive} : CardProps) {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         {SERVICES_DATA.map((service, index) => {
                             const currentCurrency = conversionRates[currency];
-                            const rawPrice = Math.round(service.basePrice * currentCurrency.rate);
+                            // Ensure rate exists before calculation to avoid NaN
+                            const rate = currentCurrency?.rate || 1;
+                            const rawPrice = Math.round(service.basePrice * rate);
                             
                             const displayPrice = service.basePrice === 0 
                                 ? "FREE" 
@@ -184,7 +192,6 @@ export default function Services({isServicesActive} : CardProps) {
                                         </div>
 
                                         <h3 className="text-2xl md:text-3xl font-black text-white mb-4 md:mb-6 tracking-tighter leading-[0.95] min-h-[3rem] md:min-h-[4rem] flex items-end">
-                                            {/* Replace underscores with spaces for wrapping */}
                                             {service.title.replace(/_/g, " ")}
                                         </h3>
                                         
@@ -218,7 +225,7 @@ export default function Services({isServicesActive} : CardProps) {
                                                         className={`flex items-center gap-1 text-[10px] font-mono transition-colors ${loadingRates ? 'text-zinc-400' : 'text-blue-200 hover:text-white'}`}
                                                         disabled={loadingRates}
                                                     >
-                                                        <RefreshCw className="w-3 h-3" />
+                                                        <RefreshCw className={`w-3 h-3 ${loadingRates ? 'animate-spin' : ''}`} />
                                                         <span>{loadingRates ? 'LOADING' : 'CONVERT'}</span>
                                                     </button>
                                                 )}
@@ -240,13 +247,20 @@ export default function Services({isServicesActive} : CardProps) {
                                             </button>
                                         </div>
                                         
-                                        <a 
-                                            href="mailto:contact@toadboy.com" 
-                                            className="flex items-center justify-between w-full px-6 py-4 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all group-hover:scale-[1.02] shadow-lg shadow-black/5"
+                                        {/* Updated Link with HackerText */}
+                                        <Link 
+                                            href={`/contact?source=${service.source}`}
+                                            className="flex items-center justify-between w-full px-6 py-4 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all group-hover:scale-[1.02] shadow-lg shadow-black/5 group/btn"
                                         >
-                                            <span>INITIATE</span>
-                                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                        </a>
+                                            <HackerText 
+                                                text="INITIATE" 
+                                                triggerOnMount={false}
+                                                triggerOnHover={true}
+                                                speed={30}
+                                                className="block"
+                                            />
+                                            <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                                        </Link>
                                     </div>
                                 </div>
                             );

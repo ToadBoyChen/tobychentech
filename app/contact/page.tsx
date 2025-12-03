@@ -33,8 +33,8 @@ function ContactContent({ formState, handleChange }: {
   }, [source]);
 
   return (
-    <div className="min-h-screen pb-12 w-full px-4 sm:px-8 xl:px-16 mx-auto  text-white overflow-hidden opacity-0 animate-slide-up">
-      <p className="min-h-32"></p>
+    <div className="min-h-screen pb-12 w-full px-4 md:px-8 xl:px-16 mx-auto text-white overflow-hidden opacity-0 animate-slide-up">
+      <p className="min-h-24 md:min-h-32"></p>
       <style jsx>{`
         @keyframes slideUpFade {
           0% {
@@ -50,20 +50,19 @@ function ContactContent({ formState, handleChange }: {
           animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* --- Custom Gradient Hover Effect (KEPT for consistency) --- */
+        /* --- Custom Gradient Hover Effect --- */
         .group-hover:decoration-blue-to-purple {
           transition: all 300ms ease-out;
-          text-decoration-color: #f4f4f5; /* zinc-100 default */
+          text-decoration-color: #f4f4f5; 
         }
         .group:hover .group-hover:decoration-blue-to-purple {
           text-decoration-color: transparent;
           text-decoration-style: solid;
-
           background-image: linear-gradient(
             to right,
             #1d4ed8,
-            /* blue-700 */ #6d28d9,
-            /* violet-700 */ #9333ea /* fuchsia-700 */
+            #6d28d9,
+            #9333ea
           );
           background-repeat: repeat-x;
           background-position: 0 bottom;
@@ -81,11 +80,11 @@ function ContactContent({ formState, handleChange }: {
 
       <div className="max-w-7xl mx-auto">
         <div
-          className="flex items-center gap-6 mb-12 relative z-10 opacity-0 animate-slide-up"
+          className="flex items-center gap-4 md:gap-6 mb-8 md:mb-12 relative z-10 opacity-0 animate-slide-up"
           style={{ animationDelay: "0.15s" }}
         >
           <div className="h-px bg-white/30 flex-1" />
-          <span className="font-mono text-sm text-blue-100 uppercase tracking-widest">
+          <span className="font-mono text-[10px] md:text-sm text-blue-100 uppercase tracking-widest whitespace-nowrap">
             00 // CONTACT_ME
           </span>
           <div className="h-px bg-white/30 flex-1" />
@@ -93,7 +92,7 @@ function ContactContent({ formState, handleChange }: {
 
         <div className="relative z-10">
           <div
-            className="flex flex-col items-center mb-12 opacity-0 animate-slide-up"
+            className="flex flex-col items-center mb-8 md:mb-12 opacity-0 animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
             <HackerText
@@ -101,31 +100,32 @@ function ContactContent({ formState, handleChange }: {
               triggerOnMount={true}
               triggerOnHover={false}
               speed={50}
-              className="font-black text-7xl tracking-tighter text-center font-mono text-white"
+              className="font-black text-4xl md:text-6xl lg:text-7xl tracking-tighter text-center font-mono text-white"
             />
           </div>
 
           <div className="grid grid-cols-1 gap-6">
             <div
-              className="bg-white/30 backdrop-blur-md border border-white/20 p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 min-h-[400px] opacity-0 animate-slide-up rounded-xl hover:bg-white/35"
+              className="bg-white/30 backdrop-blur-md border border-white/20 p-6 md:p-12 flex flex-col justify-between group transition-all duration-300 min-h-[350px] md:min-h-[400px] opacity-0 animate-slide-up rounded-xl hover:bg-white/35"
               style={{ animationDelay: "0.3s" }}
             >
               <div>
-                <p className="text-5xl font-black text-white mb-6 tracking-tighter leading-none">
+                <p className="text-3xl md:text-5xl font-black text-white mb-4 md:mb-6 tracking-tighter leading-none">
                   GET IN TOUCH.
                 </p>
-                <p className="text-white/80 leading-relaxed text-base font-medium mb-8"> I am <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-cyan-300 transition-all"> available </span> for projects and collaborations, <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-sky-300 transition-all"> paid or unpaid</span>. I'm really just looking to gain some experience. If you have any <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all"> project ideas, research, questions, etc</span>, please reach out. I always aim to respond within <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-indigo-500 transition-all"> 48hrs </span>.
+                <p className="text-white/80 leading-relaxed text-sm md:text-base font-medium mb-6 md:mb-8"> 
+                    I am <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-cyan-300 transition-all"> available </span> for projects and collaborations, <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-sky-300 transition-all"> paid or unpaid</span>. I'm really just looking to gain some experience. If you have any <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all"> project ideas, research, questions, etc</span>, please reach out. I always aim to respond within <span className="text-white font-extrabold underline decoration-white/30 decoration-4 underline-offset-4 group-hover:decoration-indigo-500 transition-all"> 48hrs </span>.
                 </p>
               </div>
 
               <div className="space-y-4 pt-6 border-t border-white/10">
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs text-white/50 uppercase tracking-widest">
+                  <span className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">
                     EMAIL ADDRESS
                   </span>
                   <a
                     href="mailto:Toby.chen1337@outlook.com"
-                    className="text-xl font-black text-white hover:text-blue-100 transition-colors"
+                    className="text-lg md:text-xl font-black text-white hover:text-blue-100 transition-colors break-all"
                   >
                     Toby.chen1337@outlook.com
                   </a>
@@ -133,7 +133,7 @@ function ContactContent({ formState, handleChange }: {
 
                 <div className="h-px bg-white/30 w-full" />
 
-                <div className="flex justify-between items-center text-xs font-mono text-white/50">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[10px] md:text-xs font-mono text-white/50 gap-2 sm:gap-0">
                   <span>LOCATION: LONDON, UK</span>
                   <span>TIMEZONE: GMT</span>
                 </div>
@@ -141,25 +141,26 @@ function ContactContent({ formState, handleChange }: {
             </div>
 
             <div
-              className="bg-white/30 backdrop-blur-md border border-white/20 p-8 md:p-12 relative overflow-hidden flex flex-col justify-center opacity-0 animate-slide-up rounded-xl hover:bg-white/35"
+              className="bg-white/30 backdrop-blur-md border border-white/20 p-6 md:p-12 relative overflow-hidden flex flex-col justify-center opacity-0 animate-slide-up rounded-xl hover:bg-white/35"
               style={{ animationDelay: "0.4s" }}
             >
 
               <form
-                className="relative z-10 flex flex-col gap-8"
+                className="relative z-10 flex flex-col gap-6 md:gap-8"
                 action="#"
                 method="POST"
               >
                 <div className="space-y-6">
+                  {/* Name Input */}
                   <div className="group">
                     <label
                       htmlFor="name"
-                      className="block text-sm text-white/50 mb-2 font-mono tracking-widest group-focus-within:text-white transition-colors"
+                      className="block text-xs md:text-sm text-white/50 mb-2 font-mono tracking-widest group-focus-within:text-white transition-colors"
                     >
                       str VISITOR_NAME:
                     </label>
                     <div className="flex flex-row items-center justify-center">
-                      <span className="text-white/50 font-mono text-4xl">
+                      <span className="text-white/50 font-mono text-2xl md:text-4xl shrink-0">
                         {"{"}
                       </span>
                       <input
@@ -169,24 +170,25 @@ function ContactContent({ formState, handleChange }: {
                         value={formState.name}
                         onChange={handleChange}
                         placeholder="John Doe"
-                        className="w-full text-white font-mono rounded-none px-10 py-4 focus:outline-none focus:ring-0 transition-all placeholder:text-white/40 text-lg font-bold"
+                        className="w-full text-white font-mono rounded-none px-4 md:px-10 py-3 md:py-4 focus:outline-none focus:ring-0 transition-all placeholder:text-white/40 text-base md:text-lg font-bold bg-transparent"
                         required
                       />
-                      <span className="text-white/50 font-mono text-4xl">
+                      <span className="text-white/50 font-mono text-2xl md:text-4xl shrink-0">
                         {"}"}
                       </span>
                     </div>
                   </div>
 
+                  {/* Email Input */}
                   <div className="group">
                     <label
                       htmlFor="email"
-                      className="block text-sm text-white/50 mb-2 font-mono tracking-widest group-focus-within:text-white transition-colors"
+                      className="block text-xs md:text-sm text-white/50 mb-2 font-mono tracking-widest group-focus-within:text-white transition-colors"
                     >
                       str VISITOR_EMAIL:
                     </label>
                     <div className="flex flex-row items-center justify-center">
-                      <span className="text-white/50 font-mono text-4xl">
+                      <span className="text-white/50 font-mono text-2xl md:text-4xl shrink-0">
                         {"{"}
                       </span>
                       <input
@@ -196,18 +198,20 @@ function ContactContent({ formState, handleChange }: {
                         value={formState.email}
                         onChange={handleChange}
                         placeholder="JohnDoe@example.com"
-                        className="w-full text-white font-mono rounded-none px-10 py-4 focus:outline-none focus:ring-0 transition-all placeholder:text-white/40 text-lg font-bold"
+                        className="w-full text-white font-mono rounded-none px-4 md:px-10 py-3 md:py-4 focus:outline-none focus:ring-0 transition-all placeholder:text-white/40 text-base md:text-lg font-bold bg-transparent"
                         required
                       />
-                      <span className="text-white/50 font-mono text-4xl">
+                      <span className="text-white/50 font-mono text-2xl md:text-4xl shrink-0">
                         {"}"}
                       </span>
                     </div>
                   </div>
+                  
+                  {/* Message Input */}
                   <div className="group">
                     <label
                       htmlFor="message"
-                      className="block text-sm text-white/50 mb-2 font-mono tracking-widest group-focus-within:text-white transition-colors"
+                      className="block text-xs md:text-sm text-white/50 mb-2 font-mono tracking-widest group-focus-within:text-white transition-colors"
                     >
                       str VISITOR_QUERY:
                     </label>
@@ -218,7 +222,7 @@ function ContactContent({ formState, handleChange }: {
                         value={formState.message}
                         onChange={handleChange}
                         placeholder="Hey Toby your website is awesome..."
-                        className="w-full text-white font-mono rounded-none px-10 py-4 focus:outline-none focus:ring-0 transition-all placeholder:text-white/40 text-lg font-bold min-h-[150px]"
+                        className="w-full text-white font-mono rounded-none px-4 md:px-10 py-3 md:py-4 focus:outline-none focus:ring-0 transition-all placeholder:text-white/40 text-base md:text-lg font-bold min-h-[150px] bg-transparent/50 resize-y"
                         rows={6} 
                         required
                       />
@@ -229,7 +233,7 @@ function ContactContent({ formState, handleChange }: {
                 <div className="flex justify-end pt-4">
                   <a
                     href="mailto:contact@toadboy.com"
-                    className="flex items-center justify-between gap-3 font-mono px-8 py-4 bg-white text-blue-600 font-black uppercase tracking-widest hover:bg-blue-50 transition-all duration-300 shadow-xl shadow-black/20 group"
+                    className="flex items-center justify-center w-full md:w-auto md:justify-between gap-3 font-mono px-6 py-3 md:px-8 md:py-4 bg-white text-blue-600 font-black uppercase tracking-widest hover:bg-blue-50 transition-all duration-300 shadow-xl shadow-black/20 group text-sm md:text-base"
                   >
                     <HackerText 
                       text="SEND MESSAGE"
@@ -238,11 +242,11 @@ function ContactContent({ formState, handleChange }: {
                       speed={30}
                       className="block" 
                     />
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </div>
               </form>
-              <div className="absolute bottom-4 left-6 text-[10px] text-white/50 font-mono">
+              <div className="absolute bottom-4 left-6 text-[10px] text-white/50 font-mono hidden md:block">
                 <span className="animate-pulse text-white mr-1">●</span>{" "}
                   CURRENTLY AVAILABLE FOR WORK
               </div>
@@ -269,11 +273,11 @@ export default function ContactPage() {
 
   return (
     <div className="bg-blue-600">
-      <div className={`fixed top-6 left-6 z-50 w-full px-6 pt-6 pointer-events-none transition-all duration-300 mix-blend-difference`}>
+      <div className={`fixed top-4 left-4 md:top-6 md:left-6 z-50 w-full px-4 md:px-6 pt-4 md:pt-6 pointer-events-none transition-all duration-300 mix-blend-difference`}>
         <Link
           href="/"
           className={`
-              pointer-events-auto font-extrabold text-xl tracking-tighter text-white transition-all
+              pointer-events-auto font-extrabold text-lg md:text-xl tracking-tighter text-white transition-all
             `}
         >
           <HackerText
@@ -288,7 +292,7 @@ export default function ContactPage() {
 
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center text-white/50">
-            <p className="font-mono">LOADING CONTACT FORM...</p>
+            <p className="font-mono text-xs md:text-base">LOADING CONTACT FORM...</p>
         </div>
       }> 
         <ContactContent formState={formState} handleChange={handleChange} />

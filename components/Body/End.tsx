@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import HackerText from "../HackerText";
-import { motion, useAnimation, Variants } from "framer-motion";
+import { motion, useAnimation} from "framer-motion";
 
 interface CardProps {
   isEndActive: boolean;
@@ -9,13 +9,13 @@ interface CardProps {
 
 const TESTIMONIALS = [
   {
-    name: "Sarah Jenkins",
-    role: "Senior Product Manager",
-    company: "TechFlow",
-    text: "He didn't just build what we asked for; he built what we actually needed. The attention to detail in the frontend architecture saved us months of technical debt down the line.",
-    initials: "SJ"
-  },
-  // Add other testimonials back if needed
+      name: "Morné Nemdil",
+      role: "FULLSTACK DEVELOPER",
+      company: "FREELANCER",
+      text: "I've always enjoyed working with Toby. He communicates himself clearly and is a proactive listener. I'm always able to go deep into a topic with him, whether its Mathematics, UI/UX or some random topic.",
+      initials: "MN",
+      link: "https://www.mornenemdil.com/" 
+  }
 ];
 
 export default function End({ isEndActive }: CardProps) {
@@ -56,7 +56,6 @@ export default function End({ isEndActive }: CardProps) {
           <div className="h-px bg-zinc-300 flex-1" />
         </div>
 
-        {/* --- MAIN THANK YOU TEXT --- */}
         <div className="flex flex-col items-center group max-w-4xl mx-auto text-center mb-20 md:mb-32">
           <HackerText
             text="THANK_YOU"
@@ -115,14 +114,21 @@ export default function End({ isEndActive }: CardProps) {
                     {item.initials}
                   </div>
                   
-                  <div className="flex flex-col">
-                    <span className="text-zinc-900 font-bold text-sm tracking-tight">
+                  {/* WRAPPED NAME/ROLE IN ANCHOR TAG */}
+                  <a 
+                    href={item.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex flex-col group/link cursor-pointer"
+                  >
+                    <span className="text-zinc-900 font-bold text-sm tracking-tight group-hover/link:text-blue-600 transition-colors">
                       {item.name}
                     </span>
-                    <span className="text-zinc-400 text-[10px] md:text-xs font-mono uppercase tracking-wider">
+                    <span className="text-zinc-400 text-[10px] md:text-xs font-mono uppercase tracking-wider group-hover/link:underline">
                       {item.role} @ {item.company}
                     </span>
-                  </div>
+                  </a>
+                  {/* END ANCHOR TAG */}
                 </div>
               </div>
             ))}

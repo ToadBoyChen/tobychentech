@@ -8,6 +8,7 @@ import CustomDiv from "../CustomDiv";
 import HackerHeader from "../HackerHeader";
 import Hike from "@/public/hike.jpeg";
 import Kew from "@/public/kewfinger.jpg";
+import HighText from "../HighText";
 
 // --- DATA CONSTANTS ---
 const METRICS = [
@@ -71,10 +72,17 @@ interface CardProps {
 }
 
 export default function Card({ isAboutActive }: CardProps) {
-  const [isPhotoVisible, setIsPhotoVisible] = useState(false);
-  const photoRef = useRef<HTMLDivElement>(null);
-  const [metricIndex, setMetricIndex] = useState(0);
+  // 1. Separate states for independent animation
+  const [isMeVisible, setIsMeVisible] = useState(false);
+  const [isKewVisible, setIsKewVisible] = useState(false);
+  const [isHikeVisible, setIsHikeVisible] = useState(false);
 
+  // 2. Separate refs to track each image location
+  const meRef = useRef<HTMLDivElement>(null);
+  const kewRef = useRef<HTMLDivElement>(null);
+  const hikeRef = useRef<HTMLDivElement>(null);
+
+  const [metricIndex, setMetricIndex] = useState(0);
   const controls = useAnimation();
 
   const cardVariants = {
@@ -97,15 +105,30 @@ export default function Card({ isAboutActive }: CardProps) {
     return () => clearInterval(interval);
   }, []);
 
+  // 3. Set up independent observers
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsPhotoVisible(true);
-      },
-      { threshold: 0.3 }
-    );
-    if (photoRef.current) observer.observe(photoRef.current);
-    return () => observer.disconnect();
+    const createObserver = (setState: (val: boolean) => void) => {
+      return new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setState(true);
+        },
+        { threshold: 0.3 }
+      );
+    };
+
+    const meObserver = createObserver(setIsMeVisible);
+    const kewObserver = createObserver(setIsKewVisible);
+    const hikeObserver = createObserver(setIsHikeVisible);
+
+    if (meRef.current) meObserver.observe(meRef.current);
+    if (kewRef.current) kewObserver.observe(kewRef.current);
+    if (hikeRef.current) hikeObserver.observe(hikeRef.current);
+
+    return () => {
+      meObserver.disconnect();
+      kewObserver.disconnect();
+      hikeObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -157,34 +180,18 @@ export default function Card({ isAboutActive }: CardProps) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-auto mb-24">
-          {/* 1. BIO CARD */}
+          
           <div className="lg:col-span-2 bg-zinc-100 rounded-3xl p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 ease-out min-h-[350px] md:min-h-[400px]">
             <div>
-              <p className="text-3xl md:text-5xl font-black text-zinc-900 mb-8 tracking-tighter leading-[0.95]">
-                Building the <br /> Foundation.
+              <p className="text-3xl md:text-5xl font-black mb-8 tracking-tighter">
+                Building the Foundation.
               </p>
-              <p className="text-zinc-500 leading-relaxed text-base md:text-lg font-medium">
-                I am currently{" "}
-                <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-lime-500 transition-all">
-                  making my mark
-                </span>
-                . As a developer without years under their belt, I compensate my
-                lack of experience with a{" "}
-                <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-green-500 transition-all">
-                  real love for programming
-                </span>{" "}
-                and{" "}
-                <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-emerald-500 transition-all">
-                  genuine curiosity
-                </span>
+              <p className="text-lg lg:text-xl font-medium">
+                I am currently <HighText text="making my mark"/>.. As a developer without years under their belt, I compensate my lack of experience with a <HighText text="real love for programming"/> and <HighText text="genuine curiosity"/>
                 .
                 <br />
                 <br />
-                I've yet to find a niche. All I know is that I want to{" "}
-                <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-teal-600 transition-all">
-                  code for you
-                </span>
-                .
+                I'm yet to find a niche. It could be fullstack, algo-trading or anything else. All I know is that I want to <HighText text="code for you"/>.
               </p>
             </div>
             <div className="mt-12 flex items-center justify-between gap-4 text-xs font-mono text-zinc-400 group-hover:text-zinc-900 transition-colors">
@@ -194,9 +201,8 @@ export default function Card({ isAboutActive }: CardProps) {
             </div>
           </div>
 
-          {/* 2. PHOTO CARD */}
           <div
-            ref={photoRef}
+            ref={meRef}
             className="lg:col-span-1 lg:row-span-2 relative overflow-hidden bg-zinc-900 rounded-3xl h-[400px] lg:h-auto group"
           >
             <Image
@@ -204,13 +210,13 @@ export default function Card({ isAboutActive }: CardProps) {
               alt="Toby Chen"
               fill
               className={`object-cover object-center transition-all duration-[1.5s] ease-out ${
-                isPhotoVisible ? "grayscale-0 scale-105" : "grayscale scale-100"
+                isMeVisible ? "grayscale-0 scale-105" : "grayscale scale-100" // Uses isMeVisible
               }`}
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80" />
             <div
               className={`absolute top-4 right-4 transition-all duration-1000 delay-300 ${
-                isPhotoVisible
+                isMeVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-8 opacity-0"
               }`}
@@ -220,8 +226,6 @@ export default function Card({ isAboutActive }: CardProps) {
               </p>
             </div>
           </div>
-
-          {/* 3. METRICS CARD */}
           <div className="lg:col-span-2 bg-zinc-900 rounded-3xl p-8 flex flex-col justify-center items-center overflow-hidden transition-transform duration-300 relative min-h-[250px]">
             <div
               className="absolute inset-0 opacity-10 pointer-events-none"
@@ -262,20 +266,16 @@ export default function Card({ isAboutActive }: CardProps) {
 
         <div className="mb-6">
           <HackerHeader
-            text="01 02 // AUTHOR HOBBIES"
+            text="01 02 // MY HOBBIES"
             lineSide="right"
             className="text-lg"
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24 w-full">
-          {/* --- COLUMN 1: INTERESTS LIST --- */}
           <div className="md:col-span-2 lg:col-span-1 flex flex-col gap-4 h-full">
-            <div className="flex items-center justify-between border-b border-zinc-200 pb-2 mb-2">
-              <span className="font-mono text-xs text-zinc-400 font-bold">
-                // SYSTEM_INTERESTS
-              </span>
-              <span className="font-mono text-xs text-zinc-300">
+            <div className="flex items-center justify-between border-b border-zinc-300 pb-2 mb-2">
+              <span className="font-mono text-xs text-zinc-400">
                 ARRAY[{INTERESTS.length}]
               </span>
             </div>
@@ -286,14 +286,14 @@ export default function Card({ isAboutActive }: CardProps) {
                 className="relative bg-white rounded-3xl p-6 flex flex-col justify-center gap-2 hover:shadow-lg transition-all group flex-1 min-h-[140px]"
               >
                 <div className="flex items-center justify-between mb-1">
-                  <h3 className="text-lg font-black tracking-tighter text-zinc-900 uppercase group-hover:text-lime-400 transition-colors">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-black uppercase group-hover:text-lime-400 transition-colors">
                     {item.title}
                   </h3>
-                  <div className="font-mono text-xs text-zinc-300 group-hover:text-zinc-900 transition-colors">
+                  <div className="font-mono text-sm text-zinc-400 group-hover:text-zinc-900 transition-colors">
                     [0{idx + 1}]
                   </div>
                 </div>
-                <p className="text-zinc-600 font-medium text-sm leading-relaxed">
+                <p>
                   {item.desc}
                 </p>
               </div>
@@ -301,14 +301,17 @@ export default function Card({ isAboutActive }: CardProps) {
           </div>
 
           {/* --- COLUMN 2: IMAGE 1 (Kew) --- */}
-          <div className="md:col-span-1 relative bg-zinc-900 rounded-3xl min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center">
+          <div
+            ref={kewRef} // Linked to kewRef
+            className="md:col-span-1 relative bg-zinc-900 rounded-3xl min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center"
+          >
             <Image
               src={Kew}
               alt="Toby in Kew Gardens"
               fill
               unoptimized
               className={`object-cover object-[center_55%] transition-all duration-[1.5s] ease-out ${
-                isPhotoVisible
+                isKewVisible // Uses isKewVisible
                   ? "grayscale-0 scale-105"
                   : "grayscale scale-100 opacity-70"
               }`}
@@ -317,7 +320,7 @@ export default function Card({ isAboutActive }: CardProps) {
 
             <div
               className={`absolute bottom-6 right-6 transition-all duration-1000 delay-300 ${
-                isPhotoVisible
+                isKewVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-8 opacity-0"
               }`}
@@ -329,14 +332,17 @@ export default function Card({ isAboutActive }: CardProps) {
           </div>
 
           {/* --- COLUMN 3: IMAGE 2 (Hike) --- */}
-          <div className="md:col-span-1 relative bg-zinc-900 rounded-3xl min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center">
+          <div
+            ref={hikeRef} // Linked to hikeRef
+            className="md:col-span-1 relative bg-zinc-900 rounded-3xl min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center"
+          >
             <Image
               src={Hike}
               alt="Toby on a hike"
               unoptimized
               fill
               className={`object-cover object-center transition-all duration-[1.5s] ease-out ${
-                isPhotoVisible
+                isHikeVisible // Uses isHikeVisible
                   ? "grayscale-0 scale-105"
                   : "grayscale scale-100 opacity-70"
               }`}
@@ -345,7 +351,7 @@ export default function Card({ isAboutActive }: CardProps) {
 
             <div
               className={`absolute bottom-6 left-6 transition-all duration-1000 delay-300 ${
-                isPhotoVisible
+                isHikeVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-8 opacity-0"
               }`}
@@ -365,7 +371,6 @@ export default function Card({ isAboutActive }: CardProps) {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12 w-full mx-auto">
-          {/* LEFT COLUMN: WORK EXPERIENCE */}
           <div className="flex flex-col gap-8">
             <div className="mb-6 w-full">
               <HackerHeader
@@ -377,19 +382,19 @@ export default function Card({ isAboutActive }: CardProps) {
             {EXPERIENCE.map((item, idx) => (
               <div
                 key={idx}
-                className="relative pl-8 border-l border-zinc-300 group hover:border-zinc-900 transition-colors py-2"
+                className="relative pl-8 border-l border-zinc-400 group hover:border-zinc-900 transition-colors py-2"
               >
-                <div className="absolute -left-[5px] top-3 w-2.5 h-2.5 bg-zinc-400 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50" />
-                <span className="font-mono text-xs text-zinc-400 mb-1 block group-hover:text-zinc-600">
+                <div className="absolute -left-[5px] top-3 w-2.5 h-2.5 bg-zinc-500 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50" />
+                <span className="font-mono text-sm text-zinc-400 mb-4 block group-hover:text-lime-500">
                   {item.year}
                 </span>
-                <h4 className="text-xl font-bold text-zinc-900 leading-tight">
+                <h4 className="text-2xl md:3xl font-bold text-zinc-900">
                   {item.role}
                 </h4>
-                <p className="text-sm font-bold text-zinc-500 mb-2">
+                <p className="text-md font-bold text-zinc-500 mb-4 group-hover:text-lime-700">
                   {item.org}
                 </p>
-                <p className="text-zinc-600 text-sm leading-relaxed">
+                <p className="text-lg">
                   {item.desc}
                 </p>
               </div>
@@ -407,20 +412,20 @@ export default function Card({ isAboutActive }: CardProps) {
             {EDUCATION.map((item, idx) => (
               <div
                 key={idx}
-                className="relative pl-8 md:pl-0 md:pr-8 border-l md:border-l-0 md:border-r border-zinc-300 group hover:border-zinc-900 transition-colors py-2 flex flex-col md:items-end w-full"
+                className="relative pl-8 md:pl-0 md:pr-8 border-l md:border-l-0 md:border-r border-zinc-400 group hover:border-zinc-900 transition-colors py-2 flex flex-col md:items-end w-full"
               >
-                <div className="absolute top-3 w-2.5 h-2.5 bg-zinc-400 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50 -left-[5px] md:left-auto md:-right-[5px]" />
+                <div className="absolute top-3 w-2.5 h-2.5 bg-zinc-500 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50 -left-[5px] md:left-auto md:-right-[5px]" />
 
-                <span className="font-mono text-xs text-zinc-400 mb-1 block group-hover:text-zinc-600">
+                <span className="font-mono text-sm text-zinc-400 mb-4 block group-hover:text-lime-500">
                   {item.year}
                 </span>
-                <h4 className="text-xl font-bold text-zinc-900 leading-tight">
+                <h4 className="text-2xl md:text-right font-bold">
                   {item.role}
                 </h4>
-                <p className="text-sm font-bold text-zinc-500 mb-2">
+                <p className="text-md md:text-right font-bold text-zinc-500 mb-4 group-hover:text-lime-700">
                   {item.org}
                 </p>
-                <p className="text-zinc-600 text-sm leading-relaxed md:text-right max-w-md">
+                <p className="text-lg md:text-right max-w-md">
                   {item.desc}
                 </p>
               </div>

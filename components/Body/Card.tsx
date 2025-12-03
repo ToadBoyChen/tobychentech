@@ -6,6 +6,8 @@ import HackerText from "../HackerText";
 import { motion, useAnimation } from "framer-motion";
 import CustomDiv from "../CustomDiv";
 import HackerHeader from "../HackerHeader";
+import Hike from "@/public/hike.jpeg"
+import Kew from "@/public/kewfinger.jpg"
 
 // --- DATA CONSTANTS ---
 const METRICS = [
@@ -16,17 +18,20 @@ const METRICS = [
 ];
 
 const EXPERIENCE = [
-  { year: "2024 - PRES", role: "Full Stack Dev", org: "Freelance", desc: "Building high-performance web applications for clients." },
+  { year: "2025 - PRES", role: "FullStack Developer", org: "Freelance", desc: "Building beautiful web applications for clients." },
+  { year: "2023 - PRES", role: "Data Engineer", org: "DataAnnotation", desc: "Produce, test and validate training data for AIs." },
 ];
 
 const EDUCATION = [
-  { year: "2021 - 2024", role: "BSc Mathematics", org: "University of Bristol", desc: "Focus on Logic, Set Theory, and Complex Analysis." },
+  { year: "2023 - 2026", role: "BSc (Hons) Mathematics", org: "Queen Mary University of London", desc: "Focus on Group Theory, Number Theory, Ring Theory and Dynamical systems." },
+  { year: "2022 - 2024", role: "CertHE of Mathematics & Physics", org: "Heriot-Watt University", desc: "Intermediate mathematics and physics study, including basic Real Analysis and advanced Kinematics." },
 ];
 
 const INTERESTS = [
-  { title: "Visual Systems", desc: "Obsessed with pixel-perfect transitions and design systems." },
-  { title: "Pure Logic", desc: "Applying mathematical rigor to backend architecture." },
-  { title: "Open Source", desc: "Contributing to the ecosystem that taught me everything." },
+  { title: "Mathematics", desc: "Mathematics is my academic study of choice. I love it so much I have specialised in Pure Maths." },
+  { title: "Combat Sports", desc: "I am aiming to become a professional MMA fighter! I have fought in the UK nationals for Kickboxing." },
+  { title: "Nature", desc: "I love nature. I would love to work on conservation based projects." },
+  { title: "Travel", desc: "Travelling is what I intend to do after uni. I'd like to become a cosmopolitan." },
 ];
 
 interface CardProps {
@@ -90,7 +95,6 @@ export default function Card({ isAboutActive }: CardProps) {
           }
         `}</style>
       
-        <CustomDiv label="< PROFILE / >" />
         <div className="flex flex-col items-center mb-16">
           <HackerText
             text="WHO AM I?"
@@ -100,9 +104,16 @@ export default function Card({ isAboutActive }: CardProps) {
             className="font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono"
           />
         </div>
+        <CustomDiv label="< PROFILE >" />
+        
+        <div className="mb-6">
+          <HackerHeader 
+            text="01 01 // MISSION STATEMENT"
+            lineSide="right"
+            className="zinc-900"
+          />
+        </div>
 
-        {/* --- MAIN BENTO GRID (Responsive) --- */}
-        {/* Mobile: 1 col, Tablet/Desktop: 3 cols */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-auto mb-24">
           
           {/* 1. BIO CARD */}
@@ -135,8 +146,8 @@ export default function Card({ isAboutActive }: CardProps) {
                   className={`object-cover object-center transition-all duration-[1.5s] ease-out ${isPhotoVisible ? "grayscale-0 scale-105" : "grayscale scale-100"}`}
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80" />
-              <div className={`absolute bottom-8 left-8 transition-all duration-1000 delay-300 ${isPhotoVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-                 <span className="bg-white text-black text-xs font-bold px-2 py-1">TC_01</span>
+              <div className={`absolute top-4 right-4 transition-all duration-1000 delay-300 ${isPhotoVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+                 <p className="bg-white text-black text-xs font-bold px-2 py-1">TOBY_CHEN_01.jpg</p>
               </div>
           </div>
 
@@ -158,27 +169,16 @@ export default function Card({ isAboutActive }: CardProps) {
           </div>
         </div>
       
-        <HackerHeader 
-          text="01.01 // SYSTEM_VALUES"
-          lineSide="right"
-          lineColor="bg-zinc-300"
-          className="font-mono text-sm uppercase tracking-widest text-zinc-900 whitespace-nowrap"
-        />
-
-        {/* --- WHAT I LOVE (FULLY REACTIVE) --- */}
-        <div className="flex flex-col items-center mb-12 mt-8">
-            <HackerText text="WHAT I LOVE" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-4xl md:text-6xl tracking-tighter text-center font-mono" />
+        <div className="mb-6">
+          <HackerHeader 
+            text="01 02 // AUTHOR HOBBIES"
+            lineSide="right"
+            className="zinc-900"
+          />
         </div>
 
-        {/* REACTIVE GRID LOGIC:
-            - Mobile (default): 1 Column. Elements stack.
-            - Tablet (md): 2 Columns. Text spans top (2 cols), Photos sit side-by-side below.
-            - Desktop (lg): 3 Columns. Everything in one row.
-        */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
            
-           {/* SLOT 1: Text Cards */}
-           {/* Tablet: Spans 2 cols (full width). Desktop: Returns to 1 col */}
            <div className="md:col-span-2 lg:col-span-1 flex flex-col gap-4 h-full">
                {INTERESTS.map((item, idx) => (
                  <div key={idx} className="bg-zinc-50 border border-zinc-200 p-6 flex flex-col gap-2 hover:border-zinc-400 hover:shadow-lg transition-all group flex-1 justify-center min-h-[140px]">
@@ -193,39 +193,47 @@ export default function Card({ isAboutActive }: CardProps) {
                ))}
            </div>
 
-           {/* SLOT 2: Photo Placeholder A */}
-           {/* Tablet: Spans 1 col (half width) */}
            <div className="md:col-span-1 relative bg-zinc-100 border border-zinc-200 min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center">
-                {/* <Image src={Hobby1} alt="Hobby 1" fill className="object-cover" /> */}
-                <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)", backgroundSize: "20px 20px", backgroundPosition: "0 0, 10px 10px" }} />
-                <div className="text-center z-10 opacity-30 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="block text-4xl mb-2">📷</span>
-                    <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">IMG_SLOT_01</span>
-                </div>
+              <Image 
+                  src={Kew} 
+                  alt="Toby in Kew Gardens"
+                  fill 
+                  unoptimized
+                  className={`object-cover object-[center_55%] transition-all duration-[1.5s] ease-out ${isPhotoVisible ? "grayscale-0 scale-105" : "grayscale scale-100"}`}
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80" />
+                <div className={`absolute bottom-4 right-4 transition-all duration-1000 delay-300 ${isPhotoVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+                 <p className="bg-white text-black text-xs font-bold px-2 py-1">KEW_GARDENS_01.jpg</p>
+              </div>
            </div>
-
-           {/* SLOT 3: Photo Placeholder B */}
-           {/* Tablet: Spans 1 col (half width) */}
-           <div className="md:col-span-1 relative bg-zinc-900 border border-zinc-800 min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center">
-                {/* <Image src={Hobby2} alt="Hobby 2" fill className="object-cover" /> */}
-                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
-                <div className="text-center z-10 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="block text-4xl mb-2">📸</span>
-                    <span className="font-mono text-xs uppercase tracking-widest text-zinc-400">IMG_SLOT_02</span>
-                </div>
+           <div className="md:col-span-1 relative min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center">
+              <Image 
+                  src={Hike} 
+                  alt="Toby on a hike" 
+                  unoptimized
+                  fill 
+                  className={`object-cover object-center transition-all duration-[1.5s] ease-out ${isPhotoVisible ? "grayscale-0 scale-105" : "grayscale scale-100"}`}
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80" />
+                <div className={`absolute bottom-4 left-4 transition-all duration-1000 delay-300 ${isPhotoVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+                 <p className="bg-stone-50 text-black text-xs font-bold px-2 py-1">HIKING_01.jpg</p>
+              </div>
            </div>
 
         </div>
-
-        <CustomDiv label="01.02 // HISTORY_LOG" />
+        <div className="mb-6">
+          <HackerHeader 
+            text="01 03 // PAST EXPERIENCE"
+            lineSide="right"
+            className="zinc-900"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12 w-full max-w-5xl mx-auto">
-            
-            {/* LEFT: WORK EXPERIENCE */}
             <div className="flex flex-col gap-8">
-                <h4 className="text-zinc-400 font-mono text-xs uppercase tracking-widest mb-4">Work_Experience</h4>
+                <h4 className="text-zinc-400 font-mono text-sm uppercase tracking-widest mb-4">Work_Experience</h4>
                 {EXPERIENCE.map((item, idx) => (
-                  <div key={idx} className="relative pl-8 border-l border-zinc-200 group hover:border-zinc-900 transition-colors py-2">
-                      <div className="absolute -left-[5px] top-3 w-2.5 h-2.5 bg-zinc-400 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-4 outline-white" />
+                  <div key={idx} className="relative pl-8 border-l border-zinc-300 group hover:border-zinc-900 transition-colors py-2">
+                      <div className="absolute -left-[5px] top-3 w-2.5 h-2.5 bg-zinc-400 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50" />
                       <span className="font-mono text-xs text-zinc-400 mb-1 block group-hover:text-zinc-600">{item.year}</span>
                       <h4 className="text-xl font-bold text-zinc-900">{item.role}</h4>
                       <p className="text-sm font-bold text-zinc-500 mb-2">{item.org}</p>
@@ -233,14 +241,11 @@ export default function Card({ isAboutActive }: CardProps) {
                   </div>
                 ))}
             </div>
-
-            {/* RIGHT: EDUCATION */}
             <div className="flex flex-col gap-8 md:items-end md:text-right">
-                <h4 className="text-zinc-400 font-mono text-xs uppercase tracking-widest mb-4">Education_Log</h4>
+                <h4 className="text-zinc-400 font-mono text-sm uppercase tracking-widest mb-4">Education_Log</h4>
                 {EDUCATION.map((item, idx) => (
-                  <div key={idx} className="relative pl-8 md:pl-0 md:pr-8 border-l md:border-l-0 md:border-r border-zinc-200 group hover:border-zinc-900 transition-colors py-2 flex flex-col md:items-end">
-                      {/* Responsive Dot: Left on Mobile, Right on Desktop */}
-                      <div className="absolute -left-[5px] md:left-auto md:-right-[5px] top-3 w-2.5 h-2.5 bg-zinc-400 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-4 outline-white" />
+                  <div key={idx} className="relative pl-8 md:pl-0 md:pr-8 border-l md:border-l-0 md:border-r border-zinc-300 group hover:border-zinc-900 transition-colors py-2 flex flex-col md:items-end">
+                      <div className="absolute -left-[5px] md:left-auto md:-right-[5px] top-3 w-2.5 h-2.5 bg-zinc-400 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50" />
                       <span className="font-mono text-xs text-zinc-400 mb-1 block group-hover:text-zinc-600">{item.year}</span>
                       <h4 className="text-xl font-bold text-zinc-900">{item.role}</h4>
                       <p className="text-sm font-bold text-zinc-500 mb-2">{item.org}</p>
@@ -250,7 +255,9 @@ export default function Card({ isAboutActive }: CardProps) {
             </div>
 
         </div>
-
+        <div className="mt-12">
+          <CustomDiv label="</ PROFILE >" />
+        </div>
       </section>
     </motion.div>
   );

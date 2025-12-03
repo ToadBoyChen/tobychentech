@@ -28,10 +28,10 @@ export default function HackerHeader({
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.disconnect(); // Trigger once and stop observing
+          observer.disconnect();
         }
       },
-      { threshold: 0.1 } // Trigger as soon as 10% is visible
+      { threshold: 0.1 }
     );
 
     if (ref.current) observer.observe(ref.current);
@@ -40,7 +40,7 @@ export default function HackerHeader({
   }, []);
 
   return (
-    <div ref={ref} className="flex items-center gap-4 w-full overflow-hidden">
+    <div ref={ref} className="flex items-center gap-4 w-full overflow-hidden font-mono text-sm uppercase tracking-widest">
       
       {lineSide === "left" && (
         <div
@@ -67,7 +67,7 @@ export default function HackerHeader({
         <div
           className={`
             h-px flex-1 
-            transition-transform duration-1000 ease-out delay-100 
+            transition-transform duration-1000 ease-out delay-200 
             origin-left 
             ${lineColor}
             ${inView ? "scale-x-100" : "scale-x-0"}

@@ -17,6 +17,7 @@ import {
 } from "chart.js";
 import { Doughnut, Line } from "react-chartjs-2";
 import { motion, useAnimation } from "framer-motion";
+import CustomDiv from "../CustomDiv";
 
 ChartJS.register(
   ArcElement,
@@ -266,13 +267,11 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
         </svg>
       </div>
       <section className="relative px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
-        <div className="flex items-center gap-4 md:gap-6 mb-12">
-          <div className="h-px bg-zinc-800 flex-1" />
-          <div className="font-mono text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap">
-            <span className="text-zinc-600">02 // CURRENT_STATISTICS</span>
-          </div>
-          <div className="h-px bg-zinc-800 flex-1" />
-        </div>
+        <CustomDiv
+          label="< Data >"
+          lineColor="bg-stone-50"
+          textColor="text-stone-50"
+        />
 
         <div className="flex flex-col items-center mb-8 md:mb-12">
           <HackerText text="GITHUB_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-3xl md:text-5xl tracking-tighter text-center font-mono" />
@@ -356,6 +355,11 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
                 </div>
             </div>
         </div>
+        <CustomDiv
+          label="</ Data >"
+          lineColor="bg-stone-50"
+          textColor="text-stone-50"
+        />
       </section>
     </motion.div>
   );

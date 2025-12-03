@@ -18,7 +18,7 @@ export default function HackerText({
   className, 
   triggerOnMount = true, 
   triggerOnHover = true,
-  speed = 40,
+  speed = 50,
   delay = 0,
   direction = "ltr"
 }: HackerTextProps) {

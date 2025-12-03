@@ -21,6 +21,7 @@ import CustomDiv from "../CustomDiv";
 import HackerHeader from "../HackerHeader";
 import SpotifyCard from "../SpotifyCard";
 import LinuxCard from "./LinuxCard";
+import HighText from "../HighText";
 
 ChartJS.register(
   ArcElement,
@@ -271,20 +272,22 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
       </div>
       <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
         <div className="flex flex-col items-center mb-8 md:mb-12">
-          <HackerText text="SOME FACTS" triggerOnMount={true} triggerOnHover={false} speed={50} className="text-stone-50 font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono" />
+          <HackerText text="SOME FACTS" triggerOnMount={true} triggerOnHover={false} className="text-stone-50 font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono" />
         </div>
         <CustomDiv
           label="< Data >"
           lineColor="bg-stone-50"
           textColor="text-stone-50"
         />
+
         <div className="mb-24">
           <HackerHeader 
             text="02 01 // FUN FACTS"
             lineSide="right"
-            className="text-stone-50 text-xl"
-            lineColor="bg-stone-50"
+            size="large"
+            variant="light"
           />
+          
           <SpotifyCard/>
         </div>
         <div className="mb-24">

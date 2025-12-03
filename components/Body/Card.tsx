@@ -175,7 +175,7 @@ export default function Card({ isAboutActive }: CardProps) {
           <HackerHeader
             text="01 01 // MISSION STATEMENT"
             lineSide="right"
-            className="text-lg"
+            size="large"
           />
         </div>
 
@@ -268,7 +268,7 @@ export default function Card({ isAboutActive }: CardProps) {
           <HackerHeader
             text="01 02 // MY HOBBIES"
             lineSide="right"
-            className="text-lg"
+            size="large"
           />
         </div>
 
@@ -367,7 +367,7 @@ export default function Card({ isAboutActive }: CardProps) {
           <HackerHeader
             text="01 03 // PAST EXPERIENCE"
             lineSide="right"
-            className="text-lg"
+            size="large"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12 w-full mx-auto">

@@ -17,7 +17,7 @@ export default function SectionHeader({
       <div className={`h-px flex-1 ${lineColor}`} />
       
       {/* Label Text */}
-      <span className={`font-mono text-sm uppercase tracking-widest ${textColor}`}>
+      <span className={`font-mono text-md uppercase tracking-widest ${textColor}`}>
         {label}
       </span>
       

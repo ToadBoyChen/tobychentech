@@ -9,19 +9,35 @@ type HackerHeaderProps = {
   className?: string;
   speed?: number;
   delay?: number;
+  size?: "small" | "large";
+  variant?: "default" | "light" | "dark"; // <--- New Variant Prop
 };
 
 export default function HackerHeader({
   text,
   lineSide = "right",
-  lineColor = "bg-zinc-600",
+  lineColor,
   className = "",
   speed = 40,
   delay = 0,
+  size = "small",
+  variant = "default",
 }: HackerHeaderProps) {
   
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
+
+  let finalLineColor = lineColor || "bg-zinc-600";
+  let variantTextColor = "";
+
+  if (variant === "light") {
+    variantTextColor = "text-stone-50"; 
+    if (!lineColor) finalLineColor = "bg-stone-50";
+  } 
+  else if (variant === "dark") {
+    variantTextColor = "text-zinc-900"; 
+    if (!lineColor) finalLineColor = "bg-zinc-900";
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -39,24 +55,27 @@ export default function HackerHeader({
     return () => observer.disconnect();
   }, []);
 
+  const containerStyles = size === "large" 
+    ? "font-mono text-xl uppercase tracking-widest"
+    : "font-mono text-md uppercase tracking-widest";
+
   return (
-    <div ref={ref} className="flex items-center gap-4 w-full overflow-hidden font-mono text-sm uppercase tracking-widest">
-      
+    <div ref={ref} className={`flex items-center gap-4 w-full overflow-hidden ${containerStyles}`}>
       {lineSide === "left" && (
         <div
           className={`
-            h-px flex-1 
+            flex-1 
             transition-transform duration-1000 ease-out delay-100 
             origin-right 
-            ${lineColor}
+            h-px
+            ${finalLineColor}
             ${inView ? "scale-x-100" : "scale-x-0"}
           `}
         />
       )}
-
       <HackerText
         text={text}
-        className={className}
+        className={`${variantTextColor} ${className}`} 
         speed={speed}
         delay={delay}
         triggerOnMount={inView} 
@@ -66,10 +85,11 @@ export default function HackerHeader({
       {lineSide === "right" && (
         <div
           className={`
-            h-px flex-1 
+            flex-1 
             transition-transform duration-1000 ease-out delay-200 
             origin-left 
-            ${lineColor}
+            h-px
+            ${finalLineColor}
             ${inView ? "scale-x-100" : "scale-x-0"}
           `}
         />

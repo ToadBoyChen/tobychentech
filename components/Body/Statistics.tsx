@@ -268,23 +268,34 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
           <use href="#fixed-convex" />
         </svg>
       </div>
-      <section className="relative px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
+      <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
         <div className="flex flex-col items-center mb-8 md:mb-12">
-          <HackerText text="STATISTICS" triggerOnMount={true} triggerOnHover={false} speed={50} className="text-stone-50 font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono" />
+          <HackerText text="SOME FACTS" triggerOnMount={true} triggerOnHover={false} speed={50} className="text-stone-50 font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono" />
         </div>
         <CustomDiv
           label="< Data >"
           lineColor="bg-stone-50"
           textColor="text-stone-50"
         />
-        <div className="mb-6">
+        <div className="mb-24">
           <HackerHeader 
-            text="02 01 // GITHUB STATISTICS"
+            text="02 01 // FUN FACTS"
             lineSide="right"
-            className="text-stone-50"
+            className="text-stone-50 text-xl"
             lineColor="bg-stone-50"
           />
+          <HackerHeader 
+            text="02 01 01 // MUSIC OBSESSED"
+            lineSide="left"
+            className="text-stone-50 my-4"
+            lineColor="bg-stone-50"
+          />
+          <p className="leading-relaxed text-base md:text-lg font-medium text-stone-50 mb-12">
+              I'm not sure if I can claim to be an <span className="font-bold underline decoration-lime-800 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">audiophile</span> just yet, but I do love some good songs. I'm a big fan of the <span className="font-bold underline decoration-lime-800 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">Smiths, Radiohead</span> and <span className="font-bold underline decoration-lime-800 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">Deftones</span>, though I don't shy away from a varied music taste.
+          </p>
+          <SpotifyCard/>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 xl:gap-8">
             {/* Heatmap Card */}
           <div className="col-span-1 md:col-span-2 lg:col-span-5 bg-zinc-900 border border-zinc-800 p-4 md:p-8 hover:border-zinc-600 transition-all group flex flex-col justify-between relative overflow-hidden">
@@ -373,7 +384,6 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
           lineColor="bg-stone-50"
           textColor="text-stone-50"
         />
-        <SpotifyCard/>
       </section>
     </motion.div>
   );

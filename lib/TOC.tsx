@@ -4,9 +4,9 @@ import Link from "next/link";
 export default function TOC() {
   const navItems = [
     { id: "01", label: "About Me", href: "#about" },
-    { id: "02", label: "Some Statistics", href: "#stats" },
+    { id: "02", label: "Some Facts & Statistics", href: "#stats" },
     { id: "03", label: "Selected Work", href: "#projects" },
-    { id: "04", label: "My Services", href: "#services" },
+    { id: "04", label: "Services I Offer", href: "#services" },
   ];
 
   return (

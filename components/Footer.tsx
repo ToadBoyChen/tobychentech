@@ -2,6 +2,8 @@ import Link from 'next/link';
 import HackerText from '@/components/HackerText';
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from 'react';
+import CustomDiv from './CustomDiv';
+import Dots from '@/components/Dots'
 
 interface CardProps {
   isFooterActive: boolean;
@@ -36,24 +38,21 @@ export default function Footer({isFooterActive} : CardProps) {
         </svg>
       </div>
       <footer className="w-full px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center relative z-10 bg-zinc-900">
-          <div className="flex items-center gap-4 md:gap-6 mb-12 md:mb-16">
-            <div className="h-px bg-zinc-100 flex-1" />
-              <span className="font-mono text-[10px] md:text-sm text-zinc-100 uppercase tracking-widest whitespace-nowrap">
-                06 // FOOTER_LOADED
-              </span>
-            <div className="h-px bg-zinc-100 flex-1" />
-        </div>
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
-            backgroundSize: "40px 40px",
-          }}
+        <CustomDiv
+          label="< Footer />"
+          lineColor='bg-zinc-100'
+          textColor='text-zinc-100'
         />
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-center tracking-wider relative z-10 gap-12 lg:gap-0">
+        <Dots/>
 
+        {/* --- MAIN GRID CONTAINER --- */}
+        <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-0 items-start tracking-wider relative z-10">
+          
+          {/* 1. Logo/Copyright Info: Left Aligned */}
           <div className="flex flex-col items-start space-y-3">
+            <p className="text-zinc-400 text-xs tracking-widest font-mono block mb-1">
+              {`// WEBSITE_END`}
+            </p>
             <Link href="/" className="pointer-events-auto text-xl font-bold tracking-tighter text-white transition-all">
               <HackerText 
                 text={`[TOBY CHEN]`}
@@ -68,14 +67,15 @@ export default function Footer({isFooterActive} : CardProps) {
             </p>
             
             <p className="text-[10px] md:text-xs text-white/50 tracking-normal">
-              BUILT WITH NEXT.JS & TAILWIND CSS.
+              BUILT WITH NEXT.JS & LOVE.
             </p>
           </div>
-
-          <div className="flex flex-col md:flex-row w-full lg:w-auto space-y-8 md:space-y-0 md:space-x-12 text-xl font-extrabold uppercase">
-            
-            <div className="flex flex-col space-y-2 pt-1 font-mono text-base tracking-normal">
-              <span className="text-white/50 text-[10px] md:text-xs tracking-widest block mb-1">
+          
+          {/* 2. Contact Info: Center Aligned with Left Border */}
+          {/* Added lg:items-center to visually center the text block in the grid column */}
+          {/* Added lg:border-l to create the first divider */}
+          <div className="text-right md:text-center flex flex-col space-y-2 pt-1 font-mono text-base tracking-normal lg:border-l border-zinc-600 lg:items-center">
+              <span className="text-zinc-400 text-xs tracking-widest block mb-1">
                 {`// GET_IN_TOUCH`}
               </span>
               <p className="text-white font-extrabold text-lg tracking-tighter">
@@ -106,49 +106,51 @@ export default function Footer({isFooterActive} : CardProps) {
                     className="text-xs md:text-sm font-bold text-zinc-100 hover:text-blue-600 transition duration-300 underline underline-offset-4 break-all"
                 />
               </a>
-            </div>
+          </div>
+          
+          {/* 3. Socials: Right Aligned with Left Border */}
+          {/* Added lg:border-l to create the second divider (the "divider on the right") */}
+          {/* Added lg:pl-20 to give spacing from the new border */}
+          <div className="text-md flex flex-col space-y-2 font-mono lg:items-end lg:border-l border-zinc-600 lg:pl-20 font-bold">
+            <span className="text-zinc-400 text-xs mb-1 font-mono tracking-widest block">
+              {`// SOCIALS`}
+            </span>
             
-            <div className="text-md flex flex-col space-y-2 font-mono md:pl-10 md:border-l border-white/20">
-              <span className="text-zinc-400 text-[10px] md:text-xs mb-1 tracking-widest block">
-                {`// SOCIALS`}
-              </span>
-              
-              <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600  transition duration-300 text-sm">
-                <HackerText 
-                    text="[GITHUB]" 
-                    triggerOnMount={false} 
-                    triggerOnHover={true} 
-                    speed={30}
-                />
-              </a>
+            <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600  transition duration-300 text-sm">
+              <HackerText 
+                  text="[GITHUB]" 
+                  triggerOnMount={false} 
+                  triggerOnHover={true} 
+                  speed={30}
+              />
+            </a>
 
-              <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition text-zinc-100 duration-300 text-sm">
-                <HackerText 
-                    text="[LINKEDIN]" 
-                    triggerOnMount={false} 
-                    triggerOnHover={true} 
-                    speed={30}
-                />
-              </a>
+            <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition text-zinc-100 duration-300 text-sm">
+              <HackerText 
+                  text="[LINKEDIN]" 
+                  triggerOnMount={false} 
+                  triggerOnHover={true} 
+                  speed={30}
+              />
+            </a>
 
-              <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600  transition duration-300 text-sm">
-                <HackerText 
-                    text="[SUBSTACK]" 
-                    triggerOnMount={false} 
-                    triggerOnHover={true} 
-                    speed={30}
-                />
-              </a>
+            <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600  transition duration-300 text-sm">
+              <HackerText 
+                  text="[SUBSTACK]" 
+                  triggerOnMount={false} 
+                  triggerOnHover={true} 
+                  speed={30}
+              />
+            </a>
 
-              <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600 transition duration-300 text-sm">
-                <HackerText 
-                    text="[INSTAGRAM]" 
-                    triggerOnMount={false} 
-                    triggerOnHover={true} 
-                    speed={30}
-                />
-              </a>
-            </div>
+            <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className="text-zinc-100 hover:text-blue-600 transition duration-300 text-sm">
+              <HackerText 
+                  text="[INSTAGRAM]" 
+                  triggerOnMount={false} 
+                  triggerOnHover={true} 
+                  speed={30}
+              />
+            </a>
           </div> 
         </div>
       </footer>

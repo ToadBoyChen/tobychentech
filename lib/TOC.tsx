@@ -1,3 +1,6 @@
+import HackerText from "@/components/HackerText";
+import Link from "next/link";
+
 export default function TOC() {
   const navItems = [
     { id: "01", label: "About Me", href: "#about" },
@@ -8,23 +11,29 @@ export default function TOC() {
 
   return (
     <div className="w-full">
-      {/* HEADER */}
       <div className="w-full flex items-end justify-between mb-4 md:mb-8 text-[10px] md:text-xs font-mono text-zinc-300 uppercase tracking-widest">
         
-        {/* LEFT GROUP: Dot + Title */}
         <div className="flex items-center gap-2 md:gap-3">
           <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full shrink-0" />
           <p>Table of Contents</p> 
         </div>
 
-        {/* RIGHT SIDE: Credit */}
-        {/* Hidden on very small screens (optional), visible on regular mobile+ */}
-        <p className="text-right opacity-60 md:opacity-100 hidden xs:block">
-          Photo by Martin Bennie
-        </p>
+        <Link 
+          href="https://www.martinbenniephotography.com/"
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-right hover:text-white transition-colors"
+        >
+          <HackerText 
+            text="Photo by Martin Bennie"
+            triggerOnMount={false} 
+            triggerOnHover={true} 
+            speed={30}
+            className="block" 
+          />
+        </Link>
       </div>
 
-      {/* NAVIGATION LIST */}
       <nav className="flex flex-col border-t border-white/20">
         {navItems.map((item) => (
           <a

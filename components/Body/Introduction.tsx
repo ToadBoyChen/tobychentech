@@ -39,7 +39,7 @@ export default function Introduction({ onLoadComplete, shouldAnimate }: Introduc
       </div>
 
       {/* Content */}
-      <div className="w-full max-w-5xl px-6 relative z-10 pb-20 md:pb-10">
+      <div className="w-full lg:max-w-6/7 px-6 relative z-10 pb-20 md:pb-10">
         <div className="grid">
             <div className="flex flex-col text-white font-mono">
                 <HackerText 
@@ -47,8 +47,7 @@ export default function Introduction({ onLoadComplete, shouldAnimate }: Introduc
                     triggerOnMount={shouldAnimate} 
                     triggerOnHover={false}
                     speed={50}
-                    delay={100} 
-                    // RESPONSIVE TEXT SIZE: Large on desktop, smaller on mobile
+                    delay={600}
                     className="font-bold text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-4 text-white drop-shadow-lg"
                 />
 
@@ -58,7 +57,7 @@ export default function Introduction({ onLoadComplete, shouldAnimate }: Introduc
                         triggerOnMount={shouldAnimate}
                         triggerOnHover={false}
                         speed={40}
-                        delay={700} 
+                        delay={800} 
                         className="whitespace-nowrap text-zinc-200"
                     />
                     <div className="relative flex justify-start"> 
@@ -68,10 +67,9 @@ export default function Introduction({ onLoadComplete, shouldAnimate }: Introduc
                             triggerOnMount={shouldAnimate} 
                             triggerOnHover={false}
                             speed={35}
-                            delay={0}
+                            delay={900}
                             className="text-white font-bold whitespace-nowrap"
                         />
-                        {/* Responsive underline thickness */}
                         <div className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[2px] md:h-[3px] bg-white" />
                     </div>
                 </div>

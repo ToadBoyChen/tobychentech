@@ -1,14 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import HackerText from "./HackerText"; 
+import HackerText from "./HackerText";
 
 export default function Navbar() {
   const [isPastIntro, setIsPastIntro] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const threshold = window.innerHeight - 80;
+      // Adjusted threshold slightly for better mobile feel
+      const threshold = window.innerHeight - 100;
       setIsPastIntro(window.scrollY > threshold);
     };
 
@@ -19,18 +20,29 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div 
+    <nav 
       className={`
-        fixed top-0 left-0 z-50 w-full px-6 pt-6 pointer-events-none transition-all duration-300
+        fixed top-0 left-0 z-50 w-full 
+        pointer-events-none transition-all duration-300
+        
+        /* RESPONSIVE PADDING */
+        px-4 pt-4 
+        md:px-8 md:pt-8
+        
+        /* BLEND MODE */
         ${isPastIntro ? "mix-blend-difference" : ""} 
       `}
     >
-
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
+        
+        {/* LOGO / HOME LINK */}
         <Link 
           href="/" 
           className={`
-            pointer-events-auto font-extrabold text-xl tracking-tighter text-white transition-all
+            pointer-events-auto font-extrabold tracking-tighter text-white transition-all
+            
+            /* RESPONSIVE FONT SIZE */
+            text-2xl md:text-3xl
           `}
         >
             <HackerText 
@@ -41,10 +53,14 @@ export default function Navbar() {
               className="block" 
             />
         </Link>
+
         <Link 
             href="/contact?source=navbar"
             className={`
-              pointer-events-auto font-extrabold text-xl tracking-tighter text-white transition-all
+              pointer-events-auto font-extrabold tracking-tighter text-white transition-all
+              
+              /* RESPONSIVE FONT SIZE */
+              text-2xl md:text-3xl
             `}
         >
             <HackerText 
@@ -58,6 +74,6 @@ export default function Navbar() {
         </Link>
 
       </div>
-    </div>
+    </nav>
   );
 }

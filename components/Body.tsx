@@ -121,7 +121,7 @@ export default function Body() {
                 <div className="flex flex-col bg-black">
                     
                     <div id="intro">
-                        <Introduction onLoadComplete={() => setIsImageReady(true)} />
+                        <Introduction onLoadComplete={() => setIsImageReady(true)} shouldAnimate={isSystemReady}/>
                     </div>
 
                     <div id="about">

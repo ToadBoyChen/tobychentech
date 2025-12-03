@@ -29,19 +29,6 @@ ChartJS.register(
   Filler
 );
 
-const LANGUAGE_COLORS: Record<string, string> = {
-  TypeScript: "#2563eb",
-  JavaScript: "#60a5fa",
-  Python: "#0284c7",
-  HTML: "#1e40af",
-  CSS: "#3b82f6",
-  Java: "#1e3a8a",
-  Go: "#0ea5e9",
-  Rust: "#93c5fd",
-  Shell: "#0369a1",
-  default: "#94a3b8",
-};
-
 export type LangDetail = {
   name: string;
   percent: number;
@@ -89,9 +76,9 @@ const AnimatedCounter = ({ end, label, suffix = "" }: { end: number; label: stri
 
   return (
     <div ref={ref} className="flex flex-col">
-      <span className="text-3xl lg:text-4xl font-black text-white tracking-tighter tabular-nums">
+      <span className="text-2xl md:text-4xl font-black text-white tracking-tighter tabular-nums">
         {count}
-        <span className="text-zinc-600 text-xl ml-1">{suffix}</span>
+        <span className="text-zinc-600 text-lg md:text-xl ml-1">{suffix}</span>
       </span>
       <span className="font-mono text-[10px] text-zinc-500 mt-1">{label}</span>
     </div>
@@ -100,7 +87,8 @@ const AnimatedCounter = ({ end, label, suffix = "" }: { end: number; label: stri
 
 const ActivityHeatmap = ({ data }: { data: number[] }) => {
   return (
-    <div className="grid grid-cols-12 gap-1 w-full">
+    // Added overflow-x-auto for very small screens
+    <div className="grid grid-cols-12 gap-1 w-full min-w-[250px]">
       {data.length === 0
         ? Array.from({ length: 84 }).map((_, i) => (
             <div key={i} className="w-full aspect-square rounded-sm bg-zinc-800/50" />
@@ -153,8 +141,8 @@ const SystemLoad = ({ data }: { data: LangDetail[] }) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-center w-full h-full gap-12 px-16">
-      <div className="relative w-48 h-48 group cursor-crosshair">
+    <div className="flex flex-col xl:flex-row items-center w-full h-full gap-8 md:gap-12 px-0 md:px-4 lg:px-16">
+      <div className="relative w-40 h-40 md:w-48 md:h-48 group cursor-crosshair shrink-0">
         <Doughnut data={chartData} options={chartOptions} />
         <div className="absolute inset-[-10px] border border-zinc-800 rounded-full border-dashed animate-[spin_10s_linear_infinite] opacity-30 pointer-events-none" />
       </div>
@@ -163,7 +151,7 @@ const SystemLoad = ({ data }: { data: LangDetail[] }) => {
         <div className="flex justify-between items-end border-b border-zinc-800 pb-2 mb-2">
           <div>
             <span className="text-xs font-mono text-zinc-500 block mb-1">SELECTED_MODULE</span>
-            <span className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2">
               <span
                 className="w-2 h-2 rounded-full shadow-[0_0_8px_currentColor]"
                 style={{ color: activeItem.color, backgroundColor: activeItem.color }}
@@ -185,19 +173,19 @@ const SystemLoad = ({ data }: { data: LangDetail[] }) => {
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="font-mono w-4">0{idx + 1}</span>
-                <span className={`text-sm font-bold ${idx === activeIndex ? "text-white" : "text-zinc-500"}`}>
+                <span className="font-mono w-4 text-xs">0{idx + 1}</span>
+                <span className={`text-xs md:text-sm font-bold ${idx === activeIndex ? "text-white" : "text-zinc-500"}`}>
                   {lang.name}
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-56 h-2 bg-zinc-800 rounded-full overflow-hidden">
+                <div className="w-24 md:w-56 h-2 bg-zinc-800 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 font-mono"
                     style={{ width: `${lang.percent}%`, backgroundColor: idx === activeIndex ? lang.color : "#3f3f46" }}
                   />
                 </div>
-                <span className="font-mono w-8 text-right">{lang.percent}%</span>
+                <span className="font-mono w-8 text-right text-xs">{lang.percent}%</span>
               </div>
             </div>
           ))}
@@ -208,41 +196,40 @@ const SystemLoad = ({ data }: { data: LangDetail[] }) => {
 };
 
 const PerformanceChart = ({ labels, dataPoints }: { labels: string[]; dataPoints: number[] }) => {
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Commits",
-        data: dataPoints,
-        borderColor: "#ffffff",
-        backgroundColor: (context: ScriptableContext<"line">) => {
-          const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-          gradient.addColorStop(0, "rgba(255, 255, 255, 0.2)");
-          gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-          return gradient;
-        },
-        borderWidth: 2,
-        pointBackgroundColor: "#000",
-        pointBorderColor: "#fff",
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        fill: true,
-        tension: 0.3,
-      },
-    ],
-  };
+    // ... logic remains same, just ensuring responsiveness via container
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: "Commits",
+            data: dataPoints,
+            borderColor: "#ffffff",
+            backgroundColor: (context: ScriptableContext<"line">) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+              gradient.addColorStop(0, "rgba(255, 255, 255, 0.2)");
+              gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+              return gradient;
+            },
+            borderWidth: 2,
+            pointBackgroundColor: "#000",
+            pointBorderColor: "#fff",
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            fill: true,
+            tension: 0.3,
+        }]
+    };
 
-  const options: ChartOptions<"line"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { enabled: true, intersect: false, mode: "index" } },
-    scales: {
-      x: { grid: { display: true, color: "#27272a" }, ticks: { font: { family: "monospace", size: 10 }, color: "#71717a" } },
-      y: { display: false, min: 0 },
-    },
-    interaction: { mode: "nearest", axis: "x", intersect: false },
-  };
+    const options: ChartOptions<"line"> = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: true, intersect: false, mode: "index" } },
+        scales: {
+          x: { grid: { display: true, color: "#27272a" }, ticks: { font: { family: "monospace", size: 10 }, color: "#71717a" } },
+          y: { display: false, min: 0 },
+        },
+        interaction: { mode: "nearest", axis: "x", intersect: false },
+    };
 
   return (
     <div className="w-full h-full min-h-[180px] relative">
@@ -274,41 +261,42 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
   return (
     <motion.div initial="hidden" animate={controls} variants={cardVariants}>
       <div className="w-full top-0 left-0 z-50">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-[50px] fill-zinc-900 block overflow-visible">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-[30px] md:h-[50px] fill-zinc-900 block overflow-visible">
           <use href="#fixed-convex" />
         </svg>
       </div>
-      <section className="relative px-16 py-36 items-center justify-center z-20 bg-zinc-900">
-        <div className="flex items-center gap-6 mb-16">
+      <section className="relative px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-20 bg-zinc-900">
+        <div className="flex items-center gap-4 md:gap-6 mb-12">
           <div className="h-px bg-zinc-800 flex-1" />
-          <div className="font-mono text-sm text-zinc-500 uppercase tracking-widest flex items-center gap-2 group">
+          <div className="font-mono text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap">
             <span className="text-zinc-600">02 // CURRENT_STATISTICS</span>
           </div>
           <div className="h-px bg-zinc-800 flex-1" />
         </div>
 
-        <div className="flex flex-col items-center mb-12">
-          <HackerText text="GITHUB_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-5xl tracking-tighter text-center font-mono" />
+        <div className="flex flex-col items-center mb-8 md:mb-12">
+          <HackerText text="GITHUB_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-3xl md:text-5xl tracking-tighter text-center font-mono" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 xl:gap-8">
-          <div className="col-span-1 md:col-span-2 lg:col-span-5 bg-zinc-900 border border-zinc-800 p-8 hover:border-zinc-600 transition-all group flex flex-col justify-between relative overflow-hidden">
-            <div className="flex justify-between items-start mb-8">
-              <div><p className="font-bold text-white text-lg">Contributions</p></div>
+            {/* Heatmap Card */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-5 bg-zinc-900 border border-zinc-800 p-4 md:p-8 hover:border-zinc-600 transition-all group flex flex-col justify-between relative overflow-hidden">
+            <div className="flex justify-between items-start mb-6 md:mb-8">
+              <div><p className="font-bold text-white text-base md:text-lg">Contributions</p></div>
               <div className="text-right"><AnimatedCounter end={data.totalCommits} label="Total Commits" /></div>
             </div>
             <div className="flex flex-col gap-8 w-full">
-              <div className="w-full bg-zinc-950/50 p-4 rounded-lg border border-zinc-800/50">
+              <div className="w-full bg-zinc-950/50 p-2 md:p-4 rounded-lg border border-zinc-800/50 overflow-x-auto">
                 <ActivityHeatmap data={data.heatmapData} />
               </div>
               <div className="flex justify-between items-center border-t border-zinc-800 pt-6">
-                <div className="flex gap-8">
+                <div className="flex gap-4 md:gap-8">
                   <div>
-                    <span className="text-2xl font-bold text-white">{data.bestStreak}</span>
+                    <span className="text-xl md:text-2xl font-bold text-white">{data.bestStreak}</span>
                     <span className="text-[10px] block text-zinc-500 font-mono tracking-widest mt-1">BEST_STREAK</span>
                   </div>
                   <div>
-                    <span className="text-2xl font-bold text-white">{data.avgCommits}</span>
+                    <span className="text-xl md:text-2xl font-bold text-white">{data.avgCommits}</span>
                     <span className="text-[10px] block text-zinc-500 font-mono tracking-widest mt-1">DAILY_AVG</span>
                   </div>
                 </div>
@@ -316,27 +304,29 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
             </div>
           </div>
 
-          <div className="col-span-1 md:col-span-2 lg:col-span-7 bg-zinc-900 border border-zinc-800 p-8 flex flex-col hover:border-zinc-600 transition-colors group relative">
+            {/* Languages Card */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-7 bg-zinc-900 border border-zinc-800 p-4 md:p-8 flex flex-col hover:border-zinc-600 transition-colors group relative">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <p className="font-bold text-white text-lg tracking">Most Used Languages</p>
-                <p className="text-zinc-500 text-xs font-mono mt-1">LANGUAGE_DISTRIBUTION</p>
+                <p className="font-bold text-white text-base md:text-lg tracking">Most Used Languages</p>
+                <p className="text-zinc-500 text-[10px] md:text-xs font-mono mt-1">LANGUAGE_DISTRIBUTION</p>
               </div>
             </div>
             <div className="flex-1 flex items-center"><SystemLoad data={data.langData} /></div>
           </div>
 
-          <div className="col-span-1 md:col-span-2 lg:col-span-12 bg-zinc-900 border border-zinc-800 p-8 flex flex-col hover:border-zinc-600 transition-colors group h-[320px]">
+            {/* Velocity Card */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-12 bg-zinc-900 border border-zinc-800 p-4 md:p-8 flex flex-col hover:border-zinc-600 transition-colors group h-[320px]">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <p className="font-bold text-white text-lg flex items-center gap-2">
+                <p className="font-bold text-white text-base md:text-lg flex items-center gap-2">
                   Code Velocity
                   <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full font-mono">7_DAYS</span>
                 </p>
               </div>
               <div className="flex items-center gap-6">
                 <div className="text-right">
-                  <span className="text-2xl font-black text-white">{data.weeklyData.reduce((a, b) => a + b, 0)}</span>
+                  <span className="text-xl md:text-2xl font-black text-white">{data.weeklyData.reduce((a, b) => a + b, 0)}</span>
                   <span className="text-[10px] ml-2 text-zinc-500 font-mono tracking-widest">Commits this Week</span>
                 </div>
               </div>
@@ -348,20 +338,21 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
           </div>
         </div>
 
-        <div className="flex mt-32 mb-12 flex-col items-center">
-            <HackerText text="CLIENT_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-5xl tracking-tighter text-center font-mono" />
+        <div className="flex mt-20 md:mt-32 mb-8 md:mb-12 flex-col items-center">
+            <HackerText text="CLIENT_STATS" triggerOnMount={true} triggerOnHover={false} speed={50} className="font-bold text-white text-3xl md:text-5xl tracking-tighter text-center font-mono" />
         </div>
 
-        <div className="flex justify-center w-full pb-24">
-            <div className="w-full max-w-4xl bg-zinc-900 border-2 border-dashed border-zinc-800 rounded-xl p-12 flex flex-col items-center justify-center text-center hover:border-zinc-500 transition-all duration-300 group relative overflow-hidden">
+        <div className="flex justify-center w-full pb-12 md:pb-24">
+            <div className="w-full max-w-4xl bg-zinc-900 border-2 border-dashed border-zinc-800 rounded-xl p-6 md:p-12 flex flex-col items-center justify-center text-center hover:border-zinc-500 transition-all duration-300 group relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
-                <p className="text-9xl md:text-[160px] font-black text-zinc-800 mb-6 group-hover:text-zinc-700 transition-colors select-none relative z-10">0</p>
-                <p className="text-2xl md:text-3xl font-bold text-white mb-4 relative z-10">Total Customers Served <span className="text-sm"> so far </span></p>
-                <p className="text-zinc-400 font-mono text-sm md:text-base max-w-lg relative z-10 mb-8 leading-relaxed">
-                    Be the first to break the streak<br /><br /><span className="text-4xl">🥺👉👈</span>
+                {/* Responsive text sizing for the big zero */}
+                <p className="text-8xl md:text-9xl lg:text-[160px] font-black text-zinc-800 mb-6 group-hover:text-zinc-700 transition-colors select-none relative z-10">0</p>
+                <p className="text-xl md:text-3xl font-bold text-white mb-4 relative z-10">Total Customers Served <span className="text-sm"> so far </span></p>
+                <p className="text-zinc-400 font-mono text-xs md:text-base max-w-lg relative z-10 mb-8 leading-relaxed">
+                    Be the first to break the streak<br /><br /><span className="text-2xl md:text-4xl">🥺👉👈</span>
                 </p>
                 <div className="relative z-10">
-                    <a href="/contact" className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-black rounded-full font-bold text-lg"><span>Lets Work Together</span></a>
+                    <a href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 md:px-8 md:py-3 bg-white text-black rounded-full font-bold text-base md:text-lg"><span>Lets Work Together</span></a>
                 </div>
             </div>
         </div>

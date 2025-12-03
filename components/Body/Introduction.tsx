@@ -5,12 +5,12 @@ import HackerText from "../HackerText";
 import TOC from "../../lib/TOC";
 import Wallpaper from "@/public/martin-bennie-LDAEJ1rySaQ-unsplash.jpg"; 
 
-// 1. Define interface for the preload callback
 interface IntroductionProps {
     onLoadComplete?: () => void;
+    shouldAnimate: boolean; 
 }
 
-export default function Introduction({ onLoadComplete }: IntroductionProps) {
+export default function Introduction({ onLoadComplete, shouldAnimate }: IntroductionProps) {
   const roles = ["Mathematician", "Kickboxer", "Programmer", "Hacker"];
   const [index, setIndex] = useState(0);
 
@@ -21,11 +21,8 @@ export default function Introduction({ onLoadComplete }: IntroductionProps) {
     return () => clearInterval(interval);
   }, [roles.length]);
 
-
   return (
     <section className="relative w-full min-h-screen flex flex-col items-center justify-end overflow-hidden">
-
-      {/* Background Image */}
       <div className="absolute inset-0 z-1 w-full h-full">
         <Image 
             src={Wallpaper} 
@@ -42,22 +39,23 @@ export default function Introduction({ onLoadComplete }: IntroductionProps) {
       </div>
 
       {/* Content */}
-      <div className="w-full max-w-5xl px-6 relative z-10 pb-10">
+      <div className="w-full max-w-5xl px-6 relative z-10 pb-20 md:pb-10">
         <div className="grid">
             <div className="flex flex-col text-white font-mono">
                 <HackerText 
                     text="Welcome,"
-                    triggerOnMount={true} 
+                    triggerOnMount={shouldAnimate} 
                     triggerOnHover={false}
                     speed={50}
                     delay={100} 
-                    className="font-bold text-8xl tracking-tighter mb-4 text-white drop-shadow-lg"
+                    // RESPONSIVE TEXT SIZE: Large on desktop, smaller on mobile
+                    className="font-bold text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-4 text-white drop-shadow-lg"
                 />
 
-                <div className="flex flex-wrap items-center justify-start gap-x-3 text-3xl md:text-4xl font-medium tracking-tight w-full">
+                <div className="flex flex-wrap items-center justify-start gap-x-2 md:gap-x-3 text-xl md:text-3xl lg:text-4xl font-medium tracking-tight w-full">
                     <HackerText 
                         text="I'm a"
-                        triggerOnMount={true}
+                        triggerOnMount={shouldAnimate}
                         triggerOnHover={false}
                         speed={40}
                         delay={700} 
@@ -67,13 +65,14 @@ export default function Introduction({ onLoadComplete }: IntroductionProps) {
                         <HackerText 
                             key={roles[index]} 
                             text={roles[index]}
-                            triggerOnMount={true} 
+                            triggerOnMount={shouldAnimate} 
                             triggerOnHover={false}
                             speed={35}
                             delay={0}
                             className="text-white font-bold whitespace-nowrap"
                         />
-                        <div className="absolute -bottom-2 left-0 w-full h-[3px] bg-white" />
+                        {/* Responsive underline thickness */}
+                        <div className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[2px] md:h-[3px] bg-white" />
                     </div>
                 </div>
             </div>

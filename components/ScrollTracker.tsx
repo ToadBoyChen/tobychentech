@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import HackerText from "./HackerText"; // Ensure this path is correct for your setup
+import HackerText from "./HackerText";
 
 const sections = [
   { id: "intro", label: " " },
@@ -12,15 +12,11 @@ const sections = [
 ];
 
 // ------------------------------------
-// 1. ROBUST TRACKER (Winner Takes All)
-// ------------------------------------
-// NOW ACCEPTS 'isReady' argument
 export function useActiveSection(isReady: boolean) {
   const [activeSection, setActiveSection] = useState("intro");
   const observers = useRef<Map<string, IntersectionObserverEntry>>(new Map());
 
   useEffect(() => {
-    // STOP if the page isn't ready (loading screen still up)
     if (!isReady) return;
 
     const callback = (entries: IntersectionObserverEntry[]) => {
@@ -49,7 +45,6 @@ export function useActiveSection(isReady: boolean) {
       rootMargin: "-10% 0px -10% 0px", 
     });
 
-    // Helper to find elements with retry logic
     const scan = () => {
         sections.forEach(({ id }) => {
             const element = document.getElementById(id);
@@ -57,10 +52,7 @@ export function useActiveSection(isReady: boolean) {
         });
     };
 
-    // Run immediately
     scan();
-    
-    // Safety retry (just in case)
     const timer = setTimeout(scan, 500);
 
     return () => {
@@ -68,16 +60,11 @@ export function useActiveSection(isReady: boolean) {
         observer.disconnect();
     };
 
-  // RE-RUN this effect when isReady changes to true
   }, [isReady]); 
 
   return activeSection;
 }
 
-// ------------------------------------
-// 2. EARLY TRIGGER HOOK (Animations)
-// ------------------------------------
-// NOW ACCEPTS 'isReady' argument
 export function useEarlyActiveSection(isReady: boolean) {
   const [earlyActiveSection, setEarlyActiveSection] = useState("intro");
 
@@ -111,7 +98,6 @@ export function useEarlyActiveSection(isReady: boolean) {
     };
   }, [isReady]);
 
-  // Scroll to top reset logic
   useEffect(() => {
     if (!isReady) return; 
 
@@ -128,9 +114,6 @@ export function useEarlyActiveSection(isReady: boolean) {
   return earlyActiveSection;
 }
 
-// ------------------------------------
-// 3. VISUAL COMPONENT
-// ------------------------------------
 interface ScrollTrackerProps {
     activeSection: string;
 }
@@ -143,23 +126,37 @@ export default function ScrollTracker({ activeSection }: ScrollTrackerProps) {
     else setIsVisible(false);
   }, [activeSection]);
 
-  const activeLabel = sections.find((s) => s.id === activeSection)?.label || "LOADING";
+  const activeLabel = sections.find((s) => s.id === activeSection)?.label || "SYSTEM_READY";
 
   return (
     <div 
       className={`
-        fixed right-2 top-1/2 -translate-y-1/2 
-        h-[85vh] flex flex-col items-center justify-between
-        transition-all duration-1000 ease-out mix-blend-difference text-white z-50
+        fixed z-50 
+        transition-all duration-1000 ease-out 
+        mix-blend-difference
+    
+        bottom-0 left-0 w-full h-12 flex items-center justify-between px-6
+
+        md:top-0 md:bottom-auto md:left-auto md:right-0
+        md:w-18 md:h-screen
+        md:flex-col md:justify-center md:items-center md:px-0
+        
+        lg:w-24
+
         ${isVisible 
-            ? "opacity-100 translate-x-0" 
-            : "opacity-0 translate-x-10 pointer-events-none"
+            ? "translate-y-0 opacity-100" 
+            : "translate-y-10 md:translate-x-10 opacity-0 pointer-events-none"
         }
       `}
     >
-      <div className="absolute top-1/2 -translate-y-1/2 right-0 h-[60vh] flex items-center justify-center">
-         <div style={{ writingMode: 'vertical-rl' }}>
-            <span className="font-black text-6xl tracking-[3vh] uppercase whitespace-nowrap">
+        <div className="relative flex items-center justify-center">
+            <span className={`
+                uppercase mix-blend-difference whitespace-nowrap
+                text-white font-black
+                [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl]
+                text-md md:text-5xl lg:text-7xl
+                tracking-widest md:tracking-[2vh] lg:tracking-[3vh]
+            `}>
                 <HackerText 
                     key={activeLabel}
                     text={activeLabel}
@@ -168,8 +165,7 @@ export default function ScrollTracker({ activeSection }: ScrollTrackerProps) {
                     triggerOnHover={false} 
                 />
             </span>
-         </div>
-      </div>
+        </div>
     </div>
   );
 }

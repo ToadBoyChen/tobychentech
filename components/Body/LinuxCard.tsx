@@ -2,19 +2,37 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import HackerHeader from "../HackerHeader";
-import T480 from "@/public/t480_2.jpg";
-import HighText from "../HighText";
+import T480 from "@/public/t480_1.jpg";
+import { Code, Wrench, Globe, Shield } from "lucide-react";
 
-// EXPANDED SPECS LIST: 8 items for a balanced 4-row grid
-const HARDWARE_SPECS = [
-  { label: "DEVICE", value: "ThinkPad T480", detail: "Classic Chassis" },
-  { label: "CPU", value: "Intel i7-8650U", detail: "4c/8t @ 4.2GHz" },
-  { label: "GPU", value: "Intel UHD 620", detail: "Mesa Drivers" },
-  { label: "RAM", value: "32GB DDR4", detail: "2400MHz Dual Ch." },
-  { label: "DISK", value: "1TB NVMe SSD", detail: "Samsung 970 Evo" },
-  { label: "OS", value: "Arch Linux", detail: "Kernel 6.6.7-zen" },
-  { label: "WM", value: "Hyprland", detail: "Wayland / Tiling" },
-  { label: "SHELL", value: "Zsh + Starship", detail: "Alacritty Term" },
+const ICON_MAP: { [key: string]: React.ElementType } = {
+  Code: Code,
+  Wrench: Wrench,
+  Globe: Globe,
+  Shield: Shield,
+};
+
+const INTERESTS = [
+  {
+    title: "Arch Linux (Btw)",
+    desc: "Achieving total control by building my system package-by-package. It's an exercise in technological mastery.",
+    icon: "Code",
+  },
+  {
+    title: "Repairable Tech",
+    desc: "I choose hardware like the T480 because I believe in the Right to Repair. Less waste, more longevity.",
+    icon: "Wrench",
+  },
+  {
+    title: "Open Source Community",
+    desc: "The open-source ethos aligns with my belief in shared knowledge, sustainable systems, and transparency.",
+    icon: "Globe",
+  },
+  {
+    title: "Knowing your Tech",
+    desc: "Full stack knowledge, from BIOS to OS. Understanding the system is the first step to securing and optimizing it.",
+    icon: "Shield",
+  },
 ];
 
 export default function LinuxCard() {
@@ -34,70 +52,96 @@ export default function LinuxCard() {
 
   return (
     <div className="relative w-full">
-      <div className="mb-12">
+      <div className="mb-8 md:mb-12">
         <HackerHeader
-          text="02 01 02 // PASSIONATE ARCH + T480 GUY"
+          text="02 01 02 // TECHNOLOGICAL FREEDOM"
           lineSide="left"
           variant="light"
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 relative z-10 group/card">
-        
-        {/* --- LEFT COLUMN --- */}
-        <div className="lg:col-span-3 flex flex-col gap-10">
-          
-          <div className="relative">
-            <svg
-              className="float-left w-24 h-24 mr-4 mb-2 text-stone-50/20 group-hover/card:text-[#1793d1] transition-colors duration-500 ease-out"
-              viewBox="0 0 512 512"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M256 72c-14 35-23 57-39 91 10 11 22 23 41 36-21-8-35-17-45-26-21 43-53 103-117 220 50-30 90-48 127-55-2-7-3-14-3-22v-1c1-33 18-58 38-56 20 1 36 29 35 62l-2 17c36 7 75 26 125 54l-27-50c-13-10-27-23-55-38 19 5 33 11 44 17-86-159-93-180-122-250z" />
-            </svg>
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
+        <div className="w-full h-64 md:h-96 lg:h-full lg:col-span-5 flex flex-col">
+          <div
+            ref={photoRef}
+            className="relative w-full h-full rounded-3xl overflow-hidden shadow-lg shadow-lime-950/20 group"
+          >
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-black/10 z-10" />
 
-            <p className="text-stone-50 text-lg leading-relaxed">
-              There is a distinct beauty in the{" "}
-              <HighText text="utilitarian" variant="light" />. My daily driver
-              is the legendary <HighText text="ThinkPad T480" variant="light" />
-              —arguably the last great modular laptop. It’s built like a tank,
-              repairable, and possesses that classic typing experience.
-              Naturally, it runs <HighText text="Arch Linux" variant="light" />.
-              I subscribe to the philosophy of{" "}
-              <HighText text="minimalism" variant="light" /> and total control;
-              building my system package-by-package ensures I have exactly what
-              I need, and nothing I don't. It's not just an OS, it's a{" "}
-              <HighText text="personalized craft" variant="light" />.
-            </p>
+            <Image
+              src={T480}
+              alt="ThinkPad T480 Arch Linux"
+              fill
+              className={`object-cover transition-all duration-[1.5s] ease-out ${
+                isPhotoVisible
+                  ? "grayscale-0 opacity-100 scale-100"
+                  : "grayscale opacity-60 scale-110"
+              }`}
+            />
+            <div
+              className={`absolute top-2 right-2 z-20 transition-all duration-1000 delay-500 ${
+                isPhotoVisible
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-4 opacity-0"
+              }`}
+            >
+              <span className="text-lime-900 font-bold font-mono text-xs tracking-widest bg-yellow-200 px-3 py-1 rounded-lg shadow-sm">
+                THINKPAD T480
+              </span>
+            </div>
+            <div
+              className={`absolute bottom-2 left-2 z-20 transition-all duration-1000 delay-300 ${
+                isPhotoVisible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-8 opacity-0"
+              }`}
+            >
+              <span className="text-stone-50 font-black text-3xl uppercase">
+                The Daily Driver
+              </span>
+            </div>
           </div>
         </div>
-        {/* --- RIGHT COLUMN: IMAGE --- */}
-        <div
-          ref={photoRef}
-          className="lg:col-span-2 relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl"
-        >
-          <Image
-            src={T480}
-            alt="My ThinkPad Setup"
-            fill
-            className={`object-cover transition-all duration-[1.5s] ease-out ${
-              isPhotoVisible
-                ? "grayscale-0 opacity-100 scale-100"
-                : "grayscale opacity-60 scale-105"
-            }`}
-          />
-          
-          <div
-            className={`absolute bottom-6 left-6 transition-all duration-1000 delay-300 ${
-              isPhotoVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-8 opacity-0"
-            }`}
-          >
-            <p className="bg-white text-black text-xs font-bold px-2 py-1 shadow-lg">
-              T480_WITH_ARCH.jpg
-            </p>
+
+        <div className="lg:col-span-7 flex flex-col">
+          <div className="flex items-center justify-between border-b border-stone-100 pb-2 mb-4">
+            <span className="font-mono text-xs text-stone-100">
+              ARRAY[{INTERESTS.length}]
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full relative">
+            {INTERESTS.map((item, idx) => {
+              const IconComponent = ICON_MAP[item.icon];
+
+              return (
+                <div
+                  key={idx}
+                  className="group relative bg-yellow-200 shadow-sm shadow-lime-950/10 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2"
+                >
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="font-mono text-sm text-lime-600/70 group-hover:text-lime-600 transition-colors">
+                        [0{idx + 1}]
+                      </span>
+                      {IconComponent && (
+                        <div className="text-yellow-600 group-hover:scale-110 transition-all">
+                          <IconComponent size={28} strokeWidth={2} />
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold text-lime-950 group-hover:text-yellow-700 mb-3">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-lime-900 group-hover:text-lime-950">
+                      {item.desc}
+                    </p>
+                  </div>
+                  <div className="mt-4 w-full h-px bg-yellow-500" />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

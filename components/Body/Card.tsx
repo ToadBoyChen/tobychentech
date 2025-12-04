@@ -181,12 +181,12 @@ export default function Card({ isAboutActive }: CardProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-auto mb-24">
           
-          <div className="lg:col-span-2 bg-zinc-100 rounded-3xl p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 ease-out min-h-[350px] md:min-h-[400px]">
+          <div className="lg:col-span-2 bg-zinc-100 rounded-3xl p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 ease-out">
             <div>
               <p className="text-3xl md:text-5xl font-black mb-8 tracking-tighter">
                 Building the Foundation.
               </p>
-              <p className="text-lg lg:text-xl font-medium">
+              <p>
                 I am currently <HighText text="making my mark"/>.. As a developer without years under their belt, I compensate my lack of experience with a <HighText text="real love for programming"/> and <HighText text="genuine curiosity"/>
                 .
                 <br />

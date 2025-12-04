@@ -97,13 +97,13 @@ const ActivityHeatmap = ({ data }: { data: number[] }) => {
     <div className="grid grid-cols-12 gap-1.5 w-full min-w-[250px]">
       {data.length === 0
         ? Array.from({ length: 84 }).map((_, i) => (
-            <div key={i} className="w-full aspect-square rounded-[2px] bg-zinc-200" />
+            <div key={i} className="w-full aspect-square rounded-2 bg-zinc-200" />
           ))
         : data.map((val, i) => (
             <div
               key={i}
               title={`${val} contributions`}
-              className={`w-full aspect-square rounded-[2px] transition-all duration-500 border
+              className={`w-full aspect-square rounded-xl transition-all duration-500 border
                 ${val === 0 ? "bg-zinc-100 border-zinc-200" : ""} 
                 ${val === 1 ? "bg-lime-200 border-lime-300" : ""} 
                 ${val === 2 ? "bg-lime-400 border-lime-500" : ""} 
@@ -358,7 +358,7 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
                     <span className="font-mono text-zinc-400 text-xs tracking-[0.3em] mb-4">DATABASE_QUERY_RESULT</span>
                     
                     {/* The Big Zero - Light Theme Gradient */}
-                    <p className="text-9xl md:text-[180px] font-black text-transparent bg-clip-text bg-gradient-to-b from-zinc-200 to-zinc-400 mb-2 select-none">
+                    <p className="text-9xl md:text-[180px] font-black text-transparent bg-clip-text bg-linear-to-b from-zinc-200 to-zinc-400 mb-2 select-none">
                         0
                     </p>
                     

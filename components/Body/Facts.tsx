@@ -63,7 +63,7 @@ export default function Facts({isFactsActive} : FactsProps) {
         </div>
 
         <SpotifyCard />
-        <div className="mt-24 mb-32">
+        <div className="mt-46">
           <LinuxCard />
         </div>
       </section>

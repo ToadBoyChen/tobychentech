@@ -39,7 +39,7 @@ export default function Introduction({ onLoadComplete, shouldAnimate }: Introduc
       </div>
 
       {/* Content */}
-      <div className="w-full lg:max-w-6/7 px-6 relative z-10 pb-20 md:pb-10">
+      <div className="w-full lg:max-w-6/7 px-6 relative z-10 pb-8 md:pb-10">
         <div className="grid">
             <div className="flex flex-col text-white font-mono">
                 <HackerText 

@@ -211,12 +211,12 @@ export default function ProjectsList({isProjectActive} : CardProps) {
             <svg 
                 viewBox="0 0 100 100" 
                 preserveAspectRatio="none" 
-                className="w-full h-[30px] md:h-[50px] fill-stone-50 block overflow-visible"
+                className="w-full h-[30px] md:h-[50px] fill-lime-950 block overflow-visible"
             >
             <use href="#fixed-convex"/> 
             </svg>
         </div>
-        <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-30 bg-stone-50">
+        <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-30 bg-lime-950">
             <div className="flex items-center gap-4 md:gap-6 mb-12 md:mb-16">
                 <div className="h-px bg-zinc-800 flex-1" />
                 <span className="font-mono text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest whitespace-nowrap">

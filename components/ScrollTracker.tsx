@@ -5,7 +5,8 @@ import HackerText from "./HackerText";
 const sections = [
   { id: "intro", label: " " },
   { id: "about", label: "ABOUT ME" },
-  { id: "stats", label: "SOME FACTS" },
+  { id: "facts", label: "SOME FACTS" },
+  { id: "stats", label: "STATISTICS" },
   { id: "projects", label: "PROJECTS" },
   { id: "services", label: "SERVICES" },
   { id: "end", label: " " },

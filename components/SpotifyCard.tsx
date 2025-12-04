@@ -17,13 +17,14 @@ export default function SpotifyCard() {
   return (
     <div>
       <div className="flex flex-col group">
-        <HackerHeader
-          text="02 01 01 // MUSIC OBSESSED"
-          lineSide="left"
-          variant="light"
-          className="mb-4"
-        />
-        <p className="text-center text-stone-50 mb-12">
+        <div className="mb-12">
+          <HackerHeader
+            text="02 01 01 // MUSIC OBSESSED"
+            lineSide="left"
+            variant="light"
+          />
+        </div>
+        <p className="text-stone-50 mb-12">
           I'm not sure if I can claim to be an <HighText text="audiophile" variant="light"/> just yet but I do love some good songs. I'm a big fan of the <HighText text="Smiths" variant="light"/>, <HighText text="Radiohead" variant="light"/> and <HighText text="Deftones" variant="light"/> , though I don't shy away from a varied music taste. Also, I play music (the guitar and a long time ago the saxophone) - though I'm really quite terrible. The only song I can play well is either <HighText text="Nothing else matters" variant="light"/> by <HighText text="Metallica" variant="light"/> or <HighText text="Tears in heaven" variant="light"/> by <HighText text="Eric Clapton" variant="light"/>.
         </p>
       </div>

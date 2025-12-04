@@ -165,9 +165,7 @@ export default function SpotifyCard() {
         </div>
 
         {/* --- RIGHT COL: PROFILE --- */}
-        <div
-          className="col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl p-6 relative overflow-hidden group min-h-96 my-2 bg-yellow-200"
-        >
+        <div className="col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl p-6 relative overflow-hidden group min-h-96 my-2 bg-yellow-200">
           {data.profile ? (
             <>
               <div className="absolute top-6 right-6 w-42 h-42 rounded-2xl shadow-xl overflow-hidden transform rotate-3 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-105 z-30">
@@ -224,6 +222,48 @@ export default function SpotifyCard() {
             <div className="text-zinc-500">Loading Profile...</div>
           )}
         </div>
+
+        {/* --- BOTTOM: PLAYLIST BLOCK --- */}
+        {data.playlist && (
+          <Link
+            href={data.playlist.url}
+            target="_blank"
+            className="col-span-2 lg:col-span-4 bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-6 group hover:shadow-lg transition-all duration-300"
+          >
+            <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-xl shadow-lg overflow-hidden border-4 border-zinc-800 transform -rotate-2 group-hover:rotate-0 transition-transform duration-500">
+              <Image
+                src={data.playlist.coverImage}
+                alt="Playlist"
+                fill
+                sizes="150px"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="flex flex-col flex-1 min-w-0 justify-center">
+              <span className="text-[10px] uppercase font-black text-zinc-500 tracking-widest mb-1">
+                // MY_PLAYLIST
+              </span>
+              <h3 className="text-xl md:text-2xl font-black text-stone-50 leading-none truncate">
+                {data.playlist.name}
+              </h3>
+              <p className="text-zinc-400 text-sm md:text-base truncate mt-1 font-medium">
+                {data.playlist.description}
+              </p>
+            </div>
+
+            {/* Larger Play Button */}
+            <div className="hidden sm:flex w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-500 text-black items-center justify-center group-hover:scale-110 group-hover:bg-white transition-all shadow-xl shrink-0">
+              <svg
+                className="w-6 h-6 ml-1"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -238,6 +278,7 @@ function SpotifyBentoSkeleton() {
         <div className="flex-1 h-32 bg-zinc-900 rounded-2xl animate-pulse" />
       </div>
       <div className="col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-2 h-64 bg-zinc-900 rounded-2xl animate-pulse" />
+      <div className="col-span-1 sm:col-span-2 lg:col-span-4 h-24 bg-zinc-900 rounded-2xl animate-pulse" />
     </div>
   );
 }

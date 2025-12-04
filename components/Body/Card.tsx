@@ -165,7 +165,6 @@ export default function Card({ isAboutActive }: CardProps) {
             text="WHO AM I?"
             triggerOnMount={true}
             triggerOnHover={false}
-            speed={50}
             className="font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono"
           />
         </div>

@@ -47,7 +47,7 @@ export default function Facts({isFactsActive} : FactsProps) {
         </div>
         <div className="mb-12">
           <CustomDiv
-            label="< Data >"
+            label="< FACTS >"
             lineColor="bg-stone-50"
             textColor="text-stone-50"
           />
@@ -65,6 +65,13 @@ export default function Facts({isFactsActive} : FactsProps) {
         <SpotifyCard />
         <div className="mt-46">
           <LinuxCard />
+        </div>
+        <div className="mt-12">
+          <CustomDiv
+            label="</ FACTS >"
+            lineColor="bg-stone-50"
+            textColor="text-stone-50"
+          />
         </div>
       </section>
     </motion.div>

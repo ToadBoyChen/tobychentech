@@ -53,17 +53,20 @@ export default function Body() {
           `https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}?y=last`
         );
         const contribJson = await contribRes.json();
+        const contributions = contribJson.contributions; // Array of days
 
-        const last84 = contribJson.contributions.slice(-84);
-        const total = contribJson.contributions.reduce(
+        // --- 1. Basic Stats ---
+        const total = contributions.reduce(
           (acc: number, day: any) => acc + day.count,
           0
         );
-
-        let maxStreak = 0,
-          currentStreak = 0,
-          activeDays = 0;
-        contribJson.contributions.forEach((day: any) => {
+        
+        // --- 2. Streak Calculations ---
+        let maxStreak = 0;
+        let currentStreak = 0;
+        let activeDays = 0;
+        
+        contributions.forEach((day: any) => {
           if (day.count > 0) {
             currentStreak++;
             activeDays++;
@@ -72,13 +75,38 @@ export default function Body() {
             currentStreak = 0;
           }
         });
+        // Note: After the loop, 'currentStreak' holds the streak of the very last days in the array (today)
 
-        const last7 = contribJson.contributions.slice(-7);
+        // --- 3. Most Active Day Calculation ---
+        const dayCounts: Record<string, number> = { Sun: 0, Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0 };
+        contributions.forEach((day: any) => {
+            const date = new Date(day.date);
+            const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+            if(day.count > 0) {
+                dayCounts[dayName] = (dayCounts[dayName] || 0) + day.count;
+            }
+        });
+        // Find key with highest value
+        const mostActiveDay = Object.keys(dayCounts).reduce((a, b) => dayCounts[a] > dayCounts[b] ? a : b);
+
+
+        // --- 4. History Data (Last 90 Days for Velocity Graph) ---
+        const last90 = contributions.slice(-90);
+        const historyLabels = last90.map((day: any) => 
+            new Date(day.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+        );
+        const historyData = last90.map((day: any) => day.count);
+
+        // --- 5. Legacy/Other Data ---
+        const last84 = contributions.slice(-84); // For Heatmap (12 weeks)
+        
+        const last7 = contributions.slice(-7);
         const weeklyLabels = last7.map((day: any) =>
           new Date(day.date).toLocaleDateString("en-US", { weekday: "short" })
         );
         const weeklyData = last7.map((day: any) => day.count);
 
+        // --- 6. Language Data ---
         const reposRes = await fetch(
           `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`
         );
@@ -98,7 +126,7 @@ export default function Body() {
 
           langData = Object.entries(langStats)
             .sort(([, a], [, b]) => b - a)
-            .slice(0, 5)
+            .slice(0, 10)
             .map(([name, count]) => ({
               name,
               count,
@@ -111,14 +139,23 @@ export default function Body() {
           totalCommits: total,
           heatmapData: last84.map((day: any) => day.count),
           bestStreak: maxStreak,
+          currentStreak: currentStreak, // Added
           avgCommits: Math.round(total / (activeDays || 1)),
+          mostActiveDay: mostActiveDay, // Added
+          historyLabels, // Added
+          historyData,   // Added
           weeklyLabels,
           weeklyData,
           langData,
         });
       } catch (e) {
         console.error("Critical Data Load Error:", e);
-        setStatsData({} as any);
+        // Provide safer defaults if fail
+        setStatsData({
+            totalCommits: 0, heatmapData: [], bestStreak: 0, currentStreak: 0, 
+            avgCommits: 0, mostActiveDay: "N/A", historyLabels: [], historyData: [], 
+            weeklyLabels: [], weeklyData: [], langData: []
+        });
       }
     }
     fetchGlobalData();

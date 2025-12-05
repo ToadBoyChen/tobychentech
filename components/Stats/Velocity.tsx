@@ -346,7 +346,7 @@ export default function Velocity({
                   : "text-lime-600 hover:text-lime-950"
               }`}
             >
-              LIN
+              LINEAR
             </button>
             <button
               onClick={() => setIsLog(true)}
@@ -356,7 +356,7 @@ export default function Velocity({
                   : "text-lime-600 hover:text-lime-950"
               }`}
             >
-              SYMLOG
+              SYMMETRIC-LOG
             </button>
           </div>
         </div>
@@ -375,8 +375,8 @@ export default function Velocity({
               <HackerHeader 
                 text="Graphs"
                 lineSide="left"
-                className="text-sm text-zinc-400"
-                lineColor="bg-zinc-300"
+                className="text-sm text-lime-500"
+                lineColor="bg-lime-300"
               />
           </div>
 

@@ -276,11 +276,11 @@ export default function Contribution({ data }: { data: StatisticsData }) {
           <AnimatedCounter end={viewTotal} label={`TOTAL_COMMITS (${range})`} />
         </div>
       </div>
-      <div className="mb-2">
+      <div className="mb-4">
         <HackerHeader
           text="Commits"
-          lineColor="bg-zinc-300"
-          className="text-sm text-zinc-500"
+          lineColor="bg-lime-300"
+          className="text-sm text-lime-500"
         />
       </div>
       <div className="flex-1 flex flex-col gap-16 w-full justify-between">

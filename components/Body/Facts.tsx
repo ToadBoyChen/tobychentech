@@ -5,6 +5,7 @@ import HackerText from "../HackerText";
 import SpotifyCard from "../SpotifyCard";
 import LinuxCard from "./LinuxCard";
 import { useEffect } from "react";
+import AnimeCard from "./AnimeCard";
 
 interface FactsProps {
   isFactsActive: boolean;
@@ -65,6 +66,9 @@ export default function Facts({isFactsActive} : FactsProps) {
         <SpotifyCard />
         <div className="mt-46">
           <LinuxCard />
+        </div>
+        <div className="mt-46">
+          <AnimeCard />
         </div>
         <div className="mt-12">
           <CustomDiv

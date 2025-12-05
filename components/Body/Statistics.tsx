@@ -20,6 +20,7 @@ import Language from "../Stats/Language";
 import Velocity from "../Stats/Velocity";
 import Rank from "../Stats/Rank";
 import HackerText from "../HackerText";
+import HackerRank from "../Stats/Hackerrank";
 
 ChartJS.register(
   ArcElement,
@@ -116,12 +117,12 @@ export default function Statistics({
 
           {/* Grid Container for Row 1 */}
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8 w-full mb-16">
-            {/* Column 1: Contribution */}
+            {/* Column 1: Contribution (approx 40%) */}
             <div className="col-span-1 xl:col-span-5">
                <Contribution data={data} />
             </div>
 
-            {/* Column 2: Velocity */}
+            {/* Column 2: Velocity (approx 60%) */}
             <div className="col-span-1 xl:col-span-7">
                <Velocity labels={data.historyLabels} data={data.historyData} />
             </div>
@@ -132,11 +133,19 @@ export default function Statistics({
             <HackerHeader text="03 01 02 // PROGRAMMING HABITS" lineSide="left" />
           </div>
 
-          {/* Grid Container for Row 2 */}
+          {/* Grid Container for Row 2 - UPDATED */}
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8 w-full">
-             <div className="col-span-1 xl:col-span-12">
+             
+             {/* Language: Takes 6 columns (50%) on XL screens, full width on smaller */}
+             <div className="col-span-1 xl:col-span-6">
                <Language data={data.langData} />
              </div>
+
+             {/* HackerRank: Takes 6 columns (50%) on XL screens, full width on smaller */}
+             <div className="col-span-1 xl:col-span-6">
+               <HackerRank username="toby_chen13371" />
+             </div>
+
           </div>
 
           <div className="mb-6 mt-24">

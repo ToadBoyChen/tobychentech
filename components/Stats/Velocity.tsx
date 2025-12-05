@@ -16,7 +16,7 @@ import {
   ScriptableContext,
   ChartOptions,
 } from "chart.js";
-import "katex/dist/katex.min.css";
+import HackerHeader from "../HackerHeader";
 
 ChartJS.register(
   CategoryScale,
@@ -200,12 +200,12 @@ export default function Velocity({
         label: "Velocity",
         data: plotVelocity,
         hidden: !visibility.velocity,
-        borderColor: "#0ea5e9",
+        borderColor: "#fcdb05",
         backgroundColor: "transparent",
         borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 6,
-        pointBackgroundColor: "#0ea5e9",
+        pointBackgroundColor: "#fcdb05",
         pointBorderColor: "#fff",
         tension: 0.45,
         order: 2,
@@ -214,12 +214,12 @@ export default function Velocity({
         label: "Acceleration",
         data: plotAcceleration,
         hidden: !visibility.acceleration,
-        borderColor: "#f43f5e",
+        borderColor: "#fc8d05",
         backgroundColor: "transparent",
         borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 6,
-        pointBackgroundColor: "#f43f5e",
+        pointBackgroundColor: "#fc8d05",
         pointBorderColor: "#fff",
         tension: 0.45,
         order: 1,
@@ -303,16 +303,18 @@ export default function Velocity({
         {/* Row 1: Title and Total Counter */}
         {/* RESPONSIVE UPDATE: Stack on mobile, Row on md */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-4 md:gap-0">
-          <div>
-            <p className="font-mono text-stone-400 text-xs md:text-sm tracking-wider uppercase mb-1 md:mb-2">
-              // CODE_VELOCITY
-            </p>
-            <p className="font-bold text-stone-800 text-2xl tracking-tight leading-none">
-              Code Frequency
-            </p>
+          <div className="flex flex-row justify-between w-full">
+            <div>
+              <p className="font-mono text-stone-400 text-xs md:text-sm tracking-wider uppercase mb-1 md:mb-2">
+                // CODE_VELOCITY
+              </p>
+              <p className="font-bold text-stone-800 text-2xl tracking-tight leading-none">
+                Code Frequency
+              </p>
+            </div>
+            <AnimatedCounter end={totalCommits} label={`TOTAL (${range})`} />
           </div>
           
-          <AnimatedCounter end={totalCommits} label={`TOTAL (${range})`} />
         </div>
 
         {/* Row 2: Controls (Time Left, Scale Right) */}
@@ -335,15 +337,13 @@ export default function Velocity({
               </button>
             ))}
           </div>
-
-          {/* Scale Toggle (LIN / SYMLOG) */}
-          <div className="flex bg-stone-100 p-1.5 rounded-xl w-full md:w-fit">
+          <div className="flex bg-lime-100 p-1.5 rounded-xl w-full md:w-fit">
             <button
               onClick={() => setIsLog(false)}
               className={`flex-1 md:flex-none px-3 py-2 rounded-lg text-xs font-bold font-mono transition-all duration-300 ${
                 !isLog
-                  ? "bg-white shadow-sm text-stone-800"
-                  : "text-stone-400 hover:text-stone-600"
+                  ? "bg-yellow-50 shadow-md text-lime-900"
+                  : "text-lime-600 hover:text-lime-950"
               }`}
             >
               LIN
@@ -352,8 +352,8 @@ export default function Velocity({
               onClick={() => setIsLog(true)}
               className={`flex-1 md:flex-none px-3 py-2 rounded-lg text-xs font-bold font-mono transition-all duration-300 ${
                 isLog
-                  ? "bg-white shadow-sm text-stone-800"
-                  : "text-stone-400 hover:text-stone-600"
+                  ? "bg-yellow-50 shadow-md text-lime-900"
+                  : "text-lime-600 hover:text-lime-950"
               }`}
             >
               SYMLOG
@@ -372,9 +372,12 @@ export default function Velocity({
         {/* Legend / Metrics Control */}
         <div className="bg-stone-50 rounded-2xl p-4 md:p-6 border border-stone-100/50">
           <div className="flex justify-between items-center mb-4">
-            <p className="font-mono text-xs text-stone-400 uppercase tracking-widest">
-              // DISPLAY_METRICS
-            </p>
+              <HackerHeader 
+                text="Graphs"
+                lineSide="left"
+                className="text-sm text-zinc-400"
+                lineColor="bg-zinc-300"
+              />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
@@ -390,10 +393,10 @@ export default function Velocity({
                 }`}
               ></div>
               <div className="text-left flex flex-col">
-                <span className="text-xs font-bold text-stone-700">
+                <span className="text-sm font-bold text-stone-700">
                   Commits
                 </span>
-                <span className="text-[10px] text-stone-400 font-mono">
+                <span className="text-xs text-stone-400 font-mono">
                   f(x)
                 </span>
               </div>
@@ -407,14 +410,14 @@ export default function Velocity({
             >
               <div
                 className={`w-2 h-2 rounded-full border-4 transition-colors ${
-                  visibility.velocity ? "border-sky-500" : "border-stone-300"
+                  visibility.velocity ? "border-yellow-500" : "border-stone-300"
                 }`}
               ></div>
               <div className="text-left flex flex-col">
-                <span className="text-xs font-bold text-stone-700">
+                <span className="text-sm font-bold text-stone-700">
                   Velocity
                 </span>
-                <span className="text-[10px] text-stone-400 font-mono">
+                <span className="text-xs text-stone-400 font-mono">
                   f'(x)
                 </span>
               </div>
@@ -429,15 +432,15 @@ export default function Velocity({
               <div
                 className={`w-2 h-2 rounded-full border-4 transition-colors ${
                   visibility.acceleration
-                    ? "border-rose-500"
+                    ? "border-amber-600"
                     : "border-stone-300"
                 }`}
               ></div>
               <div className="text-left flex flex-col">
-                <span className="text-xs font-bold text-stone-700">
+                <span className="text-sm font-bold text-stone-700">
                   Acceleration
                 </span>
-                <span className="text-[10px] text-stone-400 font-mono">
+                <span className="text-xs text-stone-400 font-mono">
                   f''(x)
                 </span>
               </div>

@@ -6,8 +6,9 @@ export default function LinuxCard() {
     <div className="relative w-full">
       <div className="mb-8 md:mb-12">
         <HackerHeader
-          text="02 01 03 // SOME STATISTICS"
-          lineSide="left"
+          text="02 02 // SOME STATISTICS"
+          lineSide="right"
+          size="large"
           variant="light"
         />
       </div>

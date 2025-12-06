@@ -68,9 +68,9 @@ export default function Facts({ isFactsActive }: FactsProps) {
         <div className="mt-46">
           <LinuxCard />
         </div>
-        {/* <div className="mt-46">
+        <div className="mt-46">
           <AnimeCard />
-        </div> */}
+        </div>
         <div className="mt-46">
           <StatsCard />
         </div>

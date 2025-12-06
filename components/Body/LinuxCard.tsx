@@ -37,6 +37,7 @@ const INTERESTS = [
 
 export default function LinuxCard() {
   const [isPhotoVisible, setIsPhotoVisible] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const photoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,6 +50,8 @@ export default function LinuxCard() {
     if (photoRef.current) observer.observe(photoRef.current);
     return () => observer.disconnect();
   }, []);
+
+  const isHovering = hoveredIndex !== null;
 
   return (
     <div className="relative w-full">
@@ -113,11 +116,19 @@ export default function LinuxCard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full relative">
             {INTERESTS.map((item, idx) => {
               const IconComponent = ICON_MAP[item.icon];
+              const isItemHovered = idx === hoveredIndex;
+              const isDimmed = isHovering && !isItemHovered;
 
               return (
                 <div
                   key={idx}
-                  className="group relative bg-yellow-200 shadow-sm shadow-lime-950/10 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2"
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  className={`group relative bg-yellow-200 shadow-sm shadow-lime-950/10 rounded-3xl p-6 flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 ${
+                    isDimmed
+                      ? "opacity-20 blur-[1px] scale-95 grayscale"
+                      : "opacity-100 scale-100"
+                  }`}
                 >
                   <div>
                     <div className="flex justify-between items-start mb-4">

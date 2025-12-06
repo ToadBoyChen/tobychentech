@@ -239,8 +239,6 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
                   )}
                 </motion.div>
               )}
-
-              {/* --- HABITS GROUP --- */}
               {activeCategory === "HABITS" && activeSubView && (
                 <motion.div
                   key="habits-group"
@@ -271,8 +269,6 @@ export default function Statistics({ isStatisticsActive, data }: StatisticsProps
                   </div>
                 </motion.div>
               )}
-
-              {/* --- SOCIAL GROUP (Instant Load) --- */}
               {activeCategory === "SOCIAL" && (
                 <motion.div
                   key="social-group"
@@ -305,9 +301,9 @@ function SubMenuButton({ label, active, onClick }: { label: string, active: stri
     <button
       onClick={onClick}
       className={`
-        px-4 py-1 rounded-md font-mono text-xs font-bold transition-all duration-200
+        px-4 py-1 rounded-md font-mono text-sm font-bold transition-all duration-200
         ${isActive 
-          ? "bg-lime-400 text-stone-900 shadow-lg" 
+          ? "bg-lime-400 text-lime-900" 
           : "bg-stone-200 text-stone-500 hover:bg-stone-300"}
       `}
     >

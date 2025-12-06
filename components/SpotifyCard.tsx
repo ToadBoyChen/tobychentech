@@ -25,13 +25,29 @@ export default function SpotifyCard() {
           />
         </div>
         <p className="text-stone-50 mb-12">
-          I'm not sure if I can claim to be an <HighText text="audiophile" variant="light"/> just yet but I do love some good songs. I'm a big fan of the <HighText text="Smiths" variant="light"/>, <HighText text="Radiohead" variant="light"/> and <HighText text="Deftones" variant="light"/> , though I don't shy away from a varied music taste. Also, I play music (the guitar and a long time ago the saxophone) - though I'm really quite terrible. The only song I can play well is either <HighText text="Nothing else matters" variant="light"/> by <HighText text="Metallica" variant="light"/> or <HighText text="Tears in heaven" variant="light"/> by <HighText text="Eric Clapton" variant="light"/>.
+          I'm not sure if I can claim to be an{" "}
+          <HighText text="audiophile" variant="light" /> just yet but I do love
+          some good songs. I'm a big fan of the{" "}
+          <HighText text="Smiths" variant="light" />,{" "}
+          <HighText text="Radiohead" variant="light" /> and{" "}
+          <HighText text="Deftones" variant="light" /> , though I don't shy away
+          from a varied music taste. Also, I play music (the guitar and a long
+          time ago the saxophone) - though I'm really quite terrible. The only
+          song I can play well is either{" "}
+          <HighText text="Nothing else matters" variant="light" /> by{" "}
+          <HighText text="Metallica" variant="light" /> or{" "}
+          <HighText text="Tears in heaven" variant="light" /> by{" "}
+          <HighText text="Eric Clapton" variant="light" />.
         </p>
       </div>
-      
-      {/* Grid Container */}
+      <div className="mb-4">
+        <HackerHeader
+          text="SPOTIFY_API"
+          lineColor="bg-lime-300"
+          className="text-sm text-lime-500"
+        />
+      </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-10 lg:gap-14 w-full h-full">
-        
         {/* --- LEFT COL: ALL TIME FAVORITE --- */}
         <Link
           href={data.allTime?.url || "#"}
@@ -200,9 +216,7 @@ export default function SpotifyCard() {
                   <span className="text-2xl font-black text-lime-900 mt-2 mb-1">
                     {data.profile.followers}
                   </span>
-                  <span className="text-lime-700 font-semibold">
-                    Followers
-                  </span>
+                  <span className="text-lime-700 font-semibold">Followers</span>
                 </div>
 
                 <div className="absolute w-40 h-40 rounded-full border border-lime-500/20 animate-ping opacity-20" />
@@ -211,8 +225,9 @@ export default function SpotifyCard() {
 
               <Link
                 target="_blank"
-                href={data.profile?.url || "#"} 
-                className="absolute bottom-6 right-6 z-20 hover:scale-105 transition-all">
+                href={data.profile?.url || "#"}
+                className="absolute bottom-6 right-6 z-20 hover:scale-105 transition-all"
+              >
                 <p className="bg-lime-200 text-lime-900 px-8 py-4 rounded-full text-sm font-bold shadow-lg">
                   View Profile
                 </p>

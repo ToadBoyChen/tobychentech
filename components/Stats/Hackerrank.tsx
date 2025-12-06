@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
-import HackerHeader from "../HackerHeader"; // Ensure this path is correct
+import React, { useEffect, useState, memo } from "react";
+import HackerHeader from "../HackerHeader";
 import Link from "next/link";
+import HighText from "../HighText";
+import { Star } from "lucide-react";
 
 interface Badge {
   badge_name: string;
@@ -16,16 +18,97 @@ interface HackerRankProps {
   username: string;
 }
 
-// Consistent Palette: Lime -> Yellow -> Amber
-const limeAmberPalette = [
-  "#84cc16", // Lime 500
-  "#a3e635", // Lime 400
-  "#d9f99d", // Lime 200
-  "#facc15", // Yellow 400
-  "#fbbf24", // Amber 400
-  "#f59e0b", // Amber 500
-  "#d97706", // Amber 600
-];
+// --- Grade Logic & Colors ---
+const MEDALS = {
+  gold: {
+    color: "#ca8a04", // Darker Yellow/Gold
+    label: "GOLD",
+    desc: "Gold Level. Mastery achieved.",
+  },
+  silver: {
+    color: "#64748b", // Slate-500
+    label: "SILVER",
+    desc: "Silver Level. High competence.",
+  },
+  bronze: {
+    color: "#b45309", // Amber-700
+    label: "BRONZE",
+    desc: "Bronze Level. Foundation laid.",
+  },
+};
+
+// --- Helper Component: Single Star with Confetti ---
+const StarWithConfetti = memo(
+  ({
+    filled,
+    color,
+    delay,
+  }: {
+    filled: boolean;
+    color: string;
+    delay: number;
+  }) => {
+    const [isExploding, setIsExploding] = useState(false);
+
+    useEffect(() => {
+      if (isExploding) {
+        const timer = setTimeout(() => setIsExploding(false), 800);
+        return () => clearTimeout(timer);
+      }
+    }, [isExploding]);
+
+    return (
+      <div
+        className="relative group/star cursor-pointer"
+        onMouseEnter={() => setIsExploding(true)}
+      >
+        <div
+          className={`transform transition-all duration-300 ${
+            filled ? "scale-100" : "scale-90 opacity-40"
+          } group-hover/star:scale-110 group-hover/star:rotate-12`}
+          style={{ transitionDelay: `${delay}ms` }}
+        >
+          <Star
+            size={20}
+            strokeWidth={filled ? 0 : 2}
+            fill={filled ? color : "none"}
+            className={filled ? "" : "text-yellow-700"}
+            color={filled ? color : "currentColor"}
+          />
+        </div>
+        {isExploding && filled && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            {[...Array(8)].map((_, i) => (
+              <ConfettiParticle key={i} index={i} color={color} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
+StarWithConfetti.displayName = "StarWithConfetti";
+
+// --- Helper Component: Individual Particle ---
+const ConfettiParticle = ({ index, color }: { index: number; color: string }) => {
+  const angle = (index / 8) * 360 + Math.random() * 20;
+  const distance = 20 + Math.random() * 15;
+  const tx = Math.cos((angle * Math.PI) / 180) * distance;
+  const ty = Math.sin((angle * Math.PI) / 180) * distance;
+
+  return (
+    <div
+      className="absolute w-1 h-1 rounded-full animate-confetti"
+      style={{
+        backgroundColor: color,
+        // @ts-ignore
+        "--tx": `${tx}px`,
+        "--ty": `${ty}px`,
+        opacity: 0,
+      }}
+    />
+  );
+};
 
 export default function HackerRank({ username }: HackerRankProps) {
   const [data, setData] = useState<Badge[] | null>(null);
@@ -37,9 +120,7 @@ export default function HackerRank({ username }: HackerRankProps) {
       try {
         const res = await fetch(`/api/hackerrank?username=${username}`);
         const result = await res.json();
-
         if (result.models) {
-          // Filter empty badges and sort by stars (highest first)
           const activeBadges = result.models
             .filter((b: any) => b.stars > 0)
             .sort((a: any, b: any) => b.stars - a.stars);
@@ -51,29 +132,25 @@ export default function HackerRank({ username }: HackerRankProps) {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [username]);
 
-  const getBadgeColor = (stars: number) => {
-    // Map 0-5 stars to 0-6 palette index roughly
-    const index = Math.min(
-      Math.floor(stars * 1.2),
-      limeAmberPalette.length - 1
-    );
-    return limeAmberPalette[index];
+  const getBadgeDetails = (stars: number) => {
+    if (stars >= 5) return MEDALS.gold;
+    if (stars >= 3) return MEDALS.silver;
+    return MEDALS.bronze;
   };
 
-  if (loading) {
-    return <LoadingSkeleton />;
-  }
+  if (loading) return <LoadingSkeleton />;
 
   if (!data || data.length === 0) {
     return (
-      <div className="col-span-1 md:col-span-2 lg:col-span-12 flex items-center justify-center p-12 bg-stone-50/50 rounded-3xl">
-        <span className="text-stone-300 font-mono text-xs tracking-widest">
-          // NO_BADGE_DATA
-        </span>
+      <div className="w-full max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-center p-12 bg-stone-50/10 rounded-3xl border border-dashed border-stone-50/20 w-full">
+          <span className="text-stone-300 font-mono text-xs tracking-widest">
+            // NO_BADGE_DATA
+          </span>
+        </div>
       </div>
     );
   }
@@ -81,150 +158,148 @@ export default function HackerRank({ username }: HackerRankProps) {
   const isHovering = hoveredIndex !== null;
 
   return (
-    <div className="w-full h-full flex flex-col p-6 md:p-8">
-      {/* HEADER SECTION */}
-      <div className="flex flex-col mb-8 md:mb-10">
-        <div className="flex justify-between items-end">
-          <div className="w-full">
+    <div className="w-full flex justify-center p-6 md:p-10">
+      <style jsx global>{`
+        @keyframes confetti-explode {
+          0% { transform: translate(0, 0) scale(1); opacity: 1; }
+          100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+        .animate-confetti { animation: confetti-explode 0.6s ease-out forwards; }
+      `}</style>
+
+      {/* Main Container - Added w-full */}
+      <div className="w-full flex flex-col justify-center">
+        
+        {/* HEADER SECTION */}
+        <div className="flex flex-col mb-12 w-full">
+          <div className="group text-stone-50">
+            <p className="text-lg md:text-xl leading-relaxed text-stone-300">
+              Maybe I don't seem so credible yet? Maybe you're looking around
+              thinking, "
+              <HighText
+                text="yeah you have an eye for UI/UX, but can you really code?"
+                variant="light"
+              />
+              " Well, why don't we look at some of my Hackerrank stats?
+            </p>
+            <p className="mt-2 text-sm text-stone-400 font-mono">
+              (My stats aren't very good yet, forgive my cockiness)
+            </p>
+          </div>
+
+          <div className="mt-10">
             <div className="mb-4">
               <HackerHeader
                 text="HACKERRANK"
-                lineColor="bg-lime-300"
-                className="text-sm text-lime-500"
+                lineColor="bg-lime-400"
+                className="text-sm text-lime-400"
               />
             </div>
-            <div className="flex items-center justify-between gap-4">
-              <p className="font-black text-stone-800 text-3xl md:text-4xl tracking-tighter uppercase">
+            
+            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-lime-900/30 pb-4 w-full">
+              <h2 className="font-black text-lime-100/90 text-4xl md:text-5xl tracking-tighter uppercase">
                 Badges
-              </p>
+              </h2>
               <Link
                 href={`https://www.hackerrank.com/${username}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-lime-700 bg-lime-100 px-3 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors"
+                className="font-mono text-lime-950 bg-lime-300 hover:bg-yellow-300 px-4 py-2 rounded-lg text-sm font-bold transition-all"
               >
                 @{username}
               </Link>
             </div>
           </div>
-
-          {/* User Handle Display */}
-          <div className="text-right hidden sm:block"></div>
         </div>
-      </div>
 
-      {/* BADGE GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        {data.map((badge, index) => {
-          const itemColor = getBadgeColor(badge.stars);
-          const isItemHovered = index === hoveredIndex;
-          const isDimmed = isHovering && !isItemHovered;
+        {/* BADGE GRID - Ensure w-full is here */}
+        <div className="grid grid-cols-1 gap-6 w-full">
+          {data.map((badge, index) => {
+            const badgeDetails = getBadgeDetails(badge.stars);
+            const isItemHovered = index === hoveredIndex;
+            const isDimmed = isHovering && !isItemHovered;
 
-          return (
-            <div
-              key={`${badge.badge_name}-${index}`}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className={`
-                relative group cursor-pointer transition-all duration-500 rounded-2xl overflow-hidden bg-lime-100
-                ${
-                  isDimmed
-                    ? "opacity-20 blur-[1px] scale-95 grayscale"
-                    : "opacity-100 scale-100"
-                }
-              `}
-            >
-              {/* Background Glow (Active State) */}
+            return (
               <div
-                className={`absolute inset-0 transition-all duration-500 ease-out opacity-0 group-hover:opacity-10`}
-                style={{ backgroundColor: itemColor }}
-              />
-
-              {/* Subtle ambient glow always present but stronger on hover */}
-              <div
-                className="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-5 blur-2xl group-hover:opacity-20 transition-opacity duration-500"
-                style={{ backgroundColor: itemColor }}
-              />
-
-              {/* Card Content */}
-              <div className="relative p-5 flex flex-col h-full bg-white/40 hover:bg-transparent transition-colors duration-300">
-                {/* Top Row: Icon & Name */}
-                <div className="flex justify-between items-start mb-6">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-bold tracking-widest text-stone-400 uppercase mb-1">
-                      Algorithm
+                key={`${badge.badge_name}-${index}`}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                // Added w-full and h-full here
+                className={`
+                  group relative bg-yellow-200 shadow-lg shadow-black/20 rounded-3xl p-6 w-full h-full flex flex-col justify-between transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-lime-900/20
+                  ${
+                    isDimmed
+                      ? "opacity-40 blur-[2px] scale-95 grayscale"
+                      : "opacity-100 scale-100"
+                  }
+                `}
+              >
+                <div className="w-full">
+                  {/* Header: Label + Number Badge */}
+                  <div className="flex justify-between items-start mb-6 w-full">
+                    <span
+                      className="font-mono text-xs tracking-wider font-bold uppercase transition-opacity duration-300"
+                      style={{ color: badgeDetails.color, opacity: 0.8 }}
+                    >
+                      [{badgeDetails.label}]
                     </span>
-                    <h3 className="font-bold text-lg leading-tight text-stone-700 group-hover:text-stone-900 transition-colors">
-                      {badge.badge_name.replace(
-                        "Problem Solving",
-                        "Problem Solving"
-                      )}
-                    </h3>
+
+                    <div
+                      className="flex items-center justify-center w-10 h-10 rounded-full font-mono font-bold text-base shadow-md transition-transform duration-300 group-hover:scale-110"
+                      style={{
+                        backgroundColor: badgeDetails.color,
+                        color: "#fff",
+                      }}
+                    >
+                      {badge.stars}
+                    </div>
                   </div>
 
-                  {/* Star Count Number */}
-                  <div
-                    className="flex items-center justify-center w-8 h-8 rounded-full font-mono font-bold text-sm shadow-sm transition-transform duration-300 group-hover:scale-110"
-                    style={{
-                      backgroundColor: itemColor,
-                      color: badge.stars > 3 ? "#fff" : "#44403c",
-                    }}
-                  >
-                    {badge.stars}
-                  </div>
+                  {/* Title */}
+                  <p className="text-2xl font-black text-lime-950 group-hover:text-yellow-800 mb-2 leading-tight tracking-tight">
+                    {badge.badge_name.replace("Problem Solving", "Problem Solving")}
+                  </p>
+
+                  {/* Level Description */}
+                  <p className="text-lime-900/80 group-hover:text-lime-950 text-sm font-medium mb-8 leading-snug">
+                    {badgeDetails.desc}
+                  </p>
                 </div>
 
-                {/* Bottom Row: Progress Visual */}
-                <div className="mt-auto">
-                  <div className="flex gap-1 h-1.5 w-full">
-                    {[...Array(5)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="h-full rounded-full flex-1 transition-all duration-500"
-                        style={{
-                          backgroundColor:
-                            i < badge.stars ? itemColor : "#e7e5e4", // stone-200 for empty
-                          opacity: i < badge.stars ? 1 : 0.5,
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <span
-                      className={`text-[10px] font-bold uppercase tracking-wider transition-colors duration-300 ${
-                        isItemHovered ? "text-stone-600" : "text-stone-300"
-                      }`}
-                    >
-                      {badge.stars === 5
-                        ? "Gold Level"
-                        : badge.stars >= 3
-                        ? "Silver Level"
-                        : "Bronze Level"}
+                {/* Footer: Star Confetti Row */}
+                <div className="mt-auto border-t border-yellow-500/30 pt-4 w-full">
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <StarWithConfetti
+                          key={i}
+                          filled={i < badge.stars}
+                          color={i < badge.stars ? badgeDetails.color : "#d97706"}
+                          delay={i * 50}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs font-mono text-yellow-700/50 uppercase tracking-widest">
+                       Rank {badge.stars}
                     </span>
-                    {badge.stars === 5 && (
-                      <span className="animate-pulse text-amber-500 text-[10px]">
-                        ●
-                      </span>
-                    )}
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 }
 
-// Modern pulsing skeleton instead of dashed borders
 function LoadingSkeleton() {
   return (
-    <div className="w-full p-8 bg-white/50 rounded-3xl animate-pulse">
-      <div className="h-8 w-48 bg-stone-200 rounded-lg mb-8" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-40 bg-stone-100 rounded-2xl" />
+    <div className="w-full max-w-7xl mx-auto p-8 bg-white/5 rounded-3xl animate-pulse">
+      <div className="h-8 w-48 bg-stone-700 rounded-lg mb-8" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-64 bg-stone-800/50 rounded-3xl border border-stone-700/50 w-full" />
         ))}
       </div>
     </div>

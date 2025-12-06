@@ -6,12 +6,13 @@ import SpotifyCard from "../SpotifyCard";
 import LinuxCard from "./LinuxCard";
 import { useEffect } from "react";
 import AnimeCard from "./AnimeCard";
+import StatsCard from "./StatsCard";
 
 interface FactsProps {
   isFactsActive: boolean;
 }
 
-export default function Facts({isFactsActive} : FactsProps) {
+export default function Facts({ isFactsActive }: FactsProps) {
   const controls = useAnimation();
   const cardVariants = {
     hidden: { y: 100 },
@@ -67,8 +68,11 @@ export default function Facts({isFactsActive} : FactsProps) {
         <div className="mt-46">
           <LinuxCard />
         </div>
-        <div className="mt-46">
+        {/* <div className="mt-46">
           <AnimeCard />
+        </div> */}
+        <div className="mt-46">
+          <StatsCard />
         </div>
         <div className="mt-12">
           <CustomDiv

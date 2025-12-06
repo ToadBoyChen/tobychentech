@@ -221,32 +221,20 @@ export default function Body() {
             </div>
 
             <div className="bg-lime-950">
-              <div id="stats">
-                {statsData && (
-                  <Statistics
-                    isStatisticsActive={hasReached("stats")}
-                    data={statsData}
-                  />
-                )}
+              <div id="projects">
+                <Projects isProjectActive={hasReached("projects")} />
               </div>
 
               <div className="bg-stone-50">
-                <div id="projects">
-                  <Projects isProjectActive={hasReached("projects")} />
+                <div id="services">
+                  <Services isServicesActive={hasReached("services")} />
                 </div>
-
                 <div className="bg-lime-950">
-                  <div id="services">
-                    <Services isServicesActive={hasReached("services")} />
+                  <div id="end">
+                    <End isEndActive={hasReached("end")} />
                   </div>
-
-
                   <div className="bg-stone-50">
-                    <div id="end">
-                      <End isEndActive={hasReached("end")} />
-                    </div>
-
-                    <div id="footer" className="bg-lime-950">
+                    <div id="footer">
                       <Footer isFooterActive={hasReached("footer")} />
                     </div>
                   </div>

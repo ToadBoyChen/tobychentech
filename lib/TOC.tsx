@@ -5,9 +5,9 @@ export default function TOC() {
   const navItems = [
     { id: "01", label: "About Me", href: "#about" },
     { id: "02", label: "Some Facts", href: "#facts" },
-    { id: "03", label: "Statistics", href: "#stats" },
-    { id: "04", label: "Selected Work", href: "#projects" },
-    { id: "05", label: "Services I Offer", href: "#services" },
+    // { id: "03", label: "Statistics", href: "#stats" },
+    { id: "03", label: "Selected Work", href: "#projects" },
+    { id: "04", label: "Services I Offer", href: "#services" },
   ];
 
   return (

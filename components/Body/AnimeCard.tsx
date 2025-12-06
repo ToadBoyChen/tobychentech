@@ -6,7 +6,7 @@ import HackerHeader from "../HackerHeader";
 
 import VinlandImg from "@/public/vinland.webp";
 import AotImg from "@/public/aot.jpg";
-import MhaImg from "@/public/mha.jpg";
+import MhaImg from "@/public/mha.jpeg";
 
 interface AnimeItem {
   rank: number;

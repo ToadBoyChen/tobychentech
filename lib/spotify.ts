@@ -5,12 +5,9 @@ const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
 
 const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
 
-// --- OFFICIAL SPOTIFY ENDPOINTS ---
+// --- 1. CORRECT OFFICIAL ENDPOINTS ---
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
-const TOP_TRACKS_ENDPOINT = `https://api.spotify.com/v1/me/top/tracks`;
-const RECENTLY_PLAYED_ENDPOINT = `https://api.spotify.com/v1/me/player/recently-played`;
-const PLAYLIST_ENDPOINT = `https://api.spotify.com/v1/playlists`;
-const USER_PROFILE_ENDPOINT = `https://api.spotify.com/v1/me`;
+const BASE_ENDPOINT = `https://api.spotify.com/v1`;
 
 const getAccessToken = async () => {
   const response = await fetch(TOKEN_ENDPOINT, {
@@ -31,7 +28,7 @@ const getAccessToken = async () => {
 
 export const getTopTracksLong = async () => {
   const { access_token } = await getAccessToken();
-  return fetch(`${TOP_TRACKS_ENDPOINT}?time_range=long_term&limit=1`, {
+  return fetch(`${BASE_ENDPOINT}/me/top/tracks?time_range=long_term&limit=1`, {
     headers: { Authorization: `Bearer ${access_token}` },
     cache: 'no-store',
   });
@@ -39,7 +36,7 @@ export const getTopTracksLong = async () => {
 
 export const getTopTracksShort = async () => {
   const { access_token } = await getAccessToken();
-  return fetch(`${TOP_TRACKS_ENDPOINT}?time_range=short_term&limit=1`, {
+  return fetch(`${BASE_ENDPOINT}/me/top/tracks?time_range=short_term&limit=1`, {
     headers: { Authorization: `Bearer ${access_token}` },
     cache: 'no-store',
   });
@@ -47,7 +44,7 @@ export const getTopTracksShort = async () => {
 
 export const getRecentlyPlayed = async () => {
   const { access_token } = await getAccessToken();
-  return fetch(`${RECENTLY_PLAYED_ENDPOINT}?limit=1`, {
+  return fetch(`${BASE_ENDPOINT}/me/player/recently-played?limit=1`, {
     headers: { Authorization: `Bearer ${access_token}` },
     cache: 'no-store',
   });
@@ -55,16 +52,15 @@ export const getRecentlyPlayed = async () => {
 
 export const getPlaylist = async (id: string) => {
     const { access_token } = await getAccessToken();
-    return fetch(`${PLAYLIST_ENDPOINT}/${id}`, {
+    return fetch(`${BASE_ENDPOINT}/playlists/${id}`, {
       headers: { Authorization: `Bearer ${access_token}` },
       cache: 'no-store',
     });
 };
 
-// --- NEW PROFILE FUNCTION ---
 export const getUserProfile = async () => {
     const { access_token } = await getAccessToken();
-    return fetch(USER_PROFILE_ENDPOINT, {
+    return fetch(`${BASE_ENDPOINT}/me`, {
       headers: { Authorization: `Bearer ${access_token}` },
       cache: 'no-store',
     });

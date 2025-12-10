@@ -21,19 +21,10 @@ export default function Navbar() {
 
   return (
     <nav 
-      className={`
-        fixed top-0 left-0 z-50 w-full 
-        pointer-events-none transition-all duration-300
-        
-        /* RESPONSIVE PADDING */
-        px-4 pt-4 
-        md:px-8 md:pt-8
-        
-        /* BLEND MODE */
-        ${isPastIntro ? "mix-blend-difference" : ""} 
+      className={`fixed max-w-3/4 top-0 left-1/2 -translate-x-1/2 z-50 w-full pointer-events-none transition-all duration-300 pt-5 md:pt-8 ${isPastIntro ? "mix-blend-difference" : ""} 
       `}
     >
-      <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
+      <div className="w-full flex items-center justify-between">
         
         {/* LOGO / HOME LINK */}
         <Link 

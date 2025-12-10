@@ -1,195 +1,215 @@
 "use client";
-import { useEffect, useState } from "react";
-import { ArrowUpRight, Github, Globe } from "lucide-react"; 
+import { useEffect } from "react";
+import { Github, Globe, Terminal, Box } from "lucide-react"; 
 import HackerText from "../HackerText";
 import { motion, useAnimation } from "framer-motion";
 
-interface CardProps {
+interface ProjectProps {
   isProjectActive: boolean;
 }
 
-const completed_projects = [
+// --- DATA ---
+const projects = [
+  // --- COMPLETED ---
   { 
     id: "comp-01", 
+    featured: true, 
+    status: "COMPLETED",
     name: "TOADTrade V1", 
     cat: "Quant Finance", 
     year: "2024",
-    desc: "Python based trading algorithm that uses multiple technical indicators to generate trading signals and backtest strategies on historical stock data.",
+    desc: "Python based trading algorithm using technical indicators to generate signals.",
     stack: ["Python", "Pandas", "yFinance"],
-    links: { 
-        repo: "https://github.com/ToadBoyChen/trade-algo" 
-    }
+    links: { repo: "https://github.com/ToadBoyChen/trade-algo" },
+    // "Big Bold" Financial/Data Image
+    img: "https://images.unsplash.com/photo-1611974765270-ca1258634369?q=80&w=1000&auto=format&fit=crop" 
   },
-];
-
-const legacy_projects = [
-  { 
-    id: "leg-01", 
-    name: "Portfolio V2", 
-    cat: "Frontend Development", 
-    year: "2025",
-    desc: "Took on my first proper frontend development project. The website is RPG themed, using custom pixel art, animations and even a coffee character.",
-    stack: ["Vite", "React", "TypeScript", "TailwindCSS"],
-    links: { 
-        demo: "https://portfolio-pn8df6k1h-toby-chens-projects.vercel.app/", 
-        repo: "https://github.com/ToadBoyChen/portfolio" 
-    }
-  },
-  { 
-    id: "leg-02", 
-    name: "Portfolio V1", 
-    cat: "Legacy Site", 
-    year: "2024",
-    desc: "This was my second website. This was developed before I knew was TypeScript even was. It's a static website that is pretty bad.",
-    stack: ["HTML", "JavaScript", "CSS"],
-    links: { 
-        demo: "https://toadboychen.github.io/", 
-        repo: "https://github.com/ToadBoyChen/ToadBoyChen.github.io" 
-    }
-  },
-  { 
-    id: "leg-03", 
-    name: "Portfolio V0", 
-    cat: "Legacy Site", 
-    year: "2023",
-    desc: "This was my first website. It was made as I got an interview to be a web developer intern. It is a very simple static website that showcases my skills and projects. I obviously didn't get the internship.",
-    stack: ["HTML", "JavaScript", "CSS"],
-    links: { 
-        demo: "https://old-website-eight.vercel.app/", 
-        repo: "https://github.com/ToadBoyChen/Old-Website" 
-    }
-  },
-];
-
-const wip_projects = [
+  // --- WIP ---
   { 
     id: "wip-01", 
+    status: "IN_DEV",
     name: "Toadstone", 
     cat: "TUI Note Taker", 
     year: "2025",
-    desc: "Vibe coded (so far) a TUI note-taking application. I aim to make it essentially Obsidian but in the terminal. This felt useful because I started to rely on tmux sessions a lot.",
+    desc: "Vibe coded TUI note-taking app. Essentially Obsidian for the terminal.",
     stack: ["Python", "Textual"],
-    links: { repo: "https://github.com/ToadBoyChen/Toadstone" }
+    links: { repo: "https://github.com/ToadBoyChen/Toadstone" },
+    // Retro Terminal/Matrix Image
+    img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop"
   },
   { 
     id: "wip-02", 
+    status: "IN_DEV",
+    featured: true,
     name: "TOADTrade V2", 
-    cat: "Quant Finance", 
+    cat: "Quant Architecture", 
     year: "2025",
-    desc: "Through much study, I realised how unadequette TT1 was. That's why I'm rebuilding it from scratch. I'm coming into this project with a lot more knowledge on trading algorithms and software engineering principles, so hopefully the results will speak for themselves.",
+    desc: "Complete rebuild of the trading algo using Event-Driven architecture, Docker, and SQLite.",
     stack: ["SQLite3", "Docker", "Python"],
-    links: { repo: "https://github.com/ToadBoyChen/TOADTrade2" }
+    links: { repo: "https://github.com/ToadBoyChen/TOADTrade2" },
+    // Server/Infrastructure Image
+    img: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?q=80&w=1000&auto=format&fit=crop"
   },
   { 
     id: "wip-03", 
+    status: "IN_DEV",
     name: "Arch Dotfiles", 
     cat: "DevOps", 
     year: "2025",
-    desc: "I have recently switched to Arch Linux as my main OS. As a result, I'm in the process of setting up my dotfiles and automating my system.",
+    desc: "Automated Arch Linux setup scripts and configs.",
     stack: ["Bash", "Linux"],
-    links: { repo: "https://github.com/ToadBoyChen/dotfiles" }
+    links: { repo: "https://github.com/ToadBoyChen/dotfiles" },
+    // Abstract Tech/Circuit Image
+    img: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=1000&auto=format&fit=crop"
   },
-];
-
-const open_projects = [
+  // --- LEGACY ---
   { 
-    id: "open-01", 
-    name: "React Hacker", 
-    cat: "Library", 
-    year: "2023",
-    desc: "The UI library used to build this portfolio. Glitch effects and terminal aesthetics.",
-    stack: ["React", "TypeScript"],
-    links: { repo: "#" }
+    id: "leg-01", 
+    status: "LEGACY",
+    name: "Portfolio V2", 
+    cat: "Frontend", 
+    year: "2025",
+    desc: "RPG themed pixel-art portfolio.",
+    stack: ["React", "Tailwind"],
+    links: { demo: "#", repo: "#" },
+    // Pixel Art/Gaming Image
+    img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop"
   },
+  { 
+    id: "leg-02", 
+    status: "LEGACY",
+    name: "Portfolio V1", 
+    cat: "Static Site", 
+    year: "2024",
+    desc: "My first HTML/CSS site.",
+    stack: ["HTML", "CSS"],
+    links: { demo: "#", repo: "#" },
+    // Code/Editor Image
+    img: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1000&auto=format&fit=crop"
+  }
 ];
 
-const ProjectRow = ({ project, index, isExpanded, onToggle, isHovered, onHover, onLeave }: any) => {
+// --- COMPONENTS ---
+
+const FillerCard = () => (
+    <div className="col-span-1 border border-dashed border-lime-950/30 p-8 flex items-center justify-center min-h-[300px] h-full cursor-default">
+        <div className="flex flex-col items-center justify-center gap-4">
+            <motion.div 
+                animate={{ opacity: [0.2, 1, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="w-3 h-3 bg-lime-950"
+            />
+            <span className="font-mono text-[10px] text-lime-950/40 tracking-[0.2em] uppercase">
+                Slot_Empty
+            </span>
+        </div>
+    </div>
+);
+
+const BentoCard = ({ project, index }: any) => {
     return (
-        <div 
-            onMouseEnter={onHover}
-            onMouseLeave={onLeave}
-            onClick={onToggle}
+        <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
             className={`
-                group relative border-b border-zinc-800 transition-colors cursor-pointer
-                ${isExpanded ? "bg-zinc-900" : "hover:bg-zinc-900/50"}
+                group relative flex flex-col justify-between p-6 md:p-8 
+                border border-lime-950 bg-lime-950
+                min-h-[350px] h-full cursor-default
+                col-span-1 overflow-hidden
             `}
         >
-            <div className="py-8 md:py-12 px-2 md:px-4 flex items-center md:items-baseline justify-between relative z-10">
-                <div className="flex items-center md:items-baseline gap-4 md:gap-8 overflow-hidden">
-                    <span className="font-mono text-[10px] md:text-xs text-zinc-500 shrink-0">0{index + 1}</span>
-                    <h3 className={`text-2xl md:text-4xl lg:text-6xl font-black transition-colors tracking-tighter truncate ${isExpanded ? "text-white" : "text-zinc-400 group-hover:text-white"}`}>
-                        {project.name}
-                    </h3>
-                </div>
-
-                <div className="hidden md:flex flex-col items-end text-right shrink-0 ml-4">
-                    <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-1">{project.cat}</span>
-                    <span className="text-sm font-bold text-zinc-600 group-hover:text-zinc-300">YEAR: {project.year}</span>
-                </div>
+            {/* --- BACKGROUND IMAGE LAYER --- */}
+            <div className="absolute inset-0 z-0 w-full h-full">
+                {/* The Image */}
+                <img 
+                    src={project.img} 
+                    alt={project.name}
+                    className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out"
+                />
                 
-                {/* Mobile indicator */}
-                <ArrowUpRight className={`md:hidden text-zinc-600 transition-transform shrink-0 ml-2 ${isExpanded ? "rotate-90" : ""}`} />
+                {/* Gradient Overlay: Ensures text is readable at the bottom, but lets image shine at top */}
+                <div className="absolute inset-0 bg-gradient-to-t from-lime-950 via-lime-950/80 to-lime-950/20 z-10 opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
+                
+                {/* Scanline Effect (optional aesthetic) */}
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-10 mix-blend-overlay pointer-events-none" />
             </div>
 
-            {/* EXPANDED CONTENT (Accordion) */}
-            <div 
-                className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-            >
-                <div className="overflow-hidden">
-                    <div className="px-2 md:px-4 pb-8 md:pb-12 md:pl-16 md:pr-12 flex flex-col lg:flex-row gap-8 md:gap-12">
-                        
-                        {/* Description & Stack */}
-                        <div className="flex-1 space-y-6">
-                            <div className="md:hidden flex gap-4 text-xs font-mono text-zinc-500 mb-4">
-                                <span>{project.cat}</span>
-                                <span>|</span>
-                                <span>{project.year}</span>
-                            </div>
+            {/* CORNER ACCENTS (Adjusted for dark background) */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-lime-200 z-20" />
+            <div className="absolute top-0 right-0 w-2 h-2 border-r-2 border-t-2 border-lime-200 z-20" />
+            <div className="absolute bottom-0 left-0 w-2 h-2 border-l-2 border-b-2 border-lime-200 z-20" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-lime-200 z-20" />
 
-                            <p className="text-zinc-400 font-mono text-sm leading-relaxed max-w-xl">
-                                <span className="text-green-500 mr-2">root@system:~/desc$</span>
-                                {project.desc}
-                            </p>
-                            
-                            <div className="flex flex-wrap gap-2">
-                                {project.stack?.map((tech: string) => (
-                                    <span key={tech} className="px-2 py-1 md:px-3 bg-zinc-950 border border-zinc-800 rounded text-[10px] md:text-xs font-mono text-zinc-400">
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex flex-col gap-4 min-w-full lg:min-w-[200px]">
-                            {project.links?.demo && (
-                                <a href={project.links.demo} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between px-6 py-3 bg-white text-black font-bold hover:bg-zinc-200 transition-colors text-sm md:text-base">
-                                    <span>LIVE_DEMO</span>
-                                    <Globe className="w-4 h-4" />
-                                </a>
-                            )}
-                            
-                            {project.links?.repo && (
-                                <a href={project.links.repo} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between px-6 py-3 border border-zinc-700 text-white font-mono text-sm hover:border-zinc-500 transition-colors">
-                                    <span>SOURCE_CODE</span>
-                                    <Github className="w-4 h-4" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
+            {/* HEADER */}
+            <div className="relative z-20 flex justify-between items-start mb-6">
+                <div className="flex flex-col">
+                    <span className="font-mono text-xs font-bold text-lime-400 group-hover:text-white transition-colors">
+                        {project.status} // {project.year}
+                    </span>
+                    <span className="font-mono text-[10px] text-lime-200/60 group-hover:text-lime-200 uppercase">
+                        ID: {project.id}
+                    </span>
+                </div>
+                <div className="p-2 border border-lime-200/30 bg-lime-950/50 backdrop-blur-sm rounded-full">
+                   {project.cat.includes("Quant") ? <Terminal size={16} className="text-lime-200"/> : <Box size={16} className="text-lime-200"/>}
                 </div>
             </div>
-        </div>
+
+            {/* CONTENT */}
+            <div className="relative z-20 flex-grow flex flex-col justify-end">
+                <h3 className="text-3xl md:text-4xl font-black text-lime-100 group-hover:text-white mb-3 transition-colors tracking-tighter drop-shadow-lg">
+                    {project.name}
+                </h3>
+                <p className="font-mono text-sm text-lime-200/80 group-hover:text-lime-100 leading-relaxed mb-6 max-w-[90%] drop-shadow-md">
+                    {project.desc}
+                </p>
+            </div>
+
+            {/* STACK & LINKS */}
+            <div className="relative z-20 mt-auto">
+                <div className="flex flex-wrap gap-2 mb-6">
+                    {project.stack.map((tech: string) => (
+                        <span key={tech} className="px-2 py-1 text-[10px] font-bold border border-lime-200/20 bg-lime-900/40 backdrop-blur-sm text-lime-200 uppercase tracking-wider">
+                            {tech}
+                        </span>
+                    ))}
+                </div>
+
+                <div className="flex gap-4 pt-4 border-t border-lime-200/20">
+                    {project.links.repo && (
+                        <a href={project.links.repo} target="_blank" className="flex items-center gap-2 text-xs font-bold font-mono text-lime-300 group-hover:text-white hover:underline decoration-dashed underline-offset-4 shadow-black drop-shadow-sm">
+                            <Github size={14} /> SRC_CODE
+                        </a>
+                    )}
+                    {project.links.demo && (
+                        <a href={project.links.demo} target="_blank" className="flex items-center gap-2 text-xs font-bold font-mono text-lime-300 group-hover:text-white hover:underline decoration-dashed underline-offset-4 shadow-black drop-shadow-sm">
+                            <Globe size={14} /> LIVE_DEMO
+                        </a>
+                    )}
+                </div>
+            </div>
+        </motion.div>
     );
 };
 
-export default function ProjectsList({isProjectActive} : CardProps) {
-  const [hovered, setHovered] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<string | null>(null);
+const SectionHeader = ({ title, count }: { title: string, count: string }) => (
+    <div className="flex items-end gap-4 mb-8 border-b border-lime-950 pb-2">
+        <h2 className="text-2xl md:text-3xl font-black text-lime-950 tracking-tight">
+            {title}
+        </h2>
+        <span className="font-mono text-sm text-lime-950/60 mb-1">
+            [{count}]
+        </span>
+    </div>
+);
+
+export default function ProjectsGrid({isProjectActive} : ProjectProps) {
   const controls = useAnimation();
-    
-  const cardVariants = {
-    hidden: { y: 100},
+  
+  const containerVariants = {
+    hidden: { y: 100 },
     visible: { y: 0, transition: { duration: 0.6 }},
   };
   
@@ -200,111 +220,73 @@ export default function ProjectsList({isProjectActive} : CardProps) {
       controls.start("hidden");
     }
   }, [isProjectActive, controls]);
-  
-  const handleToggle = (id: string) => {
-      setExpanded(prev => prev === id ? null : id);
-  };
+
+  const completed = projects.filter(p => p.status === "COMPLETED");
+  const wip = projects.filter(p => p.status === "IN_DEV");
+  const legacy = projects.filter(p => p.status === "LEGACY");
 
   return (
-    <motion.div initial="hidden" animate={controls} variants={cardVariants}>
+    <motion.div initial="hidden" animate={controls} variants={containerVariants}>
+        {/* TOP CURVE */}
         <div className="w-full top-0 left-0 z-10">
-            <svg 
-                viewBox="0 0 100 100" 
-                preserveAspectRatio="none" 
-                className="w-full h-[30px] md:h-[50px] fill-lime-950 block overflow-visible"
-            >
-            <use href="#fixed-convex"/> 
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-[30px] md:h-[50px] fill-lime-200 block overflow-visible">
+                <use href="#fixed-convex"/> 
             </svg>
         </div>
-        <section className="px-4 md:px-8 lg:px-16 py-20 md:py-36 items-center justify-center z-30 bg-lime-950">
-            <div className="flex items-center gap-4 md:gap-6 mb-12 md:mb-16">
-                <div className="h-px bg-zinc-800 flex-1" />
-                <span className="font-mono text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest whitespace-nowrap">
-                    03 // NOTABLE_PROJECTS
-                </span>
-                <div className="h-px bg-zinc-800 flex-1" />
-            </div>
 
-            {/* --- COMPLETED --- */}
-            <div className="flex flex-col items-center mt-8 md:mt-12 mb-8">
-                <HackerText
-                    text="COMPLETED_PROJECTS"
-                    triggerOnMount={true}
-                    triggerOnHover={false}
-                    speed={50}
-                    className="font-bold text-zinc-900 text-2xl md:text-5xl tracking-tighter text-center font-mono"
-                />
-            </div>
-            <div className="flex flex-col border-t border-zinc-800">
-                {completed_projects.map((p, i) => (
-                    <ProjectRow 
-                        key={p.id} 
-                        project={p} 
-                        index={i} 
-                        isExpanded={expanded === p.id}
-                        onToggle={() => handleToggle(p.id)}
-                        isHovered={hovered === p.id}
-                        onHover={() => setHovered(p.id)}
-                        onLeave={() => setHovered(null)}
+        <section className="px-4 md:px-8 lg:px-16 py-20 bg-lime-200 min-h-screen">
+            
+            {/* MAIN HEADER */}
+            <div className="flex flex-col md:flex-row items-baseline justify-between mb-24 border-b border-lime-950 pb-8">
+                <div className="flex flex-col">
+                    <span className="font-mono text-xs text-lime-950 mb-2">/// ARCHIVE_SYSTEM_V3</span>
+                    <HackerText
+                        text="SELECTED_WORKS"
+                        triggerOnMount={true}
+                        speed={40}
+                        className="text-5xl md:text-7xl font-black text-lime-950 tracking-tighter"
                     />
-                ))}
+                </div>
+                <div className="hidden md:block text-right">
+                    <p className="font-mono text-xs text-lime-900 max-w-xs">
+                        A collection of quantitative algorithms, systems engineering, and frontend experiments.
+                    </p>
+                </div>
             </div>
 
-            {/* --- WIP --- */}
-            <div className="flex flex-col items-center mt-16 md:mt-24 mb-8">
-                <HackerText
-                    text="[W.I.P]_PROJECTS"
-                    triggerOnMount={true}
-                    triggerOnHover={false}
-                    speed={50}
-                    className="font-bold text-zinc-900 text-2xl md:text-5xl tracking-tighter text-center font-mono"
-                />
-            </div>
-            <div className="flex flex-col border-t border-zinc-800">
-                {wip_projects.map((p, i) => (
-                    <ProjectRow 
-                        key={p.id} 
-                        project={p} 
-                        index={i} 
-                        isExpanded={expanded === p.id}
-                        onToggle={() => handleToggle(p.id)}
-                        isHovered={hovered === p.id}
-                        onHover={() => setHovered(p.id)}
-                        onLeave={() => setHovered(null)}
-                    />
-                ))}
+            {/* --- COMPLETED SECTION --- */}
+            <div className="mb-24">
+                <SectionHeader title="DEPLOYED_SYSTEMS" count="01" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 auto-rows-fr">
+                    {completed.map((p, i) => (
+                        <BentoCard key={p.id} project={p} index={i} />
+                    ))}
+                    {completed.length < 2 && <FillerCard />}
+                </div>
             </div>
 
-            {/* --- LEGACY / OLD PORTFOLIOS --- */}
-            <div className="flex flex-col items-center mt-16 md:mt-24 mb-8 group px-2 text-center">
-                <HackerText
-                    text="OLD_PORTFOLIOS"
-                    triggerOnMount={true}
-                    triggerOnHover={false}
-                    speed={50}
-                    className="font-bold text-zinc-900 text-2xl md:text-5xl tracking-tighter text-center font-mono mb-4"
-                />
-                <p className="text-zinc-500 leading-relaxed text-sm md:text-lg font-medium max-w-2xl">
-                    I started web development during my <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-cyan-500 transition-all">first year</span> of Mathematics back in <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-sky-500 transition-all">2023</span>. It's Been <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-blue-500 transition-all">3</span> years of learning. 
-                    <br /><br />
-                    Here is the work I have done over the past few years. We can see <span className="text-zinc-900 font-bold underline decoration-zinc-300 decoration-4 underline-offset-4 group-hover:decoration-indigo-500 transition-all">serious, consistent improvements</span> over the years.
-                </p>
+            {/* --- W.I.P SECTION --- */}
+            <div className="mb-24">
+                <SectionHeader title="IN_DEVELOPMENT" count="03" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 auto-rows-fr">
+                    {wip.map((p, i) => (
+                        <BentoCard key={p.id} project={p} index={i} />
+                    ))}
+                    {wip.length < 2 && <FillerCard />}
+                </div>
             </div>
 
-            <div className="flex flex-col border-t border-zinc-800">
-                {legacy_projects.map((p, i) => (
-                    <ProjectRow 
-                        key={p.id} 
-                        project={p} 
-                        index={i} 
-                        isExpanded={expanded === p.id}
-                        onToggle={() => handleToggle(p.id)}
-                        isHovered={hovered === p.id}
-                        onHover={() => setHovered(p.id)}
-                        onLeave={() => setHovered(null)}
-                    />
-                ))}
+            {/* --- LEGACY SECTION --- */}
+            <div className="mb-12">
+                <SectionHeader title="LEGACY_ARCHIVES" count="OLD" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 auto-rows-fr">
+                    {legacy.map((p, i) => (
+                        <BentoCard key={p.id} project={p} index={i} />
+                    ))}
+                    {legacy.length < 2 && <FillerCard />}
+                </div>
             </div>
+            
         </section>
     </motion.div>
   );

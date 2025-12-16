@@ -4,6 +4,7 @@ import BoxedHeader from "../../BoxedHeader";
 import HighText from "../../HighText";
 import Me from "@/public/me.jpg";
 import { useEffect, useRef, useState } from "react";
+import MagneticPill from "@/components/MagneticPill";
 
 const METRICS = [
   { label: "CORE FOCUS", value: "FRONTEND" },
@@ -11,6 +12,8 @@ const METRICS = [
   { label: "EXPERIENCE", value: "1 YEAR" },
   { label: "STATUS", value: "AVAILABLE" },
 ];
+
+const FACTS = ["Python", "Maths", "Systems", "Design"];
 
 export default function Pt1() {
   const [isMeVisible, setIsMeVisible] = useState(false);
@@ -44,8 +47,8 @@ export default function Pt1() {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-      <div className="bg-lime-200 flex flex-col justify-between group p-8 border-3 border-lime-950 rounded-xl transition-all duration-300 h-full">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full my-16">
+      <div className="bg-lime-200 flex flex-col justify-between group p-8 border-3 border-lime-950 rounded-xl transition-all duration-300 h-full sm:col-span-2">
         <BoxedHeader
           text="Building Velocity."
           fillColor="bg-lime-800"
@@ -62,10 +65,9 @@ export default function Pt1() {
         </p>
       </div>
 
-      {/* 2. PHOTO (Right on Desktop) */}
       <div
         ref={meRef}
-        className="border-3 border-lime-950 relative overflow-hidden rounded-xl h-[400px] lg:h-auto group w-full"
+        className="border-3 border-lime-950 relative overflow-hidden rounded-xl h-[400px] sm:col-span-1 sm:h-full group"
       >
         <Image
           src={Me}
@@ -75,17 +77,28 @@ export default function Pt1() {
             isMeVisible ? "grayscale-0 scale-105" : "grayscale scale-100"
           }`}
         />
-        <div
-          className={`absolute top-4 right-4 transition-all duration-1000 delay-300 ${
-            isMeVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
-          }`}
-        ></div>
+
+        {/* PILLS CONTAINER */}
+        <div className="absolute top-4 right-4 flex flex-col items-end gap-3 z-10">
+          {FACTS.map((fact, i) => (
+            <div
+              key={fact}
+              className={`transition-all duration-500 ${
+                isMeVisible
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-12"
+              }`}
+              // Pass the index-based delay logic to the wrapper style
+              style={{ transitionDelay: `${i * 100 + 300}ms` }}
+            >
+              <MagneticPill children={fact} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* 3. METRICS (Bottom Full Width) */}
-      <div className="sm:col-span-2 border-3 border-lime-950 bg-yellow-200 rounded-xl relative overflow-hidden p-8 md:p-12 flex flex-row items-stretch min-h-[250px] md:min-h-[300px]">
+      <div className="sm:col-span-3 border-3 border-lime-950 bg-yellow-200 rounded-xl relative overflow-hidden p-8 md:p-12 flex flex-row items-stretch min-h-[250px] md:min-h-[300px]">
         <div className="absolute -top-[50px] -right-[50px] w-[300px] h-[300px] bg-linear-to-br from-lime-500/20 to-transparent blur-[80px] rounded-full pointer-events-none" />
 
         {/* LEFT SIDE: CONTENT */}

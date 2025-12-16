@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+// We don't need framer-motion here anymore, as MagneticPill handles it internally
+import MagneticPill from "@/components/MagneticPill"; 
 import HackerText from "./HackerText";
 
 type HackerHeaderProps = {
@@ -49,10 +51,12 @@ export default function HackerHeader({
     return () => observer.disconnect();
   }, []);
 
-  const pillClass = `${className} ${bgColour} px-4 rounded-full text-xs inline-flex items-center justify-center font-mono tracking-widest uppercase`;
+  // Shared styling: We pass this to the MagneticPill className
+  const pillClass = `${className} ${bgColour} px-4 py-1 rounded-full text-xs inline-flex items-center justify-center font-mono tracking-widest uppercase cursor-pointer select-none`;
 
   return (
-    <div ref={ref} className={`flex items-center gap-4 w-full overflow-hidden`}>
+    // CHANGED: overflow-hidden -> overflow-visible so pills don't get clipped when dragged
+    <div ref={ref} className={`flex items-center gap-4 w-full overflow-visible isolate`}>
       
       {/* Left Line */}
       {lineSide === "left" && (
@@ -68,36 +72,38 @@ export default function HackerHeader({
         />
       )}
 
-      {/* Prefix 1 (e.g. "01") */}
+      {/* Prefix 1 */}
       {prefix1 && (
-        <span className={pillClass}>
+        <MagneticPill strength={0.3} className={pillClass}>
              {prefix1}
-        </span>
+        </MagneticPill>
       )}
 
-      {/* Prefix 2 (e.g. "02") */}
+      {/* Prefix 2 */}
       {prefix2 && (
-        <span className={pillClass}>
+        <MagneticPill strength={0.3} className={pillClass}>
              {prefix2}
-        </span>
+        </MagneticPill>
       )}
 
-      {/* Prefix 3 (e.g. "03") */}
+      {/* Prefix 3 */}
       {prefix3 && (
-        <span className={pillClass}>
+        <MagneticPill strength={0.3} className={pillClass}>
              {prefix3}
-        </span>
+        </MagneticPill>
       )}
 
       {/* Main Title */}
-      <HackerText
-        text={displayTitle}
-        className={pillClass}
-        speed={speed}
-        delay={delay}
-        triggerOnMount={inView} 
-        triggerOnHover={false}
-      />
+      <MagneticPill strength={0.3} className={pillClass}>
+        <HackerText
+          text={displayTitle}
+          speed={speed}
+          delay={delay}
+          triggerOnMount={inView} 
+          triggerOnHover={false}
+          className=""
+        />
+      </MagneticPill>
 
       {/* Right Line */}
       {lineSide === "right" && (
@@ -114,4 +120,4 @@ export default function HackerHeader({
       )}
     </div>
   );
-}
+} 

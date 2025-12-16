@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import MagneticPill from "@/components/MagneticPill"; 
 
 interface SectionHeaderProps {
   label: string;
@@ -7,10 +8,10 @@ interface SectionHeaderProps {
   textColor?: string;
 }
 
-export default function SectionHeader({ 
-  label, 
+export default function SectionHeader({
+  label,
   lineColor = "bg-zinc-600",
-  textColor = "text-zinc-900" 
+  textColor = "text-zinc-900",
 }: SectionHeaderProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -32,40 +33,53 @@ export default function SectionHeader({
   }, []);
 
   return (
-    <div ref={ref} className="flex items-center gap-4 w-full overflow-hidden">
-      
-      {/* Left Line - Tapers to the Left */}
-      <div 
+    <div
+      ref={ref}
+      className="flex items-center gap-4 w-full overflow-visible isolate"
+    >
+      {/* Left Line */}
+      <div
         className={`
           h-1 rounded-full flex-1 
           origin-right 
           transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] 
           ${lineColor}
           ${inView ? "scale-x-100" : "scale-x-0"}
-        `} 
+        `}
       />
-      
-      {/* Label Text */}
-      <span 
+
+      {/* Central Magnetic Pill Wrapper */}
+      <div
         className={`
-          tracking-widest font-mono uppercase ${lineColor} text-xs px-4 rounded-full 
-          transition-opacity duration-700 delay-300
-          ${textColor}
+          transition-opacity duration-700 delay-300 z-10
+          flex items-center justify-center
           ${inView ? "opacity-100" : "opacity-0"}
         `}
       >
-        {label}
-      </span>
-      
-      {/* Right Line - Tapers to the Right */}
-      <div 
+        <MagneticPill
+          strength={0.5}
+          className={`
+            px-4 py-2 rounded-full 
+            tracking-widest font-mono uppercase text-xs
+            flex items-center justify-center
+            ${lineColor} ${textColor}
+          `}
+        >
+          <span className="relative z-10 pointer-events-none">
+            {label}
+          </span>
+        </MagneticPill>
+      </div>
+
+      {/* Right Line */}
+      <div
         className={`
           h-1 rounded-full flex-1 
           origin-left 
           transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] 
           ${lineColor}
           ${inView ? "scale-x-100" : "scale-x-0"}
-        `} 
+        `}
       />
     </div>
   );

@@ -167,8 +167,6 @@ export default function Pt1() {
                 
                 transition={{ duration: 0.4, ease: "backOut" }}
                 onClick={() => setIsFlipped(!isFlipped)} 
-                
-                // UPDATED: Track hover state so useEffect can update cursor text dynamically
                 onMouseEnter={() => {
                   setIsHovering(true);
                   setCursor(cursorLabel, "text");

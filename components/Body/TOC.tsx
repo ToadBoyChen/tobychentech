@@ -57,7 +57,7 @@ function NavButton({
     <MagneticPill strength={0.2} className="w-full h-24 md:h-32">
       <a
         href={item.href}
-        className="group relative flex flex-col justify-between p-4 md:p-6 w-full h-full bg-lime-900/20 backdrop-blur-2xl border-3 border-lime-950 hover:border-lime-500/50 transition-colors duration-300 rounded-xl overflow-hidden cursor-pointer"
+        className="group relative flex flex-col justify-between p-4 w-full h-full transition-colors duration-300 rounded-xl overflow-hidden cursor-pointer"
       >
         <div className="flex justify-between items-start z-10">
           <span className="font-mono text-xs text-stone-500 group-hover:text-lime-500 transition-colors">

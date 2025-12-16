@@ -3,7 +3,7 @@ import Body from "@/components/Body";
 
 export default function Home() {
     return (
-        <main className="flex justify-center bg-black text-zinc-900 text-lg leading-relaxed text-justify">
+        <main className="flex justify-center bg-black text-zinc-900 text-xl md:text-2xl leading-relaxed text-justify transition-all duration-300 ease-in-out">
             <div>
                 <Navbar/>
                 <Body/>

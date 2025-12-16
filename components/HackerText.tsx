@@ -1,98 +1,47 @@
 "use client";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()<>?/-_=+[]{}|;:',. ";
-
-type HackerTextProps = {
+type NatureTextProps = {
   text: string;
   className?: string;
   triggerOnMount?: boolean;
   triggerOnHover?: boolean;
   speed?: number; 
-  delay?: number;
-  direction?: "ltr" | "rtl" | "center";
+  delay?: number; 
 };
 
-export default function HackerText({ 
-  text, 
-  className, 
-  triggerOnMount = true, 
+export default function NatureText({
+  text,
+  className = "",
+  triggerOnMount = true,
   triggerOnHover = true,
-  speed = 50,
+  speed = 40,
   delay = 0,
-  direction = "ltr"
-}: HackerTextProps) {
+}: NatureTextProps) {
+  const [isVisible, setIsVisible] = useState(false);
   
-  const [displayText, setDisplayText] = useState(text);
-  const [hasPlayed, setHasPlayed] = useState(false); // Track if animation has run once
+  // State to track if we are currently hovering
+  const [isHovered, setIsHovered] = useState(false);
   
-  // 1. REF: We need a reference to the DOM element to observe it
   const elementRef = useRef<HTMLSpanElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const startScramble = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-
-    const startTime = Date.now();
-    let isFinished = false;
-
-    const tick = () => {
-      if (isFinished) return;
-
-      const now = Date.now();
-      const elapsed = now - startTime;
-
-      const revealCount = Math.floor((elapsed - delay) / speed);
-
-      const currentText = text
-        .split("")
-        .map((char, index) => {
-          
-          let shouldReveal = false;
-          if (direction === "ltr") shouldReveal = index < revealCount;
-          else if (direction === "rtl") shouldReveal = index >= text.length - revealCount;
-          else if (direction === "center") {
-            const middle = text.length / 2;
-            const distFromCenter = Math.abs(index - middle);
-            shouldReveal = distFromCenter < revealCount / 2;
-          }
-
-          if (shouldReveal) return text[index];
-          return LETTERS[Math.floor(Math.random() * LETTERS.length)];
-        })
-        .join("");
-
-      setDisplayText(currentText);
-
-      if (revealCount >= text.length) {
-        isFinished = true;
-        clearInterval(intervalRef.current as NodeJS.Timeout);
-      }
-    };
-
-    tick();
-    intervalRef.current = setInterval(tick, 30);
-
-  }, [text, speed, delay, direction]);
-
-  // 2. INTERSECTION OBSERVER LOGIC
+  // 1. Entrance Logic
   useEffect(() => {
-    // If triggerOnMount is false, we just set the text and do nothing else
     if (!triggerOnMount) {
-      setDisplayText(text);
+      setIsVisible(true);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Run ONLY if it enters viewport AND hasn't played yet
-        if (entry.isIntersecting && !hasPlayed) {
-          startScramble();
-          setHasPlayed(true); // Mark as played so it doesn't re-run when scrolling back up
-          observer.disconnect(); // Stop observing to save resources
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            setIsVisible(true);
+          }, delay);
+          observer.disconnect();
         }
       },
-      { threshold: 0.2 } // Trigger when 10% of the text is visible
+      { threshold: 0.1 }
     );
 
     if (elementRef.current) {
@@ -100,21 +49,59 @@ export default function HackerText({
     }
 
     return () => observer.disconnect();
-  }, [triggerOnMount, startScramble, hasPlayed, text]);
+  }, [triggerOnMount, delay]);
 
+  // 2. Interaction Handlers
   const handleMouseEnter = () => {
     if (triggerOnHover) {
-      startScramble();
+      setIsHovered(true);
     }
   };
 
+  const handleMouseLeave = () => {
+    if (triggerOnHover) {
+      setIsHovered(false);
+    }
+  };
+
+  const characters = text.split("");
+
   return (
-    <span 
-      ref={elementRef} // Attach ref here
-      className={className}
+    <span
+      ref={elementRef}
+      className={`inline-block relative cursor-default ${className}`}
       onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave} // Add the leave handler here
+      aria-label={text}
     >
-      {displayText}
+      {characters.map((char, index) => {
+        const entranceDelay = `${index * speed}ms`;
+        
+        // Stagger the wave so they rise one by one on hover
+        const waveDelay = `${index * 30}ms`; 
+
+        return (
+          <span
+            key={index}
+            className="inline-block whitespace-pre transition-all duration-500 ease-[cubic-bezier(0.2,0.65,0.3,0.9)]"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              filter: isVisible ? "blur(0px)" : "blur(8px)",
+              
+              transform: isVisible
+                ? isHovered
+                  ? "translateY(-6px) rotate(3deg) scale(1.1)" // Position HELD while hovering
+                  : "translateY(0) rotate(0deg) scale(1)"      // Return to rest
+                : "translateY(15px) rotate(4deg) scale(0.9)", 
+
+              // Use waveDelay when hovering to ripple up, entranceDelay otherwise
+              transitionDelay: isHovered ? waveDelay : entranceDelay,
+            }}
+          >
+            {char}
+          </span>
+        );
+      })}
     </span>
   );
 }

@@ -155,7 +155,7 @@ export default function ScrollTracker({ activeSection }: ScrollTrackerProps) {
                 uppercase mix-blend-difference whitespace-nowrap
                 text-white font-black
                 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl]
-                text-md md:text-5xl lg:text-7xl
+                text-2xl md:text-5xl lg:text-7xl
                 tracking-widest md:tracking-[2vh] lg:tracking-[3vh]
             `}>
                 <HackerText 

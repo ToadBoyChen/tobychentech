@@ -215,7 +215,7 @@ export default function Body() {
             <Card isAboutActive={hasReached("about")} />
           </div>
 
-          <div className="bg-stone-50">
+          <div className="bg-lime-200">
             <div id="facts">
               <Facts isFactsActive={hasReached("facts")} />
             </div>

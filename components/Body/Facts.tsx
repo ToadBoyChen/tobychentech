@@ -33,7 +33,7 @@ export default function Facts({ isFactsActive }: FactsProps) {
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
-          className="w-full h-[30px] md:h-[50px] fill-lime-950 block overflow-visible"
+          className="w-full h-[50px] fill-lime-950 block overflow-visible"
         >
           <use href="#fixed-convex" />
         </svg>

@@ -3,41 +3,35 @@ import { useEffect, useRef, useState } from "react";
 import HackerText from "./HackerText";
 
 type HackerHeaderProps = {
-  text: string;
+  title?: string;
+  text?: string;
+  prefix1?: string;
+  prefix2?: string; 
+  prefix3?: string;
   lineSide?: "left" | "right";
-  lineColor?: string;
   className?: string;
   speed?: number;
   delay?: number;
-  size?: "small" | "large";
-  variant?: "default" | "light" | "dark"; // <--- New Variant Prop
+  bgColour?: string;
 };
 
 export default function HackerHeader({
+  title,
   text,
+  prefix1,
+  prefix2,
+  prefix3,
   lineSide = "right",
-  lineColor,
   className = "",
   speed = 40,
   delay = 0,
-  size = "small",
-  variant = "default",
+  bgColour = "bg-lime-600",
 }: HackerHeaderProps) {
   
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 
-  let finalLineColor = lineColor || "bg-zinc-600";
-  let variantTextColor = "";
-
-  if (variant === "light") {
-    variantTextColor = "text-stone-50"; 
-    if (!lineColor) finalLineColor = "bg-stone-50";
-  } 
-  else if (variant === "dark") {
-    variantTextColor = "text-zinc-900"; 
-    if (!lineColor) finalLineColor = "bg-zinc-900";
-  }
+  const displayTitle = title || text || ""; 
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,41 +49,65 @@ export default function HackerHeader({
     return () => observer.disconnect();
   }, []);
 
-  const containerStyles = size === "large" 
-    ? "font-mono text-xl uppercase tracking-widest"
-    : "font-mono text-md uppercase tracking-widest";
+  const pillClass = `${className} ${bgColour} px-4 rounded-full text-xs inline-flex items-center justify-center font-mono tracking-widest uppercase`;
 
   return (
-    <div ref={ref} className={`flex items-center gap-4 w-full overflow-hidden ${containerStyles}`}>
+    <div ref={ref} className={`flex items-center gap-4 w-full overflow-hidden`}>
+      
+      {/* Left Line */}
       {lineSide === "left" && (
         <div
           className={`
             flex-1 
             transition-transform duration-1000 ease-out delay-100 
             origin-right 
-            h-px
-            ${finalLineColor}
+            h-1 rounded-full
+            ${bgColour}
             ${inView ? "scale-x-100" : "scale-x-0"}
           `}
         />
       )}
+
+      {/* Prefix 1 (e.g. "01") */}
+      {prefix1 && (
+        <span className={pillClass}>
+             {prefix1}
+        </span>
+      )}
+
+      {/* Prefix 2 (e.g. "02") */}
+      {prefix2 && (
+        <span className={pillClass}>
+             {prefix2}
+        </span>
+      )}
+
+      {/* Prefix 3 (e.g. "03") */}
+      {prefix3 && (
+        <span className={pillClass}>
+             {prefix3}
+        </span>
+      )}
+
+      {/* Main Title */}
       <HackerText
-        text={text}
-        className={`${variantTextColor} ${className}`} 
+        text={displayTitle}
+        className={pillClass}
         speed={speed}
         delay={delay}
         triggerOnMount={inView} 
         triggerOnHover={false}
       />
 
+      {/* Right Line */}
       {lineSide === "right" && (
         <div
           className={`
             flex-1 
             transition-transform duration-1000 ease-out delay-200 
             origin-left 
-            h-px
-            ${finalLineColor}
+            h-1 rounded-full
+            ${bgColour}
             ${inView ? "scale-x-100" : "scale-x-0"}
           `}
         />

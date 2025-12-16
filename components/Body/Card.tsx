@@ -1,69 +1,78 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Me from "@/public/me.jpg";
 import HackerText from "../HackerText";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import CustomDiv from "../CustomDiv";
 import HackerHeader from "../HackerHeader";
 import Hike from "@/public/hike.jpeg";
 import Kew from "@/public/kewfinger.jpg";
-import HighText from "../HighText";
-
-// --- DATA CONSTANTS ---
-const METRICS = [
-  { label: "CORE FOCUS", value: "FRONTEND" },
-  { label: "CURRENTLY BASED IN", value: "LDN, UK" },
-  { label: "EXPERIENCE", value: "1 YEAR" },
-  { label: "STATUS", value: "AVAILABLE" },
-];
+import { ArrowUpRight, Plus, Briefcase, GraduationCap } from "lucide-react";
+import Pt1 from "./card/pt1";
 
 const EXPERIENCE = [
   {
     year: "2025 - PRES",
     role: "FullStack Developer",
     org: "Freelance",
-    desc: "Building beautiful web applications for clients.",
+    desc: "Building beautiful web applications for clients. Focusing on React, Next.js, and high-performance UI.",
   },
   {
     year: "2023 - PRES",
     role: "Data Engineer",
     org: "DataAnnotation",
-    desc: "Produce, test and validate training data for AIs.",
+    desc: "Producing, testing and validating RLHF training data for large language models.",
   },
 ];
 
 const EDUCATION = [
   {
     year: "2023 - 2026",
-    role: "BSc (Hons) Mathematics",
-    org: "Queen Mary University of London",
-    desc: "Focus on Group Theory, Number Theory, Ring Theory and Dynamical systems.",
+    role: "BSc Mathematics",
+    org: "Queen Mary University",
+    desc: "Specializing in Abstract Algebra, Group Theory, and Dynamical Systems.",
   },
   {
     year: "2022 - 2024",
-    role: "CertHE of Mathematics & Physics",
+    role: "CertHE Phys & Math",
     org: "Heriot-Watt University",
-    desc: "Intermediate mathematics and physics study, including basic Real Analysis and advanced Kinematics.",
+    desc: "Advanced Kinematics, Real Analysis, and Computational Physics.",
   },
 ];
 
-const INTERESTS = [
+const HOBBIES = [
   {
-    title: "Mathematics",
-    desc: "Mathematics is my academic study of choice. I love it so much I have specialised in Pure Maths.",
+    id: "01",
+    title: "MATHEMATICS",
+    subtitle: "Abstract Algebra",
+    desc: "My academic study of choice. I specialize in Group Theory and finding patterns where others see chaos.",
+    img: Me,
+    align: "object-center",
   },
   {
-    title: "Combat Sports",
-    desc: "I am aiming to become a professional MMA fighter! I have fought in the UK nationals for Kickboxing.",
+    id: "02",
+    title: "CONSERVATION",
+    subtitle: "Eco-Tech",
+    desc: "Deep appreciation for the wild. My long-term goal is to engineer tech solutions for reforestation.",
+    img: Kew,
+    align: "object-[center_60%]",
   },
   {
-    title: "Nature",
-    desc: "I love nature. I would love to work on conservation based projects.",
+    id: "03",
+    title: "EXPLORATION",
+    subtitle: "Global Nomadism",
+    desc: "Aspiring cosmopolitan. I don't just want to visit places; I want to code from every continent.",
+    img: Hike,
+    align: "object-center",
   },
   {
-    title: "Travel",
-    desc: "Travelling is what I intend to do after uni. I'd like to become a cosmopolitan.",
+    id: "04",
+    title: "COMBAT SPORTS",
+    subtitle: "Kickboxing / MMA",
+    desc: "Aiming to turn Pro. Competing in UK Nationals requires the same discipline as shipping complex code.",
+    img: Me,
+    align: "object-top",
   },
 ];
 
@@ -72,18 +81,9 @@ interface CardProps {
 }
 
 export default function Card({ isAboutActive }: CardProps) {
-  // 1. Separate states for independent animation
-  const [isMeVisible, setIsMeVisible] = useState(false);
-  const [isKewVisible, setIsKewVisible] = useState(false);
-  const [isHikeVisible, setIsHikeVisible] = useState(false);
-
-  // 2. Separate refs to track each image location
-  const meRef = useRef<HTMLDivElement>(null);
-  const kewRef = useRef<HTMLDivElement>(null);
-  const hikeRef = useRef<HTMLDivElement>(null);
-
-  const [metricIndex, setMetricIndex] = useState(0);
   const controls = useAnimation();
+
+  const [activeHobby, setActiveHobby] = useState<string | null>("01");
 
   const cardVariants = {
     hidden: { y: 100 },
@@ -98,38 +98,6 @@ export default function Card({ isAboutActive }: CardProps) {
     }
   }, [isAboutActive, controls]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMetricIndex((prev) => (prev + 1) % METRICS.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // 3. Set up independent observers
-  useEffect(() => {
-    const createObserver = (setState: (val: boolean) => void) => {
-      return new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setState(true);
-        },
-        { threshold: 0.3 }
-      );
-    };
-
-    const meObserver = createObserver(setIsMeVisible);
-    const kewObserver = createObserver(setIsKewVisible);
-    const hikeObserver = createObserver(setIsHikeVisible);
-
-    if (meRef.current) meObserver.observe(meRef.current);
-    if (kewRef.current) kewObserver.observe(kewRef.current);
-    if (hikeRef.current) hikeObserver.observe(hikeRef.current);
-
-    return () => {
-      meObserver.disconnect();
-      kewObserver.disconnect();
-      hikeObserver.disconnect();
-    };
-  }, []);
 
   return (
     <motion.div initial="hidden" animate={controls} variants={cardVariants}>
@@ -137,301 +105,246 @@ export default function Card({ isAboutActive }: CardProps) {
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
-          className="w-full h-[50px] fill-stone-50 block overflow-visible"
+          className="w-full h-[50px] fill-lime-950 block overflow-visible"
         >
           <use href="#fixed-convex" />
         </svg>
       </div>
 
-      <section className="relative px-6 md:px-20 lg:px-32 py-24 md:py-36 items-center justify-center z-10 bg-stone-50">
-        <style jsx>{`
-          @keyframes slideUpFade {
-            0% {
-              opacity: 0;
-              transform: translateY(10px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          .animate-slide-up {
-            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          }
-        `}</style>
-
-        <div className="flex flex-col items-center mb-16">
+      <section className="relative px-8 md:px-16 lg:px-64 py-24 md:py-36 items-center justify-center z-10 bg-lime-950 min-h-screen">
+        <div className="flex flex-col items-center mb-16 mt-8 gap-12">
+          <CustomDiv
+            label="PROFILE"
+            lineColor="bg-lime-800"
+            textColor="text-stone-50"
+          />
           <HackerText
             text="WHO AM I?"
             triggerOnMount={true}
             triggerOnHover={false}
-            className="font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono"
+            className="font-semibold text-7xl font-mono tracking-wider text-lime-200"
           />
-        </div>
-        <CustomDiv label="< PROFILE >" />
-
-        <div className="mb-6">
           <HackerHeader
-            text="01 01 // MISSION STATEMENT"
+            prefix1="01"
+            prefix2="01"
+            title="MISSION STATEMENT"
             lineSide="right"
-            size="large"
+            bgColour="bg-lime-800"
+            className="text-stone-50"
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-auto mb-24">
-          
-          <div className="lg:col-span-2 bg-zinc-100 rounded-3xl p-8 md:p-12 flex flex-col justify-between group transition-all duration-300 ease-out">
-            <div>
-              <p className="text-3xl md:text-5xl font-black mb-8 tracking-tighter">
-                Building the Foundation.
-              </p>
-              <p>
-                I am currently <HighText text="making my mark"/>.. As a developer without years under their belt, I compensate my lack of experience with a <HighText text="real love for programming"/> and <HighText text="genuine curiosity"/>
-                .
-                <br />
-                <br />
-                I'm yet to find a niche. It could be fullstack, algo-trading or anything else. All I know is that I want to <HighText text="code for you"/>.
-              </p>
-            </div>
-            <div className="mt-12 flex items-center justify-between gap-4 text-xs font-mono text-zinc-400 group-hover:text-zinc-900 transition-colors">
-              <span>STATUS: STUDENT</span>
-              <span className="h-px bg-current flex-1 opacity-20" />
-              <span>TYPE: MATHEMATICS</span>
-            </div>
-          </div>
+        <Pt1/>
 
-          <div
-            ref={meRef}
-            className="lg:col-span-1 lg:row-span-2 relative overflow-hidden bg-zinc-900 rounded-3xl h-[400px] lg:h-auto group"
-          >
-            <Image
-              src={Me}
-              alt="Toby Chen"
-              fill
-              className={`object-cover object-center transition-all duration-[1.5s] ease-out ${
-                isMeVisible ? "grayscale-0 scale-105" : "grayscale scale-100" // Uses isMeVisible
-              }`}
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80" />
-            <div
-              className={`absolute top-4 right-4 transition-all duration-1000 delay-300 ${
-                isMeVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              <p className="bg-white text-black text-xs font-bold px-2 py-1">
-                TOBY_CHEN_01.jpg
-              </p>
-            </div>
-          </div>
-          <div className="lg:col-span-2 bg-zinc-900 rounded-3xl p-8 flex flex-col justify-center items-center overflow-hidden transition-transform duration-300 relative min-h-[250px]">
-            <div
-              className="absolute inset-0 opacity-10 pointer-events-none"
-              style={{
-                backgroundImage:
-                  "radial-gradient(#ffffff 1px, transparent 1px)",
-                backgroundSize: "16px 16px",
-              }}
-            />
-            <div className="relative z-10 w-full text-center">
-              <div
-                key={metricIndex}
-                className="animate-slide-up flex flex-col gap-2"
+        {/* --- SECTION 2: THE HOBBY ARCHIVE --- */}
+        <div className="mb-8">
+          <HackerHeader
+            prefix1="01"
+            prefix2="01"
+            title="MISSION STATEMENT"
+            lineSide="right"
+          />
+        </div>
+
+        <div className="flex flex-col w-full mb-24 gap-2 border-lime-950">
+          {HOBBIES.map((hobby) => {
+            const isActive = activeHobby === hobby.id;
+
+            return (
+              <motion.div
+                key={hobby.id}
+                onClick={() => setActiveHobby(isActive ? null : hobby.id)}
+                className={`relative border-lime-950 cursor-pointer overflow-hidden transition-colors border-3 rounded-xl ${
+                  isActive ? "bg-lime-950" : "hover:bg-lime-900 duration-300"
+                }`}
               >
-                <p className="text-zinc-500 font-mono text-sm uppercase tracking-[0.2em]">
-                  {METRICS[metricIndex].label}
-                </p>
-                <p className="text-white font-black text-4xl md:text-5xl lg:text-7xl tracking-tighter">
-                  {METRICS[metricIndex].value}
-                </p>
-              </div>
-              <div className="flex justify-center gap-2 mt-8">
-                {METRICS.map((_, i) => (
+                {/* The Header Row */}
+                <div className="flex items-center justify-between p-6 md:p-8">
+                  <div className="flex items-center gap-6 md:gap-12">
+                    <span
+                      className={`font-mono text-base tracking-widest ${
+                        isActive ? "text-lime-400" : "text-lime-950"
+                      }`}
+                    >
+                      {hobby.id}
+                    </span>
+                    <h3
+                      className={`text-2xl hover:text-stone-50 md:text-5xl font-black uppercase tracking-tighter transition-colors duration-300 ${
+                        isActive ? "text-white" : "text-lime-950"
+                      }`}
+                    >
+                      {hobby.title}
+                    </h3>
+                  </div>
+
                   <div
-                    key={i}
-                    className={`h-1 rounded-full transition-all duration-300 ${
-                      i === metricIndex ? "w-8 bg-white" : "w-2 bg-zinc-700"
+                    className={`p-2 rounded-full border transition-all duration-300 ${
+                      isActive
+                        ? "border-lime-400 rotate-45"
+                        : "border-lime-950/30 rotate-0"
                     }`}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="absolute -right-4 -bottom-8 text-[6rem] md:text-[8rem] font-black text-white/5 select-none pointer-events-none">
-              2004
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <HackerHeader
-            text="01 02 // MY HOBBIES"
-            lineSide="right"
-            size="large"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24 w-full">
-          <div className="md:col-span-2 lg:col-span-1 flex flex-col gap-4 h-full">
-            <div className="flex items-center justify-between border-b border-zinc-300 pb-2 mb-2">
-              <span className="font-mono text-xs text-zinc-400">
-                ARRAY[{INTERESTS.length}]
-              </span>
-            </div>
-
-            {INTERESTS.map((item, idx) => (
-              <div
-                key={idx}
-                className="relative bg-white rounded-3xl p-6 flex flex-col justify-center gap-2 hover:shadow-lg transition-all group flex-1 min-h-[140px]"
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="text-xl md:text-2xl lg:text-3xl font-black uppercase group-hover:text-lime-400 transition-colors">
-                    {item.title}
-                  </h3>
-                  <div className="font-mono text-sm text-zinc-400 group-hover:text-zinc-900 transition-colors">
-                    [0{idx + 1}]
+                  >
+                    {isActive ? (
+                      <Plus className="text-lime-400" />
+                    ) : (
+                      <Plus className="text-lime-950" />
+                    )}
                   </div>
                 </div>
-                <p>
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
 
-          {/* --- COLUMN 2: IMAGE 1 (Kew) --- */}
-          <div
-            ref={kewRef} // Linked to kewRef
-            className="md:col-span-1 relative bg-zinc-900 rounded-3xl min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center"
-          >
-            <Image
-              src={Kew}
-              alt="Toby in Kew Gardens"
-              fill
-              unoptimized
-              className={`object-cover object-[center_55%] transition-all duration-[1.5s] ease-out ${
-                isKewVisible // Uses isKewVisible
-                  ? "grayscale-0 scale-105"
-                  : "grayscale scale-100 opacity-70"
-              }`}
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-zinc-900 via-transparent to-transparent opacity-60" />
-
-            <div
-              className={`absolute bottom-6 right-6 transition-all duration-1000 delay-300 ${
-                isKewVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              <p className="bg-white text-black text-xs font-bold px-2 py-1">
-                KEW_GARDENS.jpg
-              </p>
-            </div>
-          </div>
-
-          {/* --- COLUMN 3: IMAGE 2 (Hike) --- */}
-          <div
-            ref={hikeRef} // Linked to hikeRef
-            className="md:col-span-1 relative bg-zinc-900 rounded-3xl min-h-[300px] md:min-h-[400px] lg:h-full group overflow-hidden flex items-center justify-center"
-          >
-            <Image
-              src={Hike}
-              alt="Toby on a hike"
-              unoptimized
-              fill
-              className={`object-cover object-center transition-all duration-[1.5s] ease-out ${
-                isHikeVisible // Uses isHikeVisible
-                  ? "grayscale-0 scale-105"
-                  : "grayscale scale-100 opacity-70"
-              }`}
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-zinc-900 via-transparent to-transparent opacity-60" />
-
-            <div
-              className={`absolute bottom-6 left-6 transition-all duration-1000 delay-300 ${
-                isHikeVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              <p className="bg-white text-black text-xs font-bold px-2 py-1">
-                BRIGHTON_HIKE.jpg
-              </p>
-            </div>
-          </div>
+                {/* Expanded Content */}
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        duration: 0.4,
+                        ease: [0.04, 0.62, 0.23, 0.98],
+                      }}
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8 pt-0">
+                        <div className="relative h-[250px] md:h-[350px] w-full rounded-2xl overflow-hidden border border-white/10 group">
+                          <Image
+                            src={hobby.img}
+                            alt={hobby.title}
+                            fill
+                            className={`object-cover ${hobby.align} grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100`}
+                          />
+                          <div className="absolute inset-0 bg-lime-950/20 mix-blend-multiply pointer-events-none" />
+                          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] opacity-20 pointer-events-none" />
+                        </div>
+                        <div className="flex flex-col justify-between py-2">
+                          <div>
+                            <div className="inline-block px-3 py-1 mb-4 border border-lime-400/30 rounded-full bg-lime-400/10">
+                              <span className="font-mono text-xs text-lime-400 uppercase tracking-widest">
+                                // {hobby.subtitle}
+                              </span>
+                            </div>
+                            <p className="text-lg md:text-xl text-zinc-300 font-medium leading-relaxed max-w-md">
+                              {hobby.desc}
+                            </p>
+                          </div>
+                          <div className="mt-8 md:mt-0 pt-8 border-t border-white/10 flex items-center justify-between">
+                            <span className="font-mono text-xs text-lime-400/50">
+                              IMAGE_REF: IMG_{hobby.id}_001.JPG
+                            </span>
+                            <ArrowUpRight className="text-lime-400" />
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
 
-        <div className="mb-6">
+        {/* --- SECTION 3: SYSTEM LOGS (EXPERIENCE & EDUCATION) --- */}
+        <div className="mb-12">
           <HackerHeader
-            text="01 03 // PAST EXPERIENCE"
+            prefix1="01"
+            prefix2="01"
+            title="MISSION STATEMENT"
             lineSide="right"
-            size="large"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12 w-full mx-auto">
-          <div className="flex flex-col gap-8">
-            <div className="mb-6 w-full">
-              <HackerHeader
-                text="01 03 01 // WORK EXPERIENCE"
-                lineSide="left"
-              />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 w-full">
+          {/* COLUMN 1: RUNTIME HISTORY (Experience) */}
+          <div>
+            <div className="flex items-center gap-4 mb-12">
+              <div className="p-3 bg-lime-950 rounded-lg text-lime-200">
+                <Briefcase size={20} />
+              </div>
+              <h3 className="font-mono text-lg text-lime-950 font-bold tracking-[0.2em] uppercase">
+                RUNTIME_HISTORY
+              </h3>
             </div>
 
-            {EXPERIENCE.map((item, idx) => (
-              <div
-                key={idx}
-                className="relative pl-8 border-l border-zinc-400 group hover:border-zinc-900 transition-colors py-2"
-              >
-                <div className="absolute -left-[5px] top-3 w-2.5 h-2.5 bg-zinc-500 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50" />
-                <span className="font-mono text-sm text-zinc-400 mb-4 block group-hover:text-lime-500">
-                  {item.year}
-                </span>
-                <h4 className="text-2xl md:3xl font-bold text-zinc-900">
-                  {item.role}
-                </h4>
-                <p className="text-md font-bold text-zinc-500 mb-4 group-hover:text-lime-700">
-                  {item.org}
-                </p>
-                <p className="text-lg">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+            <div className="relative border-l-2 border-lime-950/20 ml-4 space-y-12">
+              {EXPERIENCE.map((item, idx) => (
+                <div key={idx} className="group relative pl-10">
+                  {/* Connector Dot */}
+                  <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 border-lime-950 bg-lime-200 group-hover:bg-lime-950 transition-colors duration-300 z-10" />
+
+                  {/* Content */}
+                  <div className="flex flex-col gap-2">
+                    {/* Metadata Tag */}
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-xs font-bold text-lime-950/70 bg-lime-950/5 px-2 py-1 rounded group-hover:bg-lime-950 group-hover:text-lime-200 transition-colors">
+                        [{item.year}]
+                      </span>
+                      <span className="h-[1px] w-8 bg-lime-950/20" />
+                    </div>
+
+                    {/* Main Text */}
+                    <div className="group-hover:translate-x-2 transition-transform duration-300">
+                      <h4 className="text-3xl md:text-4xl font-black text-lime-950 uppercase leading-none tracking-tighter">
+                        {item.role}
+                      </h4>
+                      <span className="block mt-2 font-mono text-sm font-bold text-lime-700 uppercase tracking-widest">
+                        @ {item.org}
+                      </span>
+                      <p className="mt-4 text-lg text-lime-900/80 leading-relaxed font-medium">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col gap-8 md:items-end w-full">
-            <div className="mb-6 w-full text-right">
-              <HackerHeader
-                text="01 03 02 // HIGHER EDUCATION"
-                lineSide="left"
-                className="justify-end"
-              />
+
+          {/* COLUMN 2: KERNEL MODULES (Education) */}
+          <div>
+            <div className="flex items-center gap-4 mb-12">
+              <div className="p-3 bg-lime-950 rounded-lg text-lime-200">
+                <GraduationCap size={20} />
+              </div>
+              <h3 className="font-mono text-lg text-lime-950 font-bold tracking-[0.2em] uppercase">
+                KERNEL_MODULES
+              </h3>
             </div>
 
-            {EDUCATION.map((item, idx) => (
-              <div
-                key={idx}
-                className="relative pl-8 md:pl-0 md:pr-8 border-l md:border-l-0 md:border-r border-zinc-400 group hover:border-zinc-900 transition-colors py-2 flex flex-col md:items-end w-full"
-              >
-                <div className="absolute top-3 w-2.5 h-2.5 bg-zinc-500 rounded-full group-hover:bg-zinc-900 transition-colors outline outline-stone-50 -left-[5px] md:left-auto md:-right-[5px]" />
+            <div className="relative border-l-2 border-lime-950/20 ml-4 space-y-12">
+              {EDUCATION.map((item, idx) => (
+                <div key={idx} className="group relative pl-10">
+                  {/* Connector Dot */}
+                  <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 border-lime-950 bg-lime-200 group-hover:bg-lime-950 transition-colors duration-300 z-10" />
 
-                <span className="font-mono text-sm text-zinc-400 mb-4 block group-hover:text-lime-500">
-                  {item.year}
-                </span>
-                <h4 className="text-2xl md:text-right font-bold">
-                  {item.role}
-                </h4>
-                <p className="text-md md:text-right font-bold text-zinc-500 mb-4 group-hover:text-lime-700">
-                  {item.org}
-                </p>
-                <p className="text-lg md:text-right max-w-md">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+                  {/* Content */}
+                  <div className="flex flex-col gap-2">
+                    {/* Metadata Tag */}
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-xs font-bold text-lime-950/70 bg-lime-950/5 px-2 py-1 rounded group-hover:bg-lime-950 group-hover:text-lime-200 transition-colors">
+                        [{item.year}]
+                      </span>
+                      <span className="h-[1px] w-8 bg-lime-950/20" />
+                    </div>
+
+                    {/* Main Text */}
+                    <div className="group-hover:translate-x-2 transition-transform duration-300">
+                      <h4 className="text-3xl md:text-4xl font-black text-lime-950 uppercase leading-none tracking-tighter">
+                        {item.role}
+                      </h4>
+                      <span className="block mt-2 font-mono text-sm font-bold text-lime-700 uppercase tracking-widest">
+                        @ {item.org}
+                      </span>
+                      <p className="mt-4 text-lg text-lime-900/80 leading-relaxed font-medium">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="mt-12">
+
+        <div className="mt-24">
           <CustomDiv label="</ PROFILE >" />
         </div>
       </section>

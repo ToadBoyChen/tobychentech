@@ -1,22 +1,22 @@
 interface HighlightTextProps {
   text: string;
   className?: string;
-  colour?: "lime" | "blue" | "red"; 
+  colour?: "yellow" | "blue" | "red"; 
   variant?: "light" | "dark";
 }
 
 export default function HighlightText({ 
   text, 
   className = "", 
-  colour = "lime",
+  colour = "yellow",
   variant = "dark"
 }: HighlightTextProps) {
 
   const textColor = variant === "light" ? "text-stone-50" : "text-zinc-900";
-  const underlineBase = variant === "light" ? "decoration-lime-800" : "decoration-zinc-300";
+  const underlineBase = variant === "light" ? "decoration-yellow-400" : "decoration-lime-500";
 
   const hoverColors = {
-    lime: "group-hover:decoration-lime-400",
+    yellow: "group-hover:decoration-yellow-400",
     blue: "group-hover:decoration-blue-500",
     red: "group-hover:decoration-red-500",
   };

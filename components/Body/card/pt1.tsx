@@ -1,24 +1,47 @@
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import BoxedHeader from "../../BoxedHeader";
 import HighText from "../../HighText";
 import Me from "@/public/me.jpg";
 import { useEffect, useRef, useState } from "react";
 import MagneticPill from "@/components/MagneticPill";
+import NatureText from "@/components/HackerText";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCursor } from "@/context/CursorContext";
 
 const METRICS = [
-  { label: "CORE FOCUS", value: "FRONTEND" },
-  { label: "CURRENTLY BASED IN", value: "LDN, UK" },
-  { label: "EXPERIENCE", value: "1 YEAR" },
-  { label: "STATUS", value: "AVAILABLE" },
+  { 
+    label: "CORE FOCUS", 
+    value: "FRONTEND", 
+    details: "Specializing in React, Next.js, and high-performance UI engineering." 
+  },
+  { 
+    label: "CURRENTLY BASED IN", 
+    value: "LDN, UK", 
+    details: "Based in London. Available for hybrid or remote collaboration globally." 
+  },
+  { 
+    label: "EXPERIENCE", 
+    value: "1 YEAR", 
+    details: "Intensive commercial experience shipping production-grade applications." 
+  },
+  { 
+    label: "STATUS", 
+    value: "AVAILABLE", 
+    details: "Currently open to new opportunities. Ready to ship impact immediately." 
+  },
 ];
-
-const FACTS = ["Python", "Maths", "Systems", "Design"];
 
 export default function Pt1() {
   const [isMeVisible, setIsMeVisible] = useState(false);
   const meRef = useRef<HTMLDivElement>(null);
-
+  const { setCursor, resetCursor } = useCursor();
+  
+  const [isPaused, setIsPaused] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+  
+  // NEW: State to track if mouse is inside the flipper
+  const [isHovering, setIsHovering] = useState(false);
+  
   const [metricIndex, setMetricIndex] = useState(0);
 
   useEffect(() => {
@@ -39,20 +62,40 @@ export default function Pt1() {
     };
   }, []);
 
-  // Metrics Autoplay
+  // Timer: Pauses on hover OR flip.
   useEffect(() => {
+    if (isPaused || isFlipped) return;
+
     const interval = setInterval(() => {
       setMetricIndex((prev) => (prev + 1) % METRICS.length);
     }, 3000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [isPaused, isFlipped, metricIndex]);
+
+  const handleManualChange = (index: number) => {
+    setMetricIndex(index);
+    setIsFlipped(false);
+  };
+
+  const cursorLabel = isFlipped ? "RESET" : "FLIP";
+
+  // NEW: Sync cursor text immediately when 'isFlipped' changes
+  useEffect(() => {
+    if (isHovering) {
+      setCursor(cursorLabel, "text");
+    }
+  }, [isFlipped, isHovering, cursorLabel, setCursor]);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full my-16">
-      <div className="bg-lime-200 flex flex-col justify-between group p-8 border-3 border-lime-950 rounded-xl transition-all duration-300 h-full sm:col-span-2">
+      
+      {/* 1. MISSION TEXT */}
+      <div className="bg-lime-200 flex flex-col justify-between group p-8 border-3 border-lime-700 rounded-xl transition-all duration-300 h-full sm:col-span-2">
         <BoxedHeader
-          text="Building Velocity."
-          fillColor="bg-lime-800"
-          className="bg-yellow-200"
+          text="Building Foundations."
+          fillColor="bg-yellow-500"
+          className="bg-lime-800 border-3 border-lime-950 p-4 rounded-xl text-4xl font-semibold text-stone-50 uppercase mb-8 hover:translate-x-1 hover:translate-y-1 transition-all duration-300 cursor-default"
         />
         <p>
           I am currently <HighText text="accelerating" />. I trade years of
@@ -65,9 +108,10 @@ export default function Pt1() {
         </p>
       </div>
 
+      {/* 2. PHOTO SECTION */}
       <div
         ref={meRef}
-        className="border-3 border-lime-950 relative overflow-hidden rounded-xl h-[400px] sm:col-span-1 sm:h-full group"
+        className="border-3 border-lime-700 relative overflow-hidden rounded-xl h-[400px] sm:col-span-1 sm:h-full group"
       >
         <Image
           src={Me}
@@ -77,74 +121,116 @@ export default function Pt1() {
             isMeVisible ? "grayscale-0 scale-105" : "grayscale scale-100"
           }`}
         />
-
-        {/* PILLS CONTAINER */}
-        <div className="absolute top-4 right-4 flex flex-col items-end gap-3 z-10">
-          {FACTS.map((fact, i) => (
-            <div
-              key={fact}
-              className={`transition-all duration-500 ${
-                isMeVisible
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-12"
-              }`}
-              // Pass the index-based delay logic to the wrapper style
-              style={{ transitionDelay: `${i * 100 + 300}ms` }}
-            >
-              <MagneticPill children={fact} />
-            </div>
-          ))}
+        <div className="absolute bottom-0 left-0 w-full h-[50vh] bg-linear-to-t from-black/30 to-transparent" />
+        <div className="absolute bottom-2 right-2 flex">
+          <MagneticPill strength={0.3}>
+            <BoxedHeader
+              text="Toby_Beach.png"
+              fillColor="bg-yellow-500"
+              className="px-2 py-1 rounded-full text-xs font-semibold font-mono text-stone-50 uppercase"
+            />
+          </MagneticPill>
         </div>
       </div>
 
-      {/* 3. METRICS (Bottom Full Width) */}
-      <div className="sm:col-span-3 border-3 border-lime-950 bg-yellow-200 rounded-xl relative overflow-hidden p-8 md:p-12 flex flex-row items-stretch min-h-[250px] md:min-h-[300px]">
+      {/* 3. METRICS SECTION */}
+      <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className="sm:col-span-3 border-3 border-lime-700 bg-yellow-200 rounded-xl relative overflow-hidden p-8 md:p-12 flex flex-row items-stretch min-h-[250px] md:min-h-[300px]"
+      >
         <div className="absolute -top-[50px] -right-[50px] w-[300px] h-[300px] bg-linear-to-br from-lime-500/20 to-transparent blur-[80px] rounded-full pointer-events-none" />
 
         {/* LEFT SIDE: CONTENT */}
         <div className="flex-1 flex flex-col justify-between z-10 mr-8">
-          {/* Top Label */}
+          
           <div className="h-8">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={METRICS[metricIndex].label}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-lime-700 font-mono text-xs md:text-sm uppercase tracking-widest font-bold"
-              >
-                {METRICS[metricIndex].label}
-              </motion.p>
-            </AnimatePresence>
+            <NatureText
+              key={METRICS[metricIndex].label}
+              text={METRICS[metricIndex].label}
+              className="text-lime-700 text-base uppercase tracking-widest font-bold"
+              speed={20}
+              triggerOnMount={true}
+              triggerOnHover={false}
+            />
           </div>
-          <div className="relative w-full overflow-hidden">
+
+          <div className="w-full relative perspective-[1000px] min-h-[140px]">
             <AnimatePresence mode="wait">
-              <motion.p
-                key={METRICS[metricIndex].value}
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 20,
+              <motion.div
+                key={metricIndex}
+                className="relative w-full preserve-3d cursor-pointer"
+                
+                initial={{ rotateX: -90, opacity: 0 }}
+                animate={{ rotateX: isFlipped ? 180 : 0, opacity: 1 }}
+                exit={{ rotateX: 90, opacity: 0 }}
+                
+                transition={{ duration: 0.4, ease: "backOut" }}
+                onClick={() => setIsFlipped(!isFlipped)} 
+                
+                // UPDATED: Track hover state so useEffect can update cursor text dynamically
+                onMouseEnter={() => {
+                  setIsHovering(true);
+                  setCursor(cursorLabel, "text");
                 }}
-                className="p-4 border-3 border-lime-950 rounded-xl bg-lime-200 text-lime-950 font-black text-5xl md:text-7xl lg:text-8xl"
+                onMouseLeave={() => {
+                  setIsHovering(false);
+                  resetCursor();
+                }}
+                
+                style={{ transformStyle: "preserve-3d" }}
               >
-                {METRICS[metricIndex].value}
-              </motion.p>
+                
+                {/* --- FRONT FACE --- */}
+                <div 
+                  className="p-4 border-3 border-lime-950 rounded-xl bg-lime-200 w-full backface-hidden hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-300"
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <NatureText
+                    key={METRICS[metricIndex].value}
+                    text={METRICS[metricIndex].value}
+                    className="text-lime-950 font-black text-5xl md:text-7xl lg:text-8xl block"
+                    speed={40}
+                    triggerOnMount={true}
+                    forceHoverState={isHovering && !isFlipped}
+                  />
+                </div>
+
+                {/* --- BACK FACE --- */}
+                <div 
+                  className="absolute inset-0 p-4 border-3 border-lime-950 rounded-xl bg-lime-950 w-full h-full flex items-center justify-center backface-hidden"
+                  style={{ 
+                    backfaceVisibility: "hidden", 
+                    transform: "rotateX(180deg)"
+                  }}
+                >
+                  <p className="text-lime-100 font-mono text-lg md:text-xl font-bold text-center leading-tight">
+                    {METRICS[metricIndex].details}
+                  </p>
+                </div>
+
+              </motion.div>
             </AnimatePresence>
           </div>
         </div>
-        <div className="flex flex-col justify-center gap-3 z-10 w-4">
+
+        {/* SIDEBAR */}
+        <div className="group flex flex-col justify-center gap-3 z-10 w-4 group/sidebar">
           {METRICS.map((_, i) => (
-            <div
+            <button
               key={i}
-              className={`border-2 border-lime-950 w-2 rounded-full transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-                i === metricIndex
-                  ? "h-16 bg-pink-400 opacity-100"
-                  : "h-2 bg-lime-200"
-              }`}
+              onClick={() => handleManualChange(i)}
+              className={`
+                border-2 border-lime-950 group-hover:w-4 group-hover:h-4 w-2 rounded-full 
+                transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] 
+                cursor-pointer
+                ${
+                  i === metricIndex
+                    ? "h-16 bg-pink-400 opacity-100"
+                    : "h-2 bg-lime-200 hover:h-8 hover:bg-pink-300"
+                }
+              `}
+              aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>

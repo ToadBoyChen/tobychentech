@@ -37,8 +37,8 @@ export default function Introduction({
           onLoad={onLoadComplete}
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute bottom-0 left-0 w-full h-[50vh] bg-linear-to-t from-black/90 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute bottom-0 left-0 w-full h-[50vh] bg-linear-to-t from-black via-black/50 to-transparent" />
       </div>
 
       {/* Content */}

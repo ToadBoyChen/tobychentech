@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/Footer";
+import { CursorProvider } from "@/context/CursorContext";
+import CustomCursor from "@/components/CustomCursor";
 import SectionShape from "@/components/SectionShape";
 
 const dmSans = DM_Sans({
@@ -13,7 +14,7 @@ const dmSans = DM_Sans({
 const dmMono = DM_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["300", "400", "500"], 
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -31,8 +32,11 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${dmMono.variable} antialiased font-sans bg-white text-zinc-900`}
       >
-        <SectionShape />
-        {children}
+        <CursorProvider>
+          <CustomCursor />
+          <SectionShape />
+          {children}
+        </CursorProvider>
       </body>
     </html>
   );

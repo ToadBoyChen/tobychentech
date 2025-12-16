@@ -2,48 +2,46 @@ import React from "react";
 
 interface BoxedHeaderProps {
   text: string;
-  className?: string;
-  fillColor?: string;
-  textSize?: string;
-  padding?: string;      // e.g. "p-4" or "p-8"
-  borderWidth?: string;  // e.g. "border-2" or "border-4"
+  className?: string;     // Handles all shape/size/border styling now
+  fillColor?: string;     // The color of the slide-in background
+  hoverTextColor?: string; // The color the text turns into
 }
 
 const BoxedHeader = ({ 
   text, 
   className = "", 
   fillColor = "bg-lime-950",
-  textSize = "text-4xl md:text-5xl lg:text-7xl",
-  padding = "p-4",
-  borderWidth = "border-3"
+  hoverTextColor = "group-hover:text-lime-100"
 }: BoxedHeaderProps) => {
   return (
     <div
       className={`
-        relative overflow-hidden 
-        ${borderWidth} border-lime-950 rounded-xl 
-        ${padding} mb-8 isolate 
-        ${className}
+        relative overflow-hidden isolate group
+        cursor-default
+        ${className} 
       `}
     >
+      {/* THE FILL EFFECT LAYER */}
       <div
         className={`
             absolute inset-y-0 left-0 w-[200%] z-[-1] 
-            transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]
+            transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
             -translate-x-[110%] group-hover:translate-x-0 
-            rounded-r-4xl
+            rounded-r-full
             ${fillColor}
         `}
       />
-      <h2 
+      
+      {/* TEXT LAYER */}
+      {/* Changed from <h2> to <span> for versatility */}
+      <span 
         className={`
-          ${textSize} 
-          font-black transition-colors duration-500 
-          group-hover:text-lime-100 relative z-10
+          relative z-10 transition-colors duration-300
+          ${hoverTextColor}
         `}
       >
         {text}
-      </h2>
+      </span>
     </div>
   );
 };

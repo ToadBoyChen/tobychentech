@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import HackerText from "../HackerText";
-import TOC from "../../lib/TOC";
+import TOC from "./TOC";
 import Wallpaper from "@/public/martin-bennie-LDAEJ1rySaQ-unsplash.jpg";
 
 interface IntroductionProps {

@@ -8,7 +8,6 @@ type NatureTextProps = {
   triggerOnHover?: boolean;
   speed?: number; 
   delay?: number;
-  // NEW PROP: Allows parent to control hover state
   forceHoverState?: boolean; 
 };
 
@@ -19,14 +18,12 @@ export default function NatureText({
   triggerOnHover = true,
   speed = 40,
   delay = 0,
-  forceHoverState, // Destructure new prop
+  forceHoverState,
 }: NatureTextProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [internalHover, setInternalHover] = useState(false); // Renamed for clarity
   
   const elementRef = useRef<HTMLSpanElement>(null);
-
-  // Determine effective hover state: Prop takes priority over internal state
   const isHovered = forceHoverState !== undefined ? forceHoverState : internalHover;
 
   // 1. Entrance Logic

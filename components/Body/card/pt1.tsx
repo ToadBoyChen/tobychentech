@@ -95,7 +95,7 @@ export default function Pt1() {
         <BoxedHeader
           text="Building Foundations."
           fillColor="bg-lime-500"
-          className="bg-lime-900 px-8 py-4 mb-8 self-center rounded-xl text-4xl font-semibold text-lime-200 uppercase transition-all duration-300 w-full"
+          className="bg-lime-900 px-8 py-4 mb-8 self-center rounded-xl text-5xl font-semibold text-lime-200 uppercase transition-all duration-300 w-full"
         />
         <div className="text-stone-50 bg-lime-900 p-8 flex flex-col justify-between group rounded-xl transition-all duration-300">
           <p>
@@ -214,12 +214,12 @@ export default function Pt1() {
                 onClick={() => handleManualChange(i)}
                 className={`
         w-6 rounded-full 
-        transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] 
+        transition-all duration-300 hover:bg-yellow-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] 
         cursor-pointer
         ${
           i === metricIndex
             ? "h-16 bg-lime-900 opacity-100"
-            : "h-6 bg-lime-500 hover:bg-yellow-500"
+            : "h-6 bg-lime-500"
         }
       `}
                 aria-label={`Go to slide ${i + 1}`}

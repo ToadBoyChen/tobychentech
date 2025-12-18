@@ -19,7 +19,7 @@ const dmMono = DM_Mono({
 
 export const metadata: Metadata = {
   title: "Toby Chen",
-  description: "Full Stack Developer & Mathematician",
+  description: "Full Stack Developer, Mathematician and Amateur Fighter",
 };
 
 export default function RootLayout({

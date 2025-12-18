@@ -10,6 +10,7 @@ import Hike from "@/public/hike.jpeg";
 import Kew from "@/public/kewfinger.jpg";
 import { ArrowUpRight, Plus, Briefcase, GraduationCap } from "lucide-react";
 import Pt1 from "./card/pt1";
+import Pt2 from "./card/pt2";
 
 const EXPERIENCE = [
   {
@@ -41,50 +42,12 @@ const EDUCATION = [
   },
 ];
 
-const HOBBIES = [
-  {
-    id: "01",
-    title: "MATHEMATICS",
-    subtitle: "Abstract Algebra",
-    desc: "My academic study of choice. I specialize in Group Theory and finding patterns where others see chaos.",
-    img: Me,
-    align: "object-center",
-  },
-  {
-    id: "02",
-    title: "CONSERVATION",
-    subtitle: "Eco-Tech",
-    desc: "Deep appreciation for the wild. My long-term goal is to engineer tech solutions for reforestation.",
-    img: Kew,
-    align: "object-[center_60%]",
-  },
-  {
-    id: "03",
-    title: "EXPLORATION",
-    subtitle: "Global Nomadism",
-    desc: "Aspiring cosmopolitan. I don't just want to visit places; I want to code from every continent.",
-    img: Hike,
-    align: "object-center",
-  },
-  {
-    id: "04",
-    title: "COMBAT SPORTS",
-    subtitle: "Kickboxing / MMA",
-    desc: "Aiming to turn Pro. Competing in UK Nationals requires the same discipline as shipping complex code.",
-    img: Me,
-    align: "object-top",
-  },
-];
-
 interface CardProps {
   isAboutActive: boolean;
 }
 
 export default function Card({ isAboutActive }: CardProps) {
   const controls = useAnimation();
-
-  const [activeHobby, setActiveHobby] = useState<string | null>("01");
-
   const cardVariants = {
     hidden: { y: 100 },
     visible: { y: 0, transition: { duration: 0.6 } },
@@ -136,111 +99,18 @@ export default function Card({ isAboutActive }: CardProps) {
 
         <Pt1/>
 
-        {/* --- SECTION 2: THE HOBBY ARCHIVE --- */}
         <div className="mb-8">
           <HackerHeader
             prefix1="01"
-            prefix2="01"
-            title="MISSION STATEMENT"
+            prefix2="02"
+            title="Hobby Stack"
             lineSide="right"
+            bgColour="bg-lime-800"
+            className="text-stone-50"
           />
         </div>
 
-        <div className="flex flex-col w-full mb-24 gap-2 border-lime-950">
-          {HOBBIES.map((hobby) => {
-            const isActive = activeHobby === hobby.id;
-
-            return (
-              <motion.div
-                key={hobby.id}
-                onClick={() => setActiveHobby(isActive ? null : hobby.id)}
-                className={`relative border-lime-950 cursor-pointer overflow-hidden transition-colors border-3 rounded-xl ${
-                  isActive ? "bg-lime-950" : "hover:bg-lime-900 duration-300"
-                }`}
-              >
-                {/* The Header Row */}
-                <div className="flex items-center justify-between p-6 md:p-8">
-                  <div className="flex items-center gap-6 md:gap-12">
-                    <span
-                      className={`font-mono text-base tracking-widest ${
-                        isActive ? "text-lime-400" : "text-lime-950"
-                      }`}
-                    >
-                      {hobby.id}
-                    </span>
-                    <h3
-                      className={`text-2xl hover:text-stone-50 md:text-5xl font-black uppercase tracking-tighter transition-colors duration-300 ${
-                        isActive ? "text-white" : "text-lime-950"
-                      }`}
-                    >
-                      {hobby.title}
-                    </h3>
-                  </div>
-
-                  <div
-                    className={`p-2 rounded-full border transition-all duration-300 ${
-                      isActive
-                        ? "border-lime-400 rotate-45"
-                        : "border-lime-950/30 rotate-0"
-                    }`}
-                  >
-                    {isActive ? (
-                      <Plus className="text-lime-400" />
-                    ) : (
-                      <Plus className="text-lime-950" />
-                    )}
-                  </div>
-                </div>
-
-                {/* Expanded Content */}
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        ease: [0.04, 0.62, 0.23, 0.98],
-                      }}
-                    >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8 pt-0">
-                        <div className="relative h-[250px] md:h-[350px] w-full rounded-2xl overflow-hidden border border-white/10 group">
-                          <Image
-                            src={hobby.img}
-                            alt={hobby.title}
-                            fill
-                            className={`object-cover ${hobby.align} grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100`}
-                          />
-                          <div className="absolute inset-0 bg-lime-950/20 mix-blend-multiply pointer-events-none" />
-                          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] opacity-20 pointer-events-none" />
-                        </div>
-                        <div className="flex flex-col justify-between py-2">
-                          <div>
-                            <div className="inline-block px-3 py-1 mb-4 border border-lime-400/30 rounded-full bg-lime-400/10">
-                              <span className="font-mono text-xs text-lime-400 uppercase tracking-widest">
-                                // {hobby.subtitle}
-                              </span>
-                            </div>
-                            <p className="text-lg md:text-xl text-zinc-300 font-medium leading-relaxed max-w-md">
-                              {hobby.desc}
-                            </p>
-                          </div>
-                          <div className="mt-8 md:mt-0 pt-8 border-t border-white/10 flex items-center justify-between">
-                            <span className="font-mono text-xs text-lime-400/50">
-                              IMAGE_REF: IMG_{hobby.id}_001.JPG
-                            </span>
-                            <ArrowUpRight className="text-lime-400" />
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
+        <Pt2/>
 
         {/* --- SECTION 3: SYSTEM LOGS (EXPERIENCE & EDUCATION) --- */}
         <div className="mb-12">

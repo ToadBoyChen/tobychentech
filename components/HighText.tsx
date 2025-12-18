@@ -13,7 +13,7 @@ export default function HighlightText({
 }: HighlightTextProps) {
 
   const textColor = variant === "light" ? "text-stone-50" : "text-zinc-900";
-  const underlineBase = variant === "light" ? "decoration-yellow-400" : "decoration-lime-500";
+  const underlineBase = variant === "light" ? "decoration-lime-500" : "decoration-lime-500";
 
   const hoverColors = {
     yellow: "group-hover:decoration-yellow-400",

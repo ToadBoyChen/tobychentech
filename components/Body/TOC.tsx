@@ -59,10 +59,7 @@ function NavButton({
         href={item.href}
         className="group relative flex flex-col justify-between p-4 w-full h-full transition-colors duration-300 rounded-xl overflow-hidden cursor-pointer"
       >
-        <div className="flex justify-between items-start z-10">
-          <span className="font-mono text-xs text-stone-500 group-hover:text-lime-500 transition-colors">
-            {item.id}
-          </span>
+        <div className="flex justify-end items-end z-10">
           <ArrowUpRight className="text-stone-500 group-hover:text-lime-500 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 w-4 h-4" />
         </div>
         <div className="mt-auto z-10">

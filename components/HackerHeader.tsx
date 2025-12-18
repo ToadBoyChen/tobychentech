@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-// We don't need framer-motion here anymore, as MagneticPill handles it internally
 import MagneticPill from "@/components/MagneticPill"; 
 import HackerText from "./HackerText";
 
@@ -50,12 +49,9 @@ export default function HackerHeader({
 
     return () => observer.disconnect();
   }, []);
-
-  // Shared styling: We pass this to the MagneticPill className
-  const pillClass = `${className} ${bgColour} px-4 py-1 rounded-full text-xs inline-flex items-center justify-center font-mono tracking-widest uppercase cursor-pointer select-none`;
+  const pillClass = `${className} ${bgColour} px-4 rounded-full text-xs inline-flex items-center justify-center font-mono tracking-widest uppercase select-none`;
 
   return (
-    // CHANGED: overflow-hidden -> overflow-visible so pills don't get clipped when dragged
     <div ref={ref} className={`flex items-center gap-4 w-full overflow-visible isolate`}>
       
       {/* Left Line */}

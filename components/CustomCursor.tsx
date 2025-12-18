@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import { useCursor } from "@/context/CursorContext";
 
@@ -29,18 +29,17 @@ export default function CustomCursor() {
     default: {
       width: 0,
       height: 0, 
-      opacity: 0, // Hidden by default, or set to w-4 h-4 if you want a dot always
+      opacity: 0, 
     },
     text: {
       width: 80,
       height: 80,
       opacity: 1,
-      backgroundColor: "#ec4899", // pink-500
-      mixBlendMode: "normal" as const,
+      backgroundColor: "#ffba00",
+      mixBlendMode: "normal" as const, // Ensure visibility on dark/light
     },
     button: {
-      width: 0, // Hide custom cursor on buttons to let system cursor take over? 
-                // Or make it a small ring. Let's hide it for "button" to be safe.
+      width: 0,
       height: 0,
       opacity: 0,
     }
@@ -48,7 +47,8 @@ export default function CustomCursor() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 z-[9999] pointer-events-none flex items-center justify-center rounded-full text-white font-black text-xs tracking-widest text-center"
+      // Fixed z-index to z-[9999]
+      className="fixed top-0 left-0 z-9999 pointer-events-none flex items-center justify-center rounded-full text-white font-black text-xs tracking-widest text-center"
       style={{
         translateX: "-50%",
         translateY: "-50%",

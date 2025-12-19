@@ -19,36 +19,27 @@ export default function SpotifyCard() {
       <div className="flex flex-col group">
         <div className="mb-12">
           <HackerHeader
-            text="02 01 01 // MUSIC OBSESSED"
+            prefix1="02"
+            prefix2="01"
+            prefix3="01"
+            text="MUSIC OBSESSED"
             lineSide="left"
-            variant="light"
+            bgColour="bg-lime-400"
           />
         </div>
-        <p className="text-stone-50 mb-12">
-          I'm not sure if I can claim to be an{" "}
-          <HighText text="audiophile" variant="light" /> just yet but I do love
-          some good songs. I'm a big fan of the{" "}
-          <HighText text="Smiths" variant="light" />,{" "}
-          <HighText text="Radiohead" variant="light" /> and{" "}
-          <HighText text="Deftones" variant="light" /> , though I don't shy away
-          from a varied music taste. Also, I play music (the guitar and a long
-          time ago the saxophone) - though I'm really quite terrible. The only
-          song I can play well is either{" "}
-          <HighText text="Nothing else matters" variant="light" /> by{" "}
-          <HighText text="Metallica" variant="light" /> or{" "}
-          <HighText text="Tears in heaven" variant="light" /> by{" "}
-          <HighText text="Eric Clapton" variant="light" />.
+        <p className="mb-12">
+          I'm not sure if I can claim to be an <HighText text="audiophile" />{" "}
+          just yet but I do love some good songs. I'm a big fan of the{" "}
+          <HighText text="Smiths" />, <HighText text="Radiohead" /> and{" "}
+          <HighText text="Deftones" /> , though I don't shy away from a varied
+          music taste. Also, I play music (the guitar and a long time ago the
+          saxophone) - though I'm really quite terrible. The only song I can
+          play well is either <HighText text="Nothing else matters" /> by{" "}
+          <HighText text="Metallica" /> or <HighText text="Tears in heaven" />{" "}
+          by <HighText text="Eric Clapton" />.
         </p>
       </div>
-      <div className="mb-4">
-        <HackerHeader
-          text="SPOTIFY_API"
-          lineColor="bg-lime-300"
-          className="text-sm text-lime-500"
-        />
-      </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-10 lg:gap-14 w-full h-full">
-        {/* --- LEFT COL: ALL TIME FAVORITE --- */}
         <Link
           href={data.allTime?.url || "#"}
           target="_blank"

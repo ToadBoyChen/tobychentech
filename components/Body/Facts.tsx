@@ -39,27 +39,21 @@ export default function Facts({ isFactsActive }: FactsProps) {
         </svg>
       </div>
       <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center z-20 bg-lime-200">
-        <div className="flex flex-col items-center mb-8 md:mb-12">
+        <div className="mb-12">
+          <CustomDiv label="FACTS" lineColor="bg-lime-400" />
+        </div>
+
+        <div className="flex flex-col items-center mb-8">
           <HackerText
             text="SOME FACTS"
             triggerOnMount={true}
             triggerOnHover={false}
-            className="text-stone-50 font-bold text-5xl md:text-6xl lg:text-8xl tracking-tighter text-center font-mono"
-          />
-        </div>
-        <div className="mb-12">
-          <CustomDiv
-            label="< FACTS >"
-            lineColor="bg-stone-50"
-            textColor="text-stone-50"
+            className="text-lime-900 font-bold text-5xl tracking-tighter text-center font-mono"
           />
         </div>
 
         <div className="mb-8">
-          <HackerHeader
-            text="02 01 // FUN FACTS"
-            lineSide="right"
-          />
+          <HackerHeader text="FUN FACTS" prefix1="02" prefix2="01" lineSide="right" bgColour="bg-lime-400"/>
         </div>
 
         <SpotifyCard />

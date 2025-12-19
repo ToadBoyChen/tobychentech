@@ -33,12 +33,12 @@ export default function Facts({ isFactsActive }: FactsProps) {
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
-          className="w-full h-[50px] fill-lime-950 block overflow-visible"
+          className="w-full h-[50px] fill-lime-200 block overflow-visible"
         >
           <use href="#fixed-convex" />
         </svg>
       </div>
-      <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center z-20 bg-lime-950">
+      <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center z-20 bg-lime-200">
         <div className="flex flex-col items-center mb-8 md:mb-12">
           <HackerText
             text="SOME FACTS"
@@ -59,8 +59,6 @@ export default function Facts({ isFactsActive }: FactsProps) {
           <HackerHeader
             text="02 01 // FUN FACTS"
             lineSide="right"
-            size="large"
-            variant="light"
           />
         </div>
 

@@ -90,9 +90,11 @@ export default function Card({ isAboutActive }: CardProps) {
 
         <Pt3 />
 
-        <div className="mt-24">
-          <CustomDiv label="</ PROFILE >" />
-        </div>
+        <CustomDiv
+          label="PROFILE END"
+          lineColor="bg-lime-800"
+          textColor="text-stone-50"
+        />
       </section>
     </motion.div>
   );

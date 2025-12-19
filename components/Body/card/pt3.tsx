@@ -11,36 +11,36 @@ const PATH_POINTS = [
   { x: 30, y: 900 }, // Curve Right (Edu 1)
   { x: 5, y: 1500 }, // Curve Left (Exp 2)
   { x: 20, y: 2100 }, // Curve Right (Edu 2)
-  { x: 50, y: 3000 },
+  { x: 100, y: 3000 },
 ];
 
 const DATA = [
   {
     id: "START",
     title: "I AM BORN",
-    subtitle: "2004",
+    subtitle: "Lymington, UK",
     icon: Baby,
     desc: "I am born in the UK, Lymington. Growing up in a small seaside town I got my hands on old, crap desktops and began to code.",
-    tags: ["CHINESE", "ENGLISH"],
+    date: ["2004", "Pres"],
     pointIndex: 0,
   },
   {
     id: "EXP_01",
     title: "FREELANCE DEV",
-    subtitle: "FullStack Engineering",
+    subtitle: "FullStack",
     icon: Trees,
     desc: "Architecting bespoke digital ecosystems using Next.js 14 and Server Components.",
-    tags: ["REACT", "TAILWIND"],
+    date: ["2025", "Pres"],
     pointIndex: 1,
     align: "left",
   },
   {
     id: "EDU_01",
     title: "BSC MATHEMATICS",
-    subtitle: "Queen Mary University",
+    subtitle: "QMUL, London",
     icon: Microscope,
     desc: "Specializing in Group Theory and finding order within chaotic systems.",
-    tags: ["LOGIC", "CHAOS_THEORY"],
+    date: ["2023", "2026"],
     pointIndex: 2,
     align: "right",
   },
@@ -50,17 +50,17 @@ const DATA = [
     subtitle: "DataAnnotation",
     icon: Leaf,
     desc: "Training RLHF models to improve LLM accuracy and safety protocols.",
-    tags: ["PYTHON", "AI/ML"],
+    date: ["2023", "2025"],
     pointIndex: 3,
     align: "left",
   },
   {
     id: "EDU_02",
-    title: "PHYSICS CERT",
-    subtitle: "Heriot-Watt Uni",
+    title: "Physics & Maths CertHE",
+    subtitle: "HWU, Edinburgh",
     icon: Map,
     desc: "Foundational mechanics and computational modeling of physical laws.",
-    tags: ["PHYSICS", "CALCULUS"],
+    date: ["2022", "2023"],
     pointIndex: 4,
     align: "right",
   },
@@ -119,8 +119,6 @@ export default function Pt3() {
     </div>
   );
 }
-
-// --- SUBCOMPONENTS ---
 
 function SvgPath({
   dimensions,
@@ -192,7 +190,9 @@ function Node({
         transition={{ duration: 0.5 }}
         className={`
                     relative bg-lime-200
-                    rounded-2xl p-6 transition-all group
+                    p-6 transition-all group
+
+                    ${ item.align === "left" ? "text-left rounded-tr-[60px] rounded-bl-[60px] rounded-xl" : "text-right rounded-tl-[60px] rounded-br-[60px] rounded-xl"}
                 `}
       >
         <div className="mb-4 flex flex-row w-full justify-between">
@@ -213,18 +213,19 @@ function Node({
         </MagneticPill>
         <p className="text-base mb-6">{item.desc}</p>
 
-        {item.tags && (
-          <div className="flex flex-wrap gap-2">
-            {item.tags.map((tag: string) => (
-              <span
-                key={tag}
-                className="flex items-center gap-1 text-[9px] font-mono font-bold bg-lime-50 text-lime-700 px-2 py-1 rounded-md"
-              >
-                <Terminal size={8} /> {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-row w-full justify-between">
+          <MagneticPill className="text-xs tracking-widest text-stone-50 bg-lime-600 px-4 font-mono py-1 rounded-l-3xl rounded-r-xl mr-4">
+            <p>
+              {item.date[0]}
+            </p>
+          </MagneticPill>
+
+          <HackerHeader
+            text={item.date[1]}
+            lineSide="left"
+            className="w-full text-stone-50"
+          />
+        </div>
       </motion.div>
     </div>
   );

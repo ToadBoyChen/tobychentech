@@ -215,12 +215,12 @@ export default function Body() {
             <Card isAboutActive={hasReached("about")} />
           </div>
 
-          <div className="bg-lime-200">
+          <div className="bg-lime-950">
             <div id="facts">
               <Facts isFactsActive={hasReached("facts")} />
             </div>
 
-            <div className="bg-lime-950">
+            <div className="bg-lime-200">
               <div id="projects">
                 <Projects isProjectActive={hasReached("projects")} />
               </div>

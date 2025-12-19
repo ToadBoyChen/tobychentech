@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Trees, Leaf, Microscope, Map, Terminal, Baby } from "lucide-react";
+import { Trees, Leaf, Microscope, Map, Baby } from "lucide-react";
 import NatureText from "@/components/HackerText";
 import MagneticPill from "@/components/MagneticPill";
 import HackerHeader from "@/components/HackerHeader";
@@ -11,7 +11,7 @@ const PATH_POINTS = [
   { x: 30, y: 900 }, // Curve Right (Edu 1)
   { x: 5, y: 1500 }, // Curve Left (Exp 2)
   { x: 20, y: 2100 }, // Curve Right (Edu 2)
-  { x: 100, y: 3000 },
+  { x: 120, y: 2800 },
 ];
 
 const DATA = [

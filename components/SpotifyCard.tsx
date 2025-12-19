@@ -4,16 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import HackerHeader from "./HackerHeader";
 import HighText from "./HighText";
+import CustomDiv from "./CustomDiv";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function SpotifyCard() {
-  const { data, error, isLoading } = useSWR("/api/spotify", fetcher);
-
+  const { data, isLoading } = useSWR("/api/spotify", fetcher);
   if (isLoading) return <SpotifyBentoSkeleton />;
-  if (error || !data)
-    return <div className="text-red-500">Error loading music data.</div>;
-
   return (
     <div>
       <div className="flex flex-col group">
@@ -27,58 +24,86 @@ export default function SpotifyCard() {
             bgColour="bg-lime-400"
           />
         </div>
-        <p className="mb-12">
-          I'm not sure if I can claim to be an <HighText text="audiophile" />{" "}
-          just yet but I do love some good songs. I'm a big fan of the{" "}
-          <HighText text="Smiths" />, <HighText text="Radiohead" /> and{" "}
-          <HighText text="Deftones" /> , though I don't shy away from a varied
-          music taste. Also, I play music (the guitar and a long time ago the
-          saxophone) - though I'm really quite terrible. The only song I can
-          play well is either <HighText text="Nothing else matters" /> by{" "}
-          <HighText text="Metallica" /> or <HighText text="Tears in heaven" />{" "}
-          by <HighText text="Eric Clapton" />.
-        </p>
+        <div className="grid grid-cols-3 gap-8 mb-12 bg-lime-500 py-12 px-8 rounded-2xl rounded-tl-[60px] rounded-br-[60px]">
+          <p className="col-span-3 sm:col-span-2 text-stone-50">
+            I'm not sure if I can claim to be an <HighText variant="light" text="audiophile" />{" "}
+            just yet but I do love some good songs. I'm a big fan of the{" "}
+            <HighText text="Smiths" variant="light" />, <HighText text="Radiohead" variant="light" /> and{" "}
+            <HighText text="Deftones" variant="light" /> , though I don't shy away from a varied
+            music taste. Also, I play music (the guitar and a long time ago the
+            saxophone) - though I'm really quite terrible. The only song I can
+            play well is either <HighText text="Nothing else matters" variant="light" /> by{" "}
+            <HighText text="Metallica" variant="light" /> or <HighText text="Tears in heaven" variant="light" />{" "}
+            by <HighText text="Eric Clapton" variant="light" />.
+          </p>
+          <div className="col-span-3 sm:col-span-1">
+            <CustomDiv 
+              label={"Fav Song"} 
+              lineColor="bg-lime-400" 
+              textColor="text-stone-50"  
+            />
+            <Link
+              href={data.allTime?.url || "#"}
+              target="_blank"
+              className="relative h-full min-h-[320px] flex flex-col items-center justify-between p-6"
+            >
+              {data.allTime?.coverImage ? (
+                <>
+                  <div className="relative w-48 h-48 shrink-0 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full animate-[spin_6s_linear_infinite]">
+                      <div
+                        className="absolute inset-0 rounded-full opacity-30"
+                        style={{
+                          background: `repeating-radial-gradient(
+                  #1a2e05 0, 
+                  #1a2e05 2px, 
+                  transparent 3px, 
+                  transparent 4px
+                )`,
+                        }}
+                      />
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-50 h-50 rounded-full overflow-hidden z-10">
+                        <Image
+                          src={data.allTime.coverImage}
+                          alt={data.allTime.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full text-center mt-6 relative z-10">
+                    <p className="text-2xl font-black text-lime-950 truncate mb-1">
+                      {data.allTime.title}
+                    </p>
+                    <p className="text-lime-700 font-bold font-mono text-sm uppercase tracking-wider truncate">
+                      {data.allTime.artist}
+                    </p>
+                    <div className="flex justify-center gap-1 mt-3 h-4 items-end">
+                      {[50, 75, 60, 90, 55, 90].map((h, i) => (
+                        <div
+                          key={i}
+                          className="w-2 bg-lime-600 rounded-full animate-bounce"
+                          style={{
+                            animationDelay: `${i * 0.1}s`,
+                            height: `${h}%`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center justify-center h-full text-lime-700 font-mono text-xs">
+                  // NO_DISC_LOADED
+                </div>
+              )}
+            </Link>
+          </div>
+        </div>
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-10 lg:gap-14 w-full h-full">
-        <Link
-          href={data.allTime?.url || "#"}
-          target="_blank"
-          className="col-span-1 sm:col-span-1 lg:col-span-1 lg:row-span-2 relative h-full bg-zinc-900 rounded-2xl overflow-hidden group"
-        >
-          {data.allTime?.coverImage ? (
-            <div className="flex flex-col h-full">
-              <Image
-                src={data.allTime.coverImage}
-                alt={data.allTime.title}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-zinc-900/90 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="text-stone-50 font-bold leading-none truncate text-xl">
-                  {data.allTime.title}
-                </h3>
-                <p className="text-stone-200 text-md truncate">
-                  {data.allTime.artist}
-                </p>
-              </div>
-              <div className="absolute top-0 left-0 z-10">
-                <span className="text-xs font-bold text-stone-50 font-mono tracking-tightest block bg-lime-950/40 p-2 rounded-tl-2xl rounded-br-2xl backdrop-blur-sm">
-                  // FAVOURITE_SONG
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-full text-zinc-500 text-xs">
-              No Data
-            </div>
-          )}
-        </Link>
-
-        {/* --- MIDDLE COL: STACKED CARDS --- */}
-        <div className="col-span-1 sm:col-span-1 lg:col-span-1 lg:row-span-2 flex flex-col h-full gap-4">
+      <div className="w-full h-full">
+        <div className="grid grid-cols-2 gap-6 h-full">
           <Link
             href={data.month?.url || "#"}
             target="_blank"

@@ -1,38 +1,28 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import {
-  Sprout,
-  Trees,
-  Leaf,
-  Microscope,
-  Map,
-  Binary,
-  Terminal,
-  Activity,
-} from "lucide-react";
-import BoxedHeader from "@/components/BoxedHeader";
+import { Trees, Leaf, Microscope, Map, Terminal, Baby } from "lucide-react";
 import NatureText from "@/components/HackerText";
 import MagneticPill from "@/components/MagneticPill";
+import HackerHeader from "@/components/HackerHeader";
 
-// --- CONFIGURATION ---
-// The path logic: X is % of screen width (0-100), Y is 'units' down.
 const PATH_POINTS = [
-  { x: 50, y: 0 }, // Start Center
-  { x: 20, y: 400 }, // Curve Left (Exp 1)
-  { x: 80, y: 900 }, // Curve Right (Edu 1)
-  { x: 30, y: 1500 }, // Curve Left (Exp 2)
-  { x: 60, y: 2100 }, // Curve Right (Edu 2)
-  { x: 50, y: 2600 }, // End Center
+  { x: 20, y: 0 }, // Start Center
+  { x: 10, y: 400 }, // Curve Left (Exp 1)
+  { x: 30, y: 900 }, // Curve Right (Edu 1)
+  { x: 5, y: 1500 }, // Curve Left (Exp 2)
+  { x: 20, y: 2100 }, // Curve Right (Edu 2)
+  { x: 50, y: 3000 },
 ];
 
 const DATA = [
   {
     id: "START",
-    title: "INIT_SEQUENCE",
-    subtitle: "2022_PRES",
-    icon: Binary,
-    desc: "Origin of the system.",
-    pointIndex: 0, // Corresponds to PATH_POINTS[0]
+    title: "I AM BORN",
+    subtitle: "2004",
+    icon: Baby,
+    desc: "I am born in the UK, Lymington. Growing up in a small seaside town I got my hands on old, crap desktops and began to code.",
+    tags: ["CHINESE", "ENGLISH"],
+    pointIndex: 0,
   },
   {
     id: "EXP_01",
@@ -99,12 +89,6 @@ export default function Pt3() {
     restDelta: 0.001,
   });
 
-  // --- CAMERA LOGIC ---
-  // We map the scroll progress (0 to 1) to specific coordinates (X, Y)
-  // To "follow" the line, we move the WORLD in the opposite direction of the point.
-
-  // 1. Calculate Shift in X (Pan Left/Right)
-  // If point is at 20vw, we want to shift the world so 20vw is at center (50vw). Shift = 50 - 20 = +30vw
   const xInputRange = [0, 0.2, 0.4, 0.6, 0.8, 1];
   const xOutputRange = PATH_POINTS.map((p) => 50 - p.x + "vw"); // Force center
 
@@ -118,13 +102,7 @@ export default function Pt3() {
 
   return (
     <div ref={containerRef} className="relative h-[500vh] w-full">
-      {/* FIX APPLIED: 
-        Changed 'w-full' to 'w-screen' and added 'ml-[calc(50%-50vw)]'
-        This forces the sticky container to break out of any parent padding 
-        and span the full viewport width, preventing premature clipping.
-      */}
       <div className="sticky top-0 h-screen w-screen ml-[calc(50%-50vw)] overflow-hidden flex flex-col items-center justify-center">
-        {/* --- THE MOVABLE WORLD --- */}
         <motion.div
           style={{ x: cameraX, y: cameraY }}
           className="absolute top-0 left-0 w-full"
@@ -175,14 +153,6 @@ function SvgPath({
 
   return (
     <svg className="absolute top-0 left-0 overflow-visible w-full h-[3000px] pointer-events-none">
-      {/* Background "Track" Line */}
-      <path
-        d={d}
-        stroke="#E7E5E4"
-        strokeWidth="4"
-        fill="none"
-        strokeLinecap="round"
-      />
       {/* Active "Growth" Line */}
       <motion.path
         d={d}
@@ -221,30 +191,30 @@ function Node({
         viewport={{ margin: "-10% 0px -10% 0px" }}
         transition={{ duration: 0.5 }}
         className={`
-                    relative w-[300px] md:w-[400px] bg-lime-200
+                    relative bg-lime-200
                     rounded-2xl p-6 transition-all group
-                    shadow-xl
                 `}
       >
-        <div className="mb-4 flex flex-row items-center justify-between">
-          <MagneticPill className="flex flex-row justify-between w-full text-lime-800 rounded-tl-3xl rounded-br-3xl p-3 rounded-xl group-hover:bg-lime-900 group-hover:text-lime-300 transition-colors">
-            <Icon size={20} />
+        <div className="mb-4 flex flex-row w-full justify-between">
+          <MagneticPill className="text-lime-200 bg-lime-600 px-2 py-1 rounded-l-3xl rounded-r-xl mr-4">
+            <Icon size={25} />
           </MagneticPill>
 
-          <MagneticPill className="flex flex-row justify-between w-full text-lime-800 rounded-tr-3xl rounded-bl-3xl p-3 rounded-xl group-hover:bg-lime-900 group-hover:text-lime-300 transition-colors">
-            <p className="text-xs font-bold tracking-widest">{item.subtitle}</p>
-          </MagneticPill>
+          <HackerHeader
+            text={item.subtitle}
+            lineSide="left"
+            className="w-full text-stone-50"
+          />
         </div>
-        <h3 className="text-2xl font-black text-lime-950 uppercase leading-none mb-2">
-          <NatureText text={item.title} />
-        </h3>
-
-        <p className="text-sm text-stone-600 leading-relaxed mb-4">
-          {item.desc}
-        </p>
+        <MagneticPill>
+          <p className="text-3xl font-black text-lime-950 uppercase leading-none mb-2">
+            <NatureText text={item.title} />
+          </p>
+        </MagneticPill>
+        <p className="text-base mb-6">{item.desc}</p>
 
         {item.tags && (
-          <div className="flex flex-wrap gap-2 pt-4 border-t border-stone-100">
+          <div className="flex flex-wrap gap-2">
             {item.tags.map((tag: string) => (
               <span
                 key={tag}

@@ -59,7 +59,7 @@ export default function SectionHeader({
         <MagneticPill
           strength={0.5}
           className={`
-            px-4 py-2 rounded-full 
+            px-4 py-3 rounded-full 
             tracking-widest font-mono uppercase text-xs
             flex items-center justify-center
             ${lineColor} ${textColor}

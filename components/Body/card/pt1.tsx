@@ -93,11 +93,11 @@ export default function Pt1() {
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full my-16">
       <div className="sm:col-span-2 flex flex-col justify-center">
         <BoxedHeader
-          text="Building Foundations."
+          text="Building Foundations"
           fillColor="bg-lime-500"
-          className="bg-lime-900 px-8 py-4 mb-8 self-center rounded-xl text-5xl font-semibold text-lime-200 uppercase transition-all duration-300 w-full"
+          className="bg-lime-900 px-8 pt-9 pb-6 mb-8 self-center rounded-tl-[60px] rounded-tr-[60px] rounded-bl-[60px] rounded-md text-5xl font-semibold text-lime-200 uppercase transition-all duration-300 w-full overflow-clipping text-center"
         />
-        <div className="text-stone-50 bg-lime-900 p-8 flex flex-col justify-between group rounded-xl transition-all duration-300">
+        <div className="text-stone-50 bg-lime-900 p-8 flex flex-col justify-between group rounded-bl-[60px] rounded-br-[60px] rounded-tl-[60px] rounded-xl transition-all duration-300">
           <p>
             I am currently <HighText text="accelerating" variant="light" />. I
             trade years of tenure for{" "}
@@ -114,7 +114,7 @@ export default function Pt1() {
       {/* 2. PHOTO SECTION */}
       <div
         ref={meRef}
-        className="relative overflow-hidden rounded-xl h-[400px] sm:col-span-1 sm:h-full group"
+        className="relative overflow-hidden rounded-xl h-[400px] sm:col-span-1 sm:h-full group rounded-tr-[60px] rounded-bl-[60px]"
       >
         <Image
           src={Me}
@@ -137,7 +137,7 @@ export default function Pt1() {
       </div>
 
       {/* 3. METRICS SECTION */}
-      <div className="sm:col-span-3 bg-lime-200 rounded-xl relative overflow-hidden p-8 flex flex-row items-stretch min-h-[250px] md:min-h-[300px]">
+      <div className="sm:col-span-3 rounded-tl-[60px] rounded-br-[60px] bg-lime-200 rounded-xl relative overflow-hidden p-8 flex flex-row items-stretch min-h-[250px] md:min-h-[300px]">
         {/* LEFT SIDE: CONTENT */}
         <div className="flex-1 flex flex-col justify-between z-10 mr-8">
           <div className="h-8">
@@ -190,7 +190,7 @@ export default function Pt1() {
 
                 {/* --- BACK FACE --- */}
                 <div
-                  className="absolute inset-0 p-4 rounded-xl bg-lime-500 w-full h-full flex items-center justify-center backface-hidden"
+                  className="absolute inset-0 p-8 rounded-tr-[60px] rounded-bl-[60px] rounded-xl bg-lime-500 w-full h-full flex items-center justify-center backface-hidden"
                   style={{
                     backfaceVisibility: "hidden",
                     transform: "rotateX(180deg)",
@@ -206,21 +206,20 @@ export default function Pt1() {
         </div>
 
         {/* SIDEBAR */}
-        <div className="group flex flex-col justify-center gap-3 z-10 w-6 group/sidebar">
+        <div className="group flex flex-col justify-center z-10 group/sidebar">
           {METRICS.map((_, i) => (
-           
             <MagneticPill key={i}>
               <button
                 onClick={() => handleManualChange(i)}
                 className={`
-        w-6 rounded-full 
+        w-6 h-8 rounded-md 
         transition-all duration-300 hover:bg-yellow-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] 
         cursor-pointer
         ${
-          i === metricIndex
-            ? "h-16 bg-lime-900 opacity-100"
-            : "h-6 bg-lime-500"
+          i === metricIndex ? "h-14 bg-lime-900 opacity-100" : "bg-lime-500"
         }
+        ${i === 0 ? "rounded-t-[60px] rounded-b-3xl" : ""}
+        ${i === 3 ? "rounded-b-[60px] rounded-t-3xl" : ""}
       `}
                 aria-label={`Go to slide ${i + 1}`}
               />

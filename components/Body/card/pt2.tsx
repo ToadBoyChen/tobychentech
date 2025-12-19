@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, Hash, ArrowRight } from "lucide-react"; // Added Hash/ArrowRight for design
+import { Plus, Hash, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { createPortal } from "react-dom"; // Import for Portal
+import { createPortal } from "react-dom";
 import Hike from "@/public/hike.jpeg";
 import Kew from "@/public/kewfinger.jpg";
 import Me from "@/public/me.jpg";
@@ -96,10 +96,9 @@ const HOBBIES = [
 interface ModalContent {
   title: string;
   content: string;
-  label?: string; // Optional: to pass the 'tag' (e.g. GROUP_THEORY)
+  label?: string;
 }
 
-// Helper for Portal to avoid hydration mismatch
 const Portal = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -110,41 +109,30 @@ const Portal = ({ children }: { children: React.ReactNode }) => {
 export default function Pt2() {
   const [activeHobby, setActiveHobby] = useState<string | null>("01");
   const [activeModal, setActiveModal] = useState<ModalContent | null>(null);
-
-  // Carousel State
   const [currentImgIdx, setCurrentImgIdx] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
-
   const { setCursor, resetCursor } = useCursor();
 
-  // --- ESCAPE KEY LISTENER ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setActiveModal(null);
-      }
+      if (e.key === "Escape") setActiveModal(null);
     };
-    if (activeModal) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
+    if (activeModal) window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeModal]);
 
-  // --- AUTO ROTATION EFFECT ---
   useEffect(() => {
     if (!activeHobby || isCarouselPaused) return;
-
     const currentHobbyData = HOBBIES.find((h) => h.id === activeHobby);
     if (!currentHobbyData || currentHobbyData.images.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentImgIdx((prev) => (prev + 1) % currentHobbyData.images.length);
-    }, 3000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [activeHobby, isCarouselPaused]);
 
-  // --- HANDLERS ---
   const handleCardClick = (
     e: React.MouseEvent,
     id: string,
@@ -154,20 +142,13 @@ export default function Pt2() {
     setActiveHobby(nextState);
     setCurrentImgIdx(0);
     setIsCarouselPaused(false);
-
-    if (nextState) {
-      resetCursor();
-    } else {
-      setCursor("EXPAND", "text");
-    }
+    if (nextState) resetCursor();
+    else setCursor("EXPAND", "text");
   };
 
   const handleMouseEnter = (isActive: boolean) => {
-    if (!isActive) {
-      setCursor("EXPAND", "text");
-    } else {
-      resetCursor();
-    }
+    if (!isActive) setCursor("EXPAND", "text");
+    else resetCursor();
   };
 
   const stopCursor = (e: React.MouseEvent) => {
@@ -177,11 +158,8 @@ export default function Pt2() {
 
   const restoreCursor = (e: React.MouseEvent, isActive: boolean) => {
     e.stopPropagation();
-    if (!isActive) {
-      setCursor("EXPAND", "text");
-    } else {
-      resetCursor();
-    }
+    if (!isActive) setCursor("EXPAND", "text");
+    else resetCursor();
   };
 
   const handleManualSlideChange = (e: React.MouseEvent, index: number) => {
@@ -189,7 +167,6 @@ export default function Pt2() {
     setCurrentImgIdx(index);
   };
 
-  // --- ANIMATION VARIANTS ---
   const contentVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -217,28 +194,24 @@ export default function Pt2() {
               onMouseEnter={() => handleMouseEnter(isActive)}
               onMouseLeave={resetCursor}
               className={`
-                relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]
-                ${isActive ? "bg-lime-200" : "bg-lime-900"}
+                relative cursor-pointer overflow-hidden rounded-tl-[60px] rounded-br-[60px] rounded-xl transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]
+                ${
+                  isActive
+                    ? "bg-lime-200 rounded-tr-[60px] rounded-bl-[60px] rounded-tl-xl rounded-br-xl"
+                    : "bg-lime-900"
+                }
               `}
             >
-              {/* HEADER */}
-              <div
-                className={`
-                    flex items-center justify-between p-8 transition-all`}
-              >
+              <div className="flex items-center justify-between p-8 transition-all">
                 <div className="flex items-center gap-6 md:gap-12">
                   <div
                     onMouseEnter={stopCursor}
                     onMouseLeave={(e) => restoreCursor(e, isActive)}
                   >
-                    <span
-                      className={`font-mono text-xl tracking-widest text-lime-500
-                    }`}
-                    >
+                    <span className="font-mono text-xl tracking-widest text-lime-500">
                       {hobby.id}
                     </span>
                   </div>
-
                   <h3
                     className={`text-5xl font-black uppercase tracking-tighter transition-colors duration-300 ${
                       isActive ? "text-lime-800" : "text-stone-50"
@@ -247,7 +220,6 @@ export default function Pt2() {
                     <HackerText text={hobby.title} />
                   </h3>
                 </div>
-
                 <div
                   onMouseEnter={stopCursor}
                   onMouseLeave={(e) => restoreCursor(e, isActive)}
@@ -258,17 +230,12 @@ export default function Pt2() {
                         isActive ? "rotate-135 bg-lime-900" : "rotate-0"
                       }`}
                     >
-                      <Plus
-                        className={`transition-colors duration-300 ${
-                          isActive ? "text-lime-200" : "text-lime-200"
-                        }`}
-                      />
+                      <Plus className="text-lime-200" />
                     </div>
                   </MagneticPill>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT */}
               <AnimatePresence>
                 {isActive && (
                   <motion.div
@@ -290,21 +257,38 @@ export default function Pt2() {
                       className="grid grid-cols-1 sm:grid-cols-3 gap-8 p-8 pt-0 cursor-default"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      {/* --- LEFT: IMAGE CAROUSEL --- */}
+                      {/* --- UPDATED CAROUSEL ANIMATION --- */}
                       <motion.div
                         variants={itemVariants}
                         onMouseEnter={() => setIsCarouselPaused(true)}
                         onMouseLeave={() => setIsCarouselPaused(false)}
-                        className="relative h-[250px] lg:h-auto min-h-[300px] w-full rounded-xl overflow-hidden sm:col-span-1 group/carousel perspective-[1000px]"
+                        className="relative h-[250px] lg:h-auto min-h-[300px] w-full rounded-xl overflow-hidden sm:col-span-1"
                       >
                         <AnimatePresence mode="wait">
                           <motion.div
                             key={currentImgIdx}
-                            initial={{ rotateX: -90, opacity: 0 }}
-                            animate={{ rotateX: 0, opacity: 1 }}
-                            exit={{ rotateX: 90, opacity: 0 }}
-                            transition={{ duration: 0.4, ease: "backOut" }}
-                            style={{ transformStyle: "preserve-3d" }}
+                            initial={{
+                              opacity: 0,
+                              scale: 1.1,
+                              filter: "blur(12px)",
+                              x: 10,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              scale: 1,
+                              filter: "blur(0px)",
+                              x: 0,
+                            }}
+                            exit={{
+                              opacity: 0,
+                              scale: 0.95,
+                              filter: "blur(12px)",
+                              x: -20,
+                            }}
+                            transition={{
+                              duration: 0.8,
+                              ease: [0.22, 1, 0.36, 1],
+                            }}
                             className="absolute inset-0"
                           >
                             <Image
@@ -317,7 +301,6 @@ export default function Pt2() {
                           </motion.div>
                         </AnimatePresence>
 
-                        {/* CONTROLS */}
                         {hobby.images.length > 1 && (
                           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-row gap-2 z-10">
                             {hobby.images.map((_, idx) => (
@@ -326,14 +309,15 @@ export default function Pt2() {
                                   onClick={(e) =>
                                     handleManualSlideChange(e, idx)
                                   }
-                                  className={`
-                                                w-6 h-6 rounded-full hover:bg-yellow-500 transition-all duration-300 cursor-pointer
-                                                ${
-                                                  idx === currentImgIdx
-                                                    ? "w-12 bg-lime-900"
-                                                    : "bg-lime-500"
-                                                }
-                                            `}
+                                  className={`w-7 h-5 rounded-lg hover:bg-yellow-500 transition-all duration-300 cursor-pointer 
+                                            ${
+                                              idx === currentImgIdx
+                                                ? "w-14 bg-lime-900"
+                                                : "bg-lime-500"
+                                            }
+                                            ${idx === 0 ? "rounded-l-[60px] rounded-r-3xl" : ""}
+                                            ${idx === hobby.images.length - 1 ? "rounded-r-[60px] rounded-l-3xl" : ""}
+                                          `}
                                 />
                               </MagneticPill>
                             ))}
@@ -341,7 +325,6 @@ export default function Pt2() {
                         )}
                       </motion.div>
 
-                      {/* --- RIGHT: CONTENT --- */}
                       <div className="flex flex-col justify-start py-2 sm:col-span-2">
                         <motion.div
                           variants={itemVariants}
@@ -369,7 +352,6 @@ export default function Pt2() {
                             </MagneticPill>
                           ))}
                         </motion.div>
-
                         <motion.p
                           variants={itemVariants}
                           className="text-lg md:text-xl text-lime-900 leading-relaxed max-w-prose"
@@ -386,12 +368,10 @@ export default function Pt2() {
         })}
       </div>
 
-      {/* --- REFACTORED PORTAL MODAL --- */}
       <Portal>
         <AnimatePresence>
           {activeModal && (
             <div className="fixed inset-0 z-9999 flex items-center justify-center isolate">
-              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -399,8 +379,6 @@ export default function Pt2() {
                 onClick={() => setActiveModal(null)}
                 className="absolute inset-0 bg-stone-950/60 backdrop-blur-md"
               />
-
-              {/* Modal Card */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -409,9 +387,7 @@ export default function Pt2() {
                 className="relative w-full max-w-lg mx-4 overflow-hidden rounded-3xl bg-lime-100 shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
               >
                 <div className="h-4 w-full bg-lime-500" />
-
                 <div className="p-10">
-                  {/* Header Section */}
                   <div className="flex items-start justify-between gap-4 mb-8">
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-2 text-lime-600">

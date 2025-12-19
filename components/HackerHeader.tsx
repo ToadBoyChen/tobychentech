@@ -49,7 +49,7 @@ export default function HackerHeader({
 
     return () => observer.disconnect();
   }, []);
-  const pillClass = `${className} ${bgColour} px-4 rounded-full text-xs inline-flex items-center justify-center font-mono tracking-widest uppercase select-none`;
+  const pillClass = `${className} ${bgColour} px-4 text-xs inline-flex items-center rounded-xl justify-center font-mono tracking-widest uppercase select-none`;
 
   return (
     <div ref={ref} className={`flex items-center gap-4 w-full overflow-visible isolate`}>
@@ -70,7 +70,7 @@ export default function HackerHeader({
 
       {/* Prefix 1 */}
       {prefix1 && (
-        <MagneticPill strength={0.3} className={pillClass}>
+        <MagneticPill strength={0.3} className={`${pillClass} rounded-tl-3xl rounded-bl-3xl`}>
              {prefix1}
         </MagneticPill>
       )}
@@ -90,7 +90,7 @@ export default function HackerHeader({
       )}
 
       {/* Main Title */}
-      <MagneticPill strength={0.3} className={pillClass}>
+      <MagneticPill strength={0.3} className={`${pillClass} rounded-tr-3xl rounded-br-3xl`}>
         <HackerText
           text={displayTitle}
           speed={speed}

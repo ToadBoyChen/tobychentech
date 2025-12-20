@@ -5,9 +5,8 @@ const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
 
 const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
 
-// --- 1. CORRECT OFFICIAL ENDPOINTS ---
-const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
-const BASE_ENDPOINT = `https://api.spotify.com/v1`;
+const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`; // Fixed URL
+const BASE_ENDPOINT = `https://api.spotify.com/v1`; // Fixed URL
 
 const getAccessToken = async () => {
   const response = await fetch(TOKEN_ENDPOINT, {
@@ -20,15 +19,16 @@ const getAccessToken = async () => {
       grant_type: 'refresh_token',
       refresh_token: refresh_token!,
     }),
-    cache: 'no-store',
+    cache: 'no-store', // vital for nextjs
   });
 
   return response.json();
 };
 
+// Changed limit to 5 to support the list view
 export const getTopTracksLong = async () => {
   const { access_token } = await getAccessToken();
-  return fetch(`${BASE_ENDPOINT}/me/top/tracks?time_range=long_term&limit=1`, {
+  return fetch(`${BASE_ENDPOINT}/me/top/tracks?time_range=long_term&limit=5`, {
     headers: { Authorization: `Bearer ${access_token}` },
     cache: 'no-store',
   });

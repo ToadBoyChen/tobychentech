@@ -1,12 +1,13 @@
+// app/api/spotify/route.ts
 import { getTopTracksLong, getTopTracksShort, getRecentlyPlayed, getPlaylist, getUserProfile } from '@/lib/spotify';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
     const [longRes, shortRes, recentRes, playlistRes, profileRes] = await Promise.all([
-      getTopTracksLong(),
-      getTopTracksShort(),
-      getRecentlyPlayed(),
+      getTopTracksLong(),     // Top 5 All Time
+      getTopTracksShort(),    // Top 1 Month
+      getRecentlyPlayed(),    // Last played
       getPlaylist('3x3WcYMxaQLXu4JjEZu0ZB'), // Your Playlist ID
       getUserProfile()
     ]);
@@ -24,15 +25,22 @@ export async function GET() {
         artist: track.artists.map((_artist: any) => _artist.name).join(', '),
         url: track.external_urls.spotify,
         coverImage: track.album.images[0]?.url || null,
+        album: track.album.name,
       };
     };
 
+    // Process lists
+    const top5Tracks = longData.items ? longData.items.map(formatTrack) : [];
+    
     return NextResponse.json({
-      allTime: longData.items?.[0] ? formatTrack(longData.items[0]) : null,
-      month: shortData.items?.[0] ? formatTrack(shortData.items[0]) : null,
-      recent: recentData.items?.[0] ? formatTrack(recentData.items[0].track) : null,
+      // The 3 Vinyl Heros
+      heroAllTime: top5Tracks[0] || null,
+      heroMonth: shortData.items?.[0] ? formatTrack(shortData.items[0]) : null,
+      heroRecent: recentData.items?.[0] ? formatTrack(recentData.items[0].track) : null,
       
-      // Playlist Data
+      // Data for the End Section
+      top5: top5Tracks,
+
       playlist: playlistData.error ? null : {
           name: playlistData.name,
           description: playlistData.description,
@@ -41,12 +49,11 @@ export async function GET() {
           owner: playlistData.owner.display_name,
       },
 
-      // New Profile Data
       profile: profileData.error ? null : {
           name: profileData.display_name,
           followers: profileData.followers.total,
           url: profileData.external_urls.spotify,
-          image: profileData.images?.[0]?.url || null, // Getting the largest profile image
+          image: profileData.images?.[0]?.url || null,
       }
     });
   } catch (error) {

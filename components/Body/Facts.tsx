@@ -38,7 +38,12 @@ export default function Facts({ isFactsActive }: FactsProps) {
           <use href="#fixed-convex" />
         </svg>
       </div>
-      <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center z-20 bg-lime-200">
+      
+      {/* FIX 1: Removed 'z-20' from this section. 
+         This allows the SpotifyCard inside (which will be z-100) 
+         to rise above the global ScrollTracker (z-50).
+      */}
+      <section className="relative px-6 md:px-20 lg:px-32 py-20 md:py-36 items-center justify-center bg-lime-200">
         <div className="mb-12">
           <CustomDiv label="FACTS" lineColor="bg-lime-400" />
         </div>
@@ -51,12 +56,10 @@ export default function Facts({ isFactsActive }: FactsProps) {
             className="text-lime-900 font-bold text-5xl tracking-tighter text-center font-mono"
           />
         </div>
-
-        <div className="mb-8">
-          <HackerHeader text="FUN FACTS" prefix1="02" prefix2="01" lineSide="right" bgColour="bg-lime-400"/>
-        </div>
-
+        
+        {/* The Card Component */}
         <SpotifyCard />
+
         <div className="mt-46">
           <LinuxCard />
         </div>
